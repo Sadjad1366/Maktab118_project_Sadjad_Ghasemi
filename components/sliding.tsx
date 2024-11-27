@@ -1,27 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { StaticImageData } from "next/image";
-import image1 from "@/images/sliding/slidingPhoto1.jpg";
-import image2 from "@/images/sliding/slidingPhoto2.jpg";
-import image3 from "@/images/sliding/slidingphoto3.jpg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { className } from "@/utils/classNames";
 
 // Interface for image data
 interface ImageData {
-  src: StaticImageData;
+  src: string;
 }
 
 // Image data array
 const images: ImageData[] = [
   {
-    src: image1,
+    src: "/images/sliding/slidingPhoto1.jpg",
   },
   {
-    src: image2,
+    src: "/images/sliding/slidingPhoto2.jpg",
   },
   {
-    src: image3,
+    src: "/images/sliding/slidingPhoto3.jpg",
   },
 ];
 
@@ -50,7 +47,7 @@ export default function ImageSlider(): JSX.Element {
     if (!isHovered) {
       const interval = setInterval(() => {
         nextSlide();
-      }, 3000);
+      }, 2500);
 
       // Cleanup the interval on component unmount
       return () => {
@@ -70,9 +67,13 @@ export default function ImageSlider(): JSX.Element {
   };
 
   return (
-    <div className="relative w-full mx-auto mt-4">
+    <div className={className("relative w-full mx-auto mt-4 overflow-hidden",
+       `transform translateX(-${currentIndex * 100}%)`,
+       "transition-all duration-500 ease-in-out")}
+
+       >
       <div
-        className="relative h-[460px] mx-12 group hover:-translate-y-2"
+        className="relative h-[460px] mx-12"
         onMouseOver={handleMouseOver}
         onMouseLeave={handleMouseLeave}
       >
@@ -81,28 +82,34 @@ export default function ImageSlider(): JSX.Element {
           alt={`Slider Image ${currentIndex + 1}`}
           layout="fill"
           objectFit="cover"
-          className="rounded-xl transition-all duration-500 ease-in-out cursor-pointer"
+          className="rounded-xl transition-all  cursor-pointer"
         />
       </div>
       <button
-        className="absolute left-0 top-1/2 transform h-[459px] rounded-xl hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group"
+        className={className("absolute left-0 top-1/2 h-[459px] rounded-xl",
+          "hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group")}
         onClick={prevSlide}
       >
         <ChevronLeft className="text-gray-400 group-hover:text-white" />
       </button>
       <button
-        className="absolute right-0 top-1/2 transform h-[459px] rounded-xl hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group"
+        className={className("absolute right-0 top-1/2 h-[459px] rounded-xl",
+          "hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group")}
         onClick={nextSlide}
       >
         <ChevronRight className="text-gray-400 group-hover:text-white" />
       </button>
-      <div className="flex justify-center mt-4">
+      <div
+        className={className(
+          "flex justify-center py-1"
+        )}
+      >
         {images.map((_, index) => (
           <div
             key={index}
             className={`h-1 w-10 mx-1 ${
               index === currentIndex
-                ? "bg-[#beff46] rounded-xl"
+                ? "bg-slate-800 rounded-xl"
                 : "bg-gray-300 rounded-xl"
             } transition-all duration-500 ease-in-out`}
           ></div>

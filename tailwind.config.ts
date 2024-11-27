@@ -12,8 +12,8 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
-      spacing: {
-        '5px': '5px',
+      backgroundImage: {
+        'hero-pattern': "url('/images/category/automatic.jpg')",
       }
     },
   },
