@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 const vazirFont = localFont({
-  src: "./fonts/Vazir-Medium-FD.woff2",
+  src: "../fonts/Vazir-Medium-FD.woff2",
   variable: "--font-Vazir-Medium-FD",
   weight: "400 900",
 });

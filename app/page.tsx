@@ -1,8 +1,8 @@
 import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
-import CategoryList from "@/components/categoryList";
-import ExtraInfoComp from "@/components/extraInfo";
-import ImageSlider from "@/components/sliding";
+import CategoryList from "@/container/categoryList";
+import ExtraInfoComp from "@/container/extraInfo";
+import ImageSlider from "@/container/sliding";
 
 
 export default function Home() {

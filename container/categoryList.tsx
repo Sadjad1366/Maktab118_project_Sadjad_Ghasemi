@@ -10,7 +10,7 @@ const CategoryList: React.FC = () => {
           <Image
             src="/images/category/orient-bg.png"
             layout="fill"
-            objectFit="cover"
+            style = {{objectFit:'cover'}}
             quality={100}
             alt="Automatic Watches"
           />
