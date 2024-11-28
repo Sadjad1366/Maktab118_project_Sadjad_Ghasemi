@@ -10,7 +10,7 @@ const CategoryList: React.FC = () => {
           <Image
             src="/images/category/orient-bg.png"
             layout="fill"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             quality={100}
             alt="Automatic Watches"
           />
@@ -24,7 +24,7 @@ const CategoryList: React.FC = () => {
           <Image
             src="/images/category/skeleton2.png"
             layout="fill"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             quality={100}
             alt="Skeleton Watches"
           />
@@ -38,7 +38,7 @@ const CategoryList: React.FC = () => {
           <Image
             src="/images/category/smart.png"
             layout="fill"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             quality={100}
             alt="Smart Watches"
           />
@@ -52,7 +52,7 @@ const CategoryList: React.FC = () => {
           <Image
             src="/images/category/chornograph2.png"
             layout="fill"
-            objectFit="cover"
+            style={{ objectFit: 'cover' }}
             quality={100}
             alt="Chronograph Watches"
           />
