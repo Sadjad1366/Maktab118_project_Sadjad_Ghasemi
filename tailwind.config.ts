@@ -15,6 +15,7 @@ export default {
       },
       backgroundImage: {
         'hero-pattern': "url('/images/category/automatic.jpg')",
+        
       }
     },
   },

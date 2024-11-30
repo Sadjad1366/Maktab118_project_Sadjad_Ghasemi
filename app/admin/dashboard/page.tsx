@@ -1,10 +1,9 @@
-import { revalidatePath } from "next/cache"
+import AdminDashboardLayout from "./layout"
 
-const AdminDashboard:React.FC = () => {
-return(
-      <div>
-            okok22
-      </div>
-)
+const DashboardPage = () => {
+  return (
+    <div>okokok2222</div>
+  )
 }
-export default AdminDashboard
+
+export default DashboardPage

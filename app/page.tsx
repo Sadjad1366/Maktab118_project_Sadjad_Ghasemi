@@ -6,10 +6,12 @@ import ImageSlider from "@/container/sliding";
 
 export default function Home() {
   return (
-  <div>
-    <ImageSlider/>
-    <CategoryList/>
-    <ExtraInfoComp/>
-  </div>
+    <div>
+      <Navbar />
+      <ImageSlider />
+      <CategoryList />
+      <ExtraInfoComp />
+      <Footer />
+    </div>
   );
 }

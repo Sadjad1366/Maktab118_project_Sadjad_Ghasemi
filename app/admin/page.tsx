@@ -9,36 +9,16 @@ import React from "react";
 
 const AdminLoginPage = () => {
   const { register, handleSubmit } = useForm<IAdmin>();
-  // State to manage the checkbox value
-  const [rememberMe, setRememberMe] = React.useState(false);
 
-  const submitHandler: SubmitHandler<IAdmin> = async ({
-    username,
-    password,
-  }: IAdmin) => {
+  const submitHandler = async ({ username, password }: IAdmin) => {
     const response = await adminLoginReq({ username, password });
+
     const { accessToken, refreshToken } = response.token;
+    console.log(response.token);
 
-    console.log(response);
-    if (accessToken && refreshToken) {
-    }
-    // Save tokens to cookies if 'Remember Me' is checked
-    if (rememberMe) {
-      Cookies.set("accessToken", accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // Secure in production
-        sameSite: "Strict",
-        expires: 7, // Cookie expires in 7 days
-      });
-
-      Cookies.set("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-        expires: 7,
-      });
-    }
-
+    // Store tokens in sessionStorage (only accessible in the same tab session)
+    sessionStorage.setItem("accessToken", accessToken);
+    sessionStorage.setItem("refreshToken", refreshToken);
 
     setTimeout(() => {
       redirect("/admin/dashboard");
@@ -101,8 +81,6 @@ const AdminLoginPage = () => {
                 "w-4 h-4 border border-gray-300 rounded focus:ring-2",
                 "focus:ring-blue-500"
               )}
-              checked={rememberMe} // Bind checkbox to state
-              onChange={() => setRememberMe(!rememberMe)} // Toggle state on change
             />
             <label
               htmlFor="remember"
@@ -137,13 +115,27 @@ export default AdminLoginPage;
 //   password,
 // }: IAdmin) => {
 //   const response = await adminLoginReq({ username, password });
-
 //   const { accessToken, refreshToken } = response.token;
-//   console.log(response.token);
 
-//   // Store tokens in sessionStorage (only accessible in the same tab session)
-//   sessionStorage.setItem("accessToken", accessToken);
-//   sessionStorage.setItem("refreshToken", refreshToken);
+//   console.log(response);
+//   if (accessToken && refreshToken) {
+//   }
+//   // Save tokens to cookies if 'Remember Me' is checked
+//   if (rememberMe) {
+//     Cookies.set("accessToken", accessToken, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production", // Secure in production
+//       sameSite: "Strict",
+//       expires: 7, // Cookie expires in 7 days
+//     });
+
+//     Cookies.set("refreshToken", refreshToken, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",
+//       sameSite: "Strict",
+//       expires: 7,
+//     });
+//   }
 
 //   setTimeout(() => {
 //     redirect("/admin/dashboard");
