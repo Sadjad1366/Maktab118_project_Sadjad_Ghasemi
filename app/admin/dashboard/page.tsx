@@ -1,7 +1,7 @@
 const AdminDashboard:React.FC = () => {
 return(
       <div>
-            okok
+            okok22
       </div>
 )
 }

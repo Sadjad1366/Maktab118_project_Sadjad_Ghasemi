@@ -1,10 +1,19 @@
-"use client"
+"use client";
 import { adminLoginReq } from "@/apis/auth.service";
 import { IAdmin } from "@/types/user.type";
 import { className } from "@/utils/classNames";
 import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const AdminLoginPage = () => {
+  const { register, handleSubmit } = useForm<IAdmin>();
+
+  const submitHandler: SubmitHandler<IAdmin> = async ({
+    username,
+    password,
+  }: IAdmin) => {
+    const response = await adminLoginReq({ username, password });
+  };
 
   return (
     <div className="bg-cover bg-center h-screen bg-hero-pattern relative flex items-center justify-center">
@@ -13,7 +22,7 @@ const AdminLoginPage = () => {
 
       {/* Form container */}
       <div className="relative max-w-md w-full bg-white rounded-lg shadow-lg py-10 px-6">
-        <form>
+        <form onSubmit={handleSubmit(submitHandler)}>
           {/* Welcome message */}
           <p className="text-center text-lg font-semibold text-gray-700 mb-6">
             به پنل مدیریت خوش آمدید
@@ -26,7 +35,8 @@ const AdminLoginPage = () => {
             </label>
             <input
               type="text"
-              id="username"
+              // {...register('username')}
+              {...register("username")}
               className={className(
                 "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg",
                 "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -43,7 +53,8 @@ const AdminLoginPage = () => {
             </label>
             <input
               type="password"
-              id="password"
+              {...register("password")}
+              // {...register("password")}
               className={className(
                 "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg",
                 "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
