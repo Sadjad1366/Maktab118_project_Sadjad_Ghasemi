@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache"
+
 const AdminDashboard:React.FC = () => {
 return(
       <div>

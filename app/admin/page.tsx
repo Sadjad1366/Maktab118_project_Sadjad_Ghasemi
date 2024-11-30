@@ -1,18 +1,48 @@
 "use client";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { adminLoginReq } from "@/apis/auth.service";
 import { IAdmin } from "@/types/user.type";
 import { className } from "@/utils/classNames";
+import { redirect } from "next/navigation";
+import Cookies from "js-cookie";
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
 
 const AdminLoginPage = () => {
   const { register, handleSubmit } = useForm<IAdmin>();
+  // State to manage the checkbox value
+  const [rememberMe, setRememberMe] = React.useState(false);
 
   const submitHandler: SubmitHandler<IAdmin> = async ({
     username,
     password,
   }: IAdmin) => {
     const response = await adminLoginReq({ username, password });
+    const { accessToken, refreshToken } = response.token;
+
+    console.log(response);
+    if (accessToken && refreshToken) {
+    }
+    // Save tokens to cookies if 'Remember Me' is checked
+    if (rememberMe) {
+      Cookies.set("accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Secure in production
+        sameSite: "Strict",
+        expires: 7, // Cookie expires in 7 days
+      });
+
+      Cookies.set("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        expires: 7,
+      });
+    }
+
+
+    setTimeout(() => {
+      redirect("/admin/dashboard");
+    }, 2000); // Redirect after 2 seconds
   };
 
   return (
@@ -35,7 +65,6 @@ const AdminLoginPage = () => {
             </label>
             <input
               type="text"
-              // {...register('username')}
               {...register("username")}
               className={className(
                 "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg",
@@ -54,7 +83,6 @@ const AdminLoginPage = () => {
             <input
               type="password"
               {...register("password")}
-              // {...register("password")}
               className={className(
                 "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg",
                 "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -73,6 +101,8 @@ const AdminLoginPage = () => {
                 "w-4 h-4 border border-gray-300 rounded focus:ring-2",
                 "focus:ring-blue-500"
               )}
+              checked={rememberMe} // Bind checkbox to state
+              onChange={() => setRememberMe(!rememberMe)} // Toggle state on change
             />
             <label
               htmlFor="remember"
@@ -99,4 +129,23 @@ const AdminLoginPage = () => {
     </div>
   );
 };
+
 export default AdminLoginPage;
+
+// const submitHandler: SubmitHandler<IAdmin> = async ({
+//   username,
+//   password,
+// }: IAdmin) => {
+//   const response = await adminLoginReq({ username, password });
+
+//   const { accessToken, refreshToken } = response.token;
+//   console.log(response.token);
+
+//   // Store tokens in sessionStorage (only accessible in the same tab session)
+//   sessionStorage.setItem("accessToken", accessToken);
+//   sessionStorage.setItem("refreshToken", refreshToken);
+
+//   setTimeout(() => {
+//     redirect("/admin/dashboard");
+//   }, 2000); // Redirect after 2 seconds
+// };
