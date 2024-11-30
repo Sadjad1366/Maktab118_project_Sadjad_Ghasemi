@@ -1,6 +1,11 @@
+"use client"
+import { adminLoginReq } from "@/apis/auth.service";
+import { IAdmin } from "@/types/user.type";
 import { className } from "@/utils/classNames";
+import React from "react";
 
-const adminLogin: React.FC = () => {
+const AdminLoginPage = () => {
+
   return (
     <div className="bg-cover bg-center h-screen bg-hero-pattern relative flex items-center justify-center">
       {/* Semi-transparent background overlay */}
@@ -83,5 +88,4 @@ const adminLogin: React.FC = () => {
     </div>
   );
 };
-
-export default adminLogin;
+export default AdminLoginPage;

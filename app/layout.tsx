@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 const vazirFont = localFont({
   src: "../fonts/Vazir-Medium-FD.woff2",
@@ -24,7 +26,9 @@ export default function RootLayout({
       <body
         className={`${vazirFont.variable} antialiased`}
       >
+            <Navbar/>
         {children}
+        <Footer/>
       </body>
     </html>
   );
