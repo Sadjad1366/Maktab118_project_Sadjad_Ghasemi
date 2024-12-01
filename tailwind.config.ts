@@ -15,7 +15,8 @@ export default {
       },
       backgroundImage: {
         'hero-pattern': "url('/images/category/automatic.jpg')",
-        
+        'bretling-pattern': "url('/images/category/bretling.jpg')",
+
       }
     },
   },

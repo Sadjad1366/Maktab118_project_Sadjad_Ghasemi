@@ -1,10 +1,10 @@
 "use client";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { adminLoginReq } from "@/apis/auth.service";
 import { IAdmin } from "@/types/user.type";
 import { className } from "@/utils/classNames";
 import { redirect } from "next/navigation";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import React from "react";
 
 const AdminLoginPage = () => {

@@ -6,25 +6,25 @@ export default function DashboardLayout({
       children: React.ReactNode
     }) {
   return (
-  <div className='flex'>
-        <section className="h-screen w-64 bg-gray-800 text-white">
+  <div className='"bg-cover bg-center h-screen bg-bretling-pattern relative flex'>
+        <section className=" h-screen w-64 bg-gray-200 text-white">
       <div className="p-6">
-        <h2 className="text-2xl font-bold">Watch Dashboard</h2>
+        <h2 className="text-2xl font-bold">logo</h2>
       </div>
       <ul>
         <li className="p-4 hover:bg-gray-700">
-          <Link href="/">Dashboard</Link>
+          <Link href="/admin/dashboard" className='text-2xl font-bold'>مدیریت محصولات</Link>
+
         </li>
-        <li className="p-4 hover:bg-gray-700">
-          <Link href="/products">Products</Link>
+        <li className="py-2 px-4 mt-4 hover:bg-gray-700">
+          <Link href="/admin/dashboard/product">کالاها</Link>
         </li>
-        <li className="p-4 hover:bg-gray-700">
-          <Link href="/orders">Orders</Link>
+        <li className="py-2 px-4 hover:bg-gray-700">
+          <Link href="/admin/dashboard/entity">موجودیت و قیمت</Link>
         </li>
-        <li className="p-4 hover:bg-gray-700">
-          <Link href="/customers">Customers</Link>
+        <li className="py-2 px-4 hover:bg-gray-700">
+          <Link href="/admin/dashboard/orders">سفارشات</Link>
         </li>
-        {/* Add more links here */}
       </ul>
 
     </section>
