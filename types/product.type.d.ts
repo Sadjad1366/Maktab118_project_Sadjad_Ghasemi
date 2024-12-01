@@ -1,4 +1,4 @@
-export interface IProduct {
+ interface IProduct {
   _id: string;
   category: string;
   subcategory: string;
@@ -11,7 +11,6 @@ export interface IProduct {
   images: ["products-images-default.jpeg"];
   slugname: string;
 }
-
-export interface IProductList {
+ interface IProductList {
   products: IProduct[];
 }
