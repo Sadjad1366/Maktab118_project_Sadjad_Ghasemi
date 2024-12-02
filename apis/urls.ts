@@ -1,3 +1,4 @@
 export const urls = {
-      admin:"/auth/login"
+      admin:"/auth/login",
+      product:"/products"
 }
