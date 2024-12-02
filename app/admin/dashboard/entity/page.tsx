@@ -1,7 +1,36 @@
-import Link from "next/link";
+"use client"
+import { getAllProductsReq } from "@/apis/product.service";
+import { className } from "@/utils/classNames";
 import React from "react";
+import { GrNext, GrPrevious } from "react-icons/gr";
 
 export default function entityPage() {
+  const [products, setProducts] = React.useState<IProduct[]>([]);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(1);
+
+  const fetchProducts = async (currentPage: number) => {
+    try {
+      const response = await getAllProductsReq(currentPage);
+      setProducts(response.data.products);
+      setTotalPages(response.total_pages);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProducts(page);
+  }, [page]);
+
+  const handleNext = () => {
+    if (page < totalPages) setPage((prev) => prev + 1);
+  };
+
+  const handlePrevious = () => {
+    if (page > 1) setPage((prev) => prev - 1);
+  };
+
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between py-3 px-2">
@@ -29,19 +58,52 @@ export default function entityPage() {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th
-              scope="row"
+          {products.map((product)=><tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td
               className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
-              Apple MacBook Pro 17"
-            </th>
-            <td className="px-2 py-4">Laptop</td>
-            <td className="px-2 py-4">$2999</td>
-          </tr>
-          {/* Add more rows here */}
+              {product.name}
+            </td>
+            <td className="px-2 py-4">{product.price}</td>
+            <td className="px-2 py-4">{product.quantity}</td>
+          </tr>)}
         </tbody>
       </table>
+      <div className="flex justify-center items-center gap-x-5 pt-2">
+        <button
+          onClick={handlePrevious}
+          disabled={page === 1}
+          type="button"
+          className={className(
+            "text-white bg-blue-700 hover:bg-blue-800",
+            "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
+            "gap-2 flex-row-reverse",
+            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+            page === 1 ? "opacity-50 cursor-not-allowed" : ""
+          )}
+        >
+          <GrNext className="text-lg" />
+          قبلی
+        </button>
+        <p>
+          {page} از {totalPages}
+        </p>
+        <button
+          onClick={handleNext}
+          disabled={page === totalPages}
+          type="button"
+          className={className(
+            "text-white bg-blue-700 hover:bg-blue-800",
+            "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
+            "gap-2 flex-row-reverse",
+            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+            page === totalPages ? "opacity-50 cursor-not-allowed" : ""
+          )}
+        >
+          بعدی
+          <GrPrevious className="text-lg" />
+        </button>
+      </div>
     </div>
   );
 }

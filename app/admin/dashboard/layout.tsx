@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="bg-cover bg-center h-screen bg-bretling-pattern relative flex justify-between">
-      <section className="flex flex-col h-screen w-64 bg-gray-300 text-slate-800">
+      <section className="flex flex-col h-screen w-64 bg-gray-300 text-slate-800 opacity-80 shadow-md">
         <div className="p-6">
           <h2 className="text-2xl font-bold">logo</h2>
         </div>
@@ -34,7 +34,7 @@ export default function DashboardLayout({
         </div>
 
         <div className="mt-auto p-6">
-          <Link className="text-blue-700 font-medium hover:underline" href="/">بازگشت به سایت</Link>
+          <Link className="text-blue-900 font-semibold hover:underline" href="/">بازگشت به سایت</Link>
         </div>
       </section>
       <div className="w-full flex justify-center items-center p-6">
