@@ -10,15 +10,28 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
+  const [sortKey, setSortKey] = React.useState<string | null>(null);
+  const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">(
+    "asc"
+  );
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const response = await getAllProductsReq(currentPage);
+      const sortParam = sortKey ? `${sortKey}:${sortDirection}` : undefined;
+      const response = await getAllProductsReq(currentPage, 6, sortParam);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
     } catch (error) {
       console.log("Error fetching products:", error);
     }
+  };
+
+  const handleSort = (key: keyof IProduct) => {
+    const newDirection =
+      sortKey === key && sortDirection === "asc" ? "desc" : "asc";
+    setSortKey(key);
+    setSortDirection(newDirection);
+    fetchProducts(page); // Trigger fetch with updated sort
   };
 
   React.useEffect(() => {
@@ -41,21 +54,37 @@ const ProductPage: React.FC = () => {
           افزودن کالا
         </button>
       </div>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-200 border-b-2 dark:bg-gray-700 dark:text-gray-400">
+      <table
+        className={className(
+          "w-full text-sm text-left",
+          "rtl:text-right text-gray-500 dark:text-gray-400"
+        )}
+      >
+        <thead
+          className={className(
+            "text-xs text-gray-700 uppercase",
+            "bg-gray-200 border-b-2 dark:bg-gray-700 dark:text-gray-400"
+          )}
+        >
           <tr>
             <th>تصاویر</th>
             <th scope="col" className="px-2 py-3">
               نام محصول
             </th>
             <th scope="col" className="px-2 py-3">
-              <div className="flex items-center">
+              <div
+                onClick={() => handleSort("category")}
+                className="flex items-center"
+              >
                 دسته بندی
                 <FaSort />
               </div>
             </th>
             <th scope="col" className="px-2 py-3">
-              <div className="flex items-center">
+              <div
+                // onClick={() => handleSort("price")}
+                className="flex items-center"
+              >
                 قیمت
                 <FaSort />
               </div>
@@ -76,7 +105,12 @@ const ProductPage: React.FC = () => {
                   width="50px"
                 />
               </td>
-              <td className="flex items-center px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td
+                className={className(
+                  "flex items-center px-2 py-4",
+                  "font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                )}
+              >
                 {product.name}
               </td>
               <td className="px-2 py-4">{product.category}</td>
