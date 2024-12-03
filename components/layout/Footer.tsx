@@ -3,7 +3,7 @@ import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Footer:React.FC = () => {
   return (
-    <div>
+    <div className="rounded-lg">
       <footer className="bg-gradient-to-r from-slate-300 to-slate-500 rounded-lg">
         <div className="w-full container mx-auto">
           <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-3">
@@ -19,7 +19,7 @@ const Footer:React.FC = () => {
                 ادوات سفر ویکتورینوکس با بیش از ربع قرن تجربه
               </div>
             </div>
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col gap-y-2 rounded-b-lg">
               <h2 className="border-b-2 py-2 max-w-90 mb-6 text-xl font-semibold text-gray-900 uppercase dark:text-white">
                 درباره ما
               </h2>
@@ -62,7 +62,7 @@ const Footer:React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="px-4 py-6 bg-gray-800 text-center">
+        <div className="px-4 py-6 bg-gray-800 text-center rounded-b-lg">
           <span className="text-center text-gray-200 dark:text-gray-300 sm:text-center">
             تمام حق و حقوق استفاده از این سایت متعلق به گالری ساعت نینجا می باشد
           </span>

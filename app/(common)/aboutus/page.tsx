@@ -3,8 +3,7 @@ import Link from "next/link";
 
 export default function AboutUs() {
   return (
-    <div className="bg-ingersoll-pattern">
-      <div className="opacity-90">
+      <div className="rounded-lg mt-2">
         {/* Mission Section */}
         <section className="bg-gray-400 py-16 px-6 rtl">
           <h2 className="text-4xl font-bold text-gray-800 text-center">
@@ -91,6 +90,5 @@ export default function AboutUs() {
           </div>
         </section>
       </div>
-    </div>
   );
 }
