@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
           {/* Navigation Links */}
           <div className="hidden md:flex gap-x-6">
             <Link
-              href="/products"
+              href="/"
               className="text-white hover:text-indigo-200 transition duration-300"
             >
               صفحه اصلی

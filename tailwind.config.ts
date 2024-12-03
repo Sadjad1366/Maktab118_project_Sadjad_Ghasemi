@@ -17,6 +17,7 @@ export default {
         'hero-pattern': "url('/images/brandstory/automatic.jpg')",
         'bretling-pattern': "url('/images/brandstory/bretling.jpg')",
         'luminox-pattern': "url('/images/brandstory/luminox1440.png')",
+        'ingersoll-pattern': "url('/images/brandstory/ingersoll.jpg')",
 
       }
     },

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AboutUs() {
   return (
-    <div className="bg-gray-50">
+    <div className="bg-ingersoll-pattern">
       <div className="opacity-90">
         {/* Mission Section */}
         <section className="bg-gray-400 py-16 px-6 rtl">
@@ -21,7 +21,7 @@ export default function AboutUs() {
               <h3 className="text-2xl font-bold text-gray-900 mb-3">
                 کیفیت بی‌نظیر
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-800">
                 تمامی ساعت‌ها اصل و از برندهای معتبر جهانی هستند.
               </p>
             </div>

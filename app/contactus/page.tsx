@@ -1,11 +1,12 @@
+import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
 import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 export default function ContactUs() {
   return (
-    <div className="bg-gray-600 min-h-screen">
-      <div className="container mx-auto px-4 py-12">
+    <div className="bg-luminox-pattern min-h-screen">
+      <div className="container mx-auto px-4 py-12 opacity-80">
         <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
           تماس با ما
         </h1>
@@ -104,7 +105,10 @@ export default function ContactUs() {
                 <input
                   type="text"
                   name="name"
-                  className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={className(
+                    "mt-2 p-3 border border-gray-300 shadow-md",
+                    "rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  )}
                   required
                 />
               </div>
@@ -118,7 +122,10 @@ export default function ContactUs() {
                 <input
                   type="email"
                   name="email"
-                  className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={className(
+                    "mt-2 p-3 border border-gray-300 shadow-md",
+                    "rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  )}
                   required
                 />
               </div>
@@ -133,14 +140,20 @@ export default function ContactUs() {
               <textarea
                 name="message"
                 rows={4}
-                className="mt-2 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className={className(
+                  "mt-2 p-3 border border-gray-300 shadow-md",
+                  "rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                )}
                 required
               />
             </div>
             <div className="text-center">
               <button
                 type="submit"
-                className="mt-6 text-center bg-gray-900 text-white py-3 px-2 rounded-lg hover:bg-gray-800 transition duration-300"
+                className={className(
+                  "mt-2 p-3 border bg-gray-700 text-white border-gray-300",
+                  "rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                )}
               >
                 ارسال پیام
               </button>

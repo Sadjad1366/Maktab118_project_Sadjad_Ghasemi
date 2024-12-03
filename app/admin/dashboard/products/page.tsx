@@ -10,15 +10,15 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
-  const [sortKey, setSortKey] = React.useState<string | null>(null);
-  const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">(
-    "asc"
-  );
+  // const [sortKey, setSortKey] = React.useState<string | null>(null);
+  // const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">(
+  //   "asc"
+  // );
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const sortParam = sortKey ? `${sortKey}:${sortDirection}` : undefined;
-      const response = await getAllProductsReq(currentPage, 6, sortParam);
+      // const sortParam = sortKey ? `${sortKey}:${sortDirection}` : undefined;
+      const response = await getAllProductsReq(currentPage, 6);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
     } catch (error) {
@@ -26,13 +26,13 @@ const ProductPage: React.FC = () => {
     }
   };
 
-  const handleSort = (key: keyof IProduct) => {
-    const newDirection =
-      sortKey === key && sortDirection === "asc" ? "desc" : "asc";
-    setSortKey(key);
-    setSortDirection(newDirection);
-    fetchProducts(page); // Trigger fetch with updated sort
-  };
+  // const handleSort = (key: keyof IProduct) => {
+  //   const newDirection =
+  //     sortKey === key && sortDirection === "asc" ? "desc" : "asc";
+  //   setSortKey(key);
+  //   setSortDirection(newDirection);
+  //   fetchProducts(page); // Trigger fetch with updated sort
+  // };
 
   React.useEffect(() => {
     fetchProducts(page);
@@ -73,7 +73,7 @@ const ProductPage: React.FC = () => {
             </th>
             <th scope="col" className="px-2 py-3">
               <div
-                onClick={() => handleSort("category")}
+                // onClick={() => handleSort("category")}
                 className="flex items-center"
               >
                 دسته بندی
