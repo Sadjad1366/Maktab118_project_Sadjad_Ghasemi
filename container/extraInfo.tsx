@@ -1,7 +1,7 @@
 const ExtraInfoComp: React.FC = () => {
   return (
     <div>
-      <div className="w-full bg-slate-700 grid grid-cols-4 gap-y-3 gap-x-3 py-3 px-2">
+      <div className="w-full bg-slate-700 grid grid-cols-4 gap-y-3 gap-x-3 py-3 my-2 px-2 rounded-lg">
         <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg">
           <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
           <p className="p-2 text-justify">

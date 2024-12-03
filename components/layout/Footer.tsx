@@ -4,7 +4,7 @@ import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 const Footer:React.FC = () => {
   return (
     <div>
-      <footer className="bg-gradient-to-r from-slate-300 to-slate-500">
+      <footer className="bg-gradient-to-r from-slate-300 to-slate-500 rounded-lg">
         <div className="w-full container mx-auto">
           <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-3">
             <div>

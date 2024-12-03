@@ -14,8 +14,9 @@ export default {
         foreground: "var(--foreground)",
       },
       backgroundImage: {
-        'hero-pattern': "url('/images/category/automatic.jpg')",
-        'bretling-pattern': "url('/images/category/bretling.jpg')",
+        'hero-pattern': "url('/images/brandstory/automatic.jpg')",
+        'bretling-pattern': "url('/images/brandstory/bretling.jpg')",
+        'luminox-pattern': "url('/images/brandstory/luminox1440.png')",
 
       }
     },

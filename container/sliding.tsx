@@ -23,87 +23,70 @@ const images: ImageData[] = [
 ];
 
 export default function ImageSlider(): JSX.Element {
-  // State to keep track of the current image index
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  // State to determine if the image is being hovered over
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // Function to show the previous slide
   const prevSlide = (): void => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
   };
 
-  // Function to show the next slide
   const nextSlide = (): void => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
-  // useEffect hook to handle automatic slide transition
   useEffect(() => {
-    // Start interval for automatic slide change if not hovered
     if (!isHovered) {
       const interval = setInterval(() => {
         nextSlide();
       }, 2500);
 
-      // Cleanup the interval on component unmount
       return () => {
         clearInterval(interval);
       };
     }
   }, [isHovered]);
 
-  // Handle mouse over event
   const handleMouseOver = (): void => {
     setIsHovered(true);
   };
 
-  // Handle mouse leave event
   const handleMouseLeave = (): void => {
     setIsHovered(false);
   };
 
   return (
-    <div className={className("relative w-full mx-auto mt-4 overflow-hidden",
-       `transform translateX(-${currentIndex * 100}%)`,
-       "transition-all duration-500 ease-in-out")}
-
-       >
-      <div
-        className="relative h-[460px] mx-12"
-        onMouseOver={handleMouseOver}
-        onMouseLeave={handleMouseLeave}
-      >
+    <div
+      className="relative w-full mt-2"
+      onMouseOver={handleMouseOver}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="relative h-[460px]">
         <Image
           src={images[currentIndex].src}
           alt={`Slider Image ${currentIndex + 1}`}
           layout="fill"
-          objectFit= 'cover'
-          className="rounded-xl transition-all  cursor-pointer"
+          objectFit="cover"
+          className="rounded-xl transition-all cursor-pointer"
         />
+        {/* Previous Button */}
+        <button
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300"
+          onClick={prevSlide}
+        >
+          <ChevronLeft className="text-white" />
+        </button>
+
+        {/* Next Button */}
+        <button
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300"
+          onClick={nextSlide}
+        >
+          <ChevronRight className="text-white" />
+        </button>
       </div>
-      <button
-        className={className("absolute left-0 top-1/2 h-[459px] rounded-xl",
-          "hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group")}
-        onClick={prevSlide}
-      >
-        <ChevronLeft className="text-gray-400 group-hover:text-white" />
-      </button>
-      <button
-        className={className("absolute right-0 top-1/2 h-[459px] rounded-xl",
-          "hover:bg-[#1a222f] mx-1 -mt-[10px] -translate-y-1/2 bg-[#111927] text-white p-2 group")}
-        onClick={nextSlide}
-      >
-        <ChevronRight className="text-gray-400 group-hover:text-white" />
-      </button>
-      <div
-        className={className(
-          "flex justify-center py-1"
-        )}
-      >
+      <div className="flex justify-center py-1">
         {images.map((_, index) => (
           <div
             key={index}

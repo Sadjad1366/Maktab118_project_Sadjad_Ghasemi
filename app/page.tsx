@@ -6,7 +6,7 @@ import ImageSlider from "@/container/sliding";
 
 export default function Home() {
   return (
-    <div>
+    <div className="px-2 py-2">
       <Navbar />
       <ImageSlider />
       <CategoryList />
