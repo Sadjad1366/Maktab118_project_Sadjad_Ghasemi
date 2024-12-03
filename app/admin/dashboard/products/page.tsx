@@ -4,20 +4,18 @@ import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
 import { FaSort } from "react-icons/fa";
-import { GrPrevious, GrNext } from "react-icons/gr";
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
-  const [page, setPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
-  // const [sortKey, setSortKey] = React.useState<string | null>(null);
-  // const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">(
-  //   "asc"
-  // );
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      // const sortParam = sortKey ? `${sortKey}:${sortDirection}` : undefined;
       const response = await getAllProductsReq(currentPage, 6);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
@@ -26,25 +24,11 @@ const ProductPage: React.FC = () => {
     }
   };
 
-  // const handleSort = (key: keyof IProduct) => {
-  //   const newDirection =
-  //     sortKey === key && sortDirection === "asc" ? "desc" : "asc";
-  //   setSortKey(key);
-  //   setSortDirection(newDirection);
-  //   fetchProducts(page); // Trigger fetch with updated sort
-  // };
+
 
   React.useEffect(() => {
-    fetchProducts(page);
-  }, [page]);
-
-  const handleNext = () => {
-    if (page < totalPages) setPage((prev) => prev + 1);
-  };
-
-  const handlePrevious = () => {
-    if (page > 1) setPage((prev) => prev - 1);
-  };
+    fetchProducts(currentPage);
+  }, [currentPage]);
 
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
@@ -137,39 +121,49 @@ const ProductPage: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <div className="flex justify-center items-center gap-x-5 pt-2">
+      <div className="flex justify-between items-center gap-x-5 pt-2">
         <button
-          onClick={handlePrevious}
-          disabled={page === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
           type="button"
           className={className(
             "text-white bg-blue-700 hover:bg-blue-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
             "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
-            page === 1 ? "opacity-50 cursor-not-allowed" : ""
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           )}
         >
-          <GrNext className="text-lg" />
           قبلی
         </button>
-        <p>
-          {page} از {totalPages}
-        </p>
+        <div className="flex space-x-2">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-3 mx-2 py-1 rounded ${
+                page === currentPage
+                  ? "bg-blue-600 text-white mx-1"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
         <button
-          onClick={handleNext}
-          disabled={page === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
           type="button"
           className={className(
             "text-white bg-blue-700 hover:bg-blue-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
             "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
-            page === totalPages ? "opacity-50 cursor-not-allowed" : ""
+            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
           )}
         >
           بعدی
-          <GrPrevious className="text-lg" />
         </button>
       </div>
     </div>

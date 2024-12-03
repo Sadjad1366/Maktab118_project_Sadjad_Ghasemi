@@ -38,7 +38,7 @@ interface IOrder {
   ],
   "totalPrice": number,
   "deliveryDate": string,
-  "deliveryStatus": true,
+  "deliveryStatus": boolean,
   "createdAt": string,
   "updatedAt": string
 }
