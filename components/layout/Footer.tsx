@@ -1,10 +1,11 @@
+import Link from "next/link";
 import React from "react";
 import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Footer:React.FC = () => {
   return (
     <div className="rounded-lg">
-      <footer className="bg-gradient-to-r from-slate-300 to-slate-500 rounded-lg">
+      <footer className="bg-gray-400 rounded-lg">
         <div className="w-full container mx-auto">
           <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-3">
             <div>
@@ -38,26 +39,17 @@ const Footer:React.FC = () => {
               <h2 className="border-b-2 py-2 max-w-90 mb-6 text-xl font-semibold text-gray-900 uppercase dark:text-white">
                 شبکه های اجتماعی
               </h2>
-              <div className="flex items-center">
-                <p className="flex items-center px-1 gap-x-2">
-                  <FaFacebook />: sadjad.ghasemi
-                </p>
-              </div>
 
-              <div className="flex items-center">
-                <a
-                  href="https://github.com/sadjad1366"
-                  className="hover:text-gray-900 dark:hover:text-white"
-                >
-                  <p className="flex items-center px-1 gap-x-2">
-                    <FaGithub /> : github account
-                  </p>
-                </a>
-              </div>
-              <div className="flex items-center">
-                <p className="flex items-center px-1 gap-x-2">
-                  <FaTelegramPlane /> : SadjadQasemi66@
-                </p>
+              <div className="flex gap-3">
+                <Link href="https://facebook.com/sadjad.ghasemi" target="_blank" className="text-xl hover:text-blue-600">
+                  <FaFacebook />
+                </Link>
+                <Link href="https://github.com/sadjad1366" target="_blank" className="text-xl hover:text-black">
+                  <FaGithub />
+                </Link>
+                <Link href="https://t.me/SadjadQasemi66" target="_blank" className="text-xl hover:text-blue-500">
+                  <FaTelegramPlane />
+                </Link>
               </div>
             </div>
           </div>

@@ -25,3 +25,20 @@ interface ICategory {
   updatedAt: string;
   slugname: string;
 }
+
+interface IOrder {
+  "_id": string,
+  "user": string,
+  "products": [
+      {
+          "product": string,
+          "count": number,
+          "_id": string
+      }
+  ],
+  "totalPrice": number,
+  "deliveryDate": string,
+  "deliveryStatus": true,
+  "createdAt": string,
+  "updatedAt": string
+}

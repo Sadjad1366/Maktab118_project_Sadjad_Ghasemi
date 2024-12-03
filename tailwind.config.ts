@@ -19,6 +19,9 @@ export default {
         'luminox-pattern': "url('/images/brandstory/luminox1440.png')",
         'ingersoll-pattern': "url('/images/brandstory/ingersoll.jpg')",
 
+      },
+      fontFamily:{
+        "bnazanin":"bnazanin"
       }
     },
   },

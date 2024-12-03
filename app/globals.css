@@ -8,4 +8,9 @@
     src: url("../fonts/Vazir-Medium-FD.woff2") format("woff2");
     font-display: swap;
   }
+  @font-face{
+    font-family: bnazanin;
+    src: url("../fonts/BNazanin.woff2") format("woff2");
+    font-display: swap;
+  }
 }

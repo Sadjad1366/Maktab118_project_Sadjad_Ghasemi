@@ -5,7 +5,6 @@ import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 import { GrLogin } from "react-icons/gr";
 
-
 const Navbar: React.FC = () => {
   return (
     <div className="bg-gray-800 shadow-lg rounded-lg">
@@ -52,22 +51,22 @@ const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-x-4">
-        <Link
-  className="flex items-center justify-center gap-x-2 bg-gray-500 hover:bg-gray-700 text-white rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
-  href="/login"
->
-  <GrLogin className="text-xl" />
-  <span>ورود</span>
-</Link>
-
-
+          <Link
+            className="flex items-center justify-center gap-x-2 bg-gray-500 hover:bg-gray-700 text-white rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+            href="/login"
+          >
+            <GrLogin className="text-xl" />
+            <p className="pb-2">
+              ورود
+            </p>
+          </Link>
 
           <Link
             className="flex items-center gap-x-2 bg-gray-500 hover:bg-gray-700 text-white rounded-lg px-5 py-2 transition duration-300 shadow-md"
             href="/carts"
           >
-            <IoMdCart className="text-lg" />
-            <span className="text-sm">(0)</span>
+            <IoMdCart className="text-lg size-7" />
+            <span className="text-md">(0)</span>
           </Link>
         </div>
       </nav>

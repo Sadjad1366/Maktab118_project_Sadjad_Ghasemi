@@ -3,9 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 
-const vazirFont = localFont({
-  src: "../fonts/Vazir-Medium-FD.woff2",
-  variable: "--font-Vazir-Medium-FD",
+const bnazaninFont = localFont({
+  src: "../fonts/BNazanin.woff2",
+  variable: "--font-BNazanin",
   weight: "400 900",
 });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${vazirFont.variable} antialiased`}
+        className={`${bnazaninFont.variable} antialiased font-bnazanin`}
       >
 
         {children}
