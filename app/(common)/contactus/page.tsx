@@ -5,9 +5,9 @@ import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 export default function ContactUs() {
   return (
-    <div className="bg-luminox-pattern min-h-screen">
-      <div className="container mx-auto px-4 py-12 opacity-80">
-        <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
+    <div className="bg-luminox-pattern min-h-screen rounded-lg">
+      <div className="container mx-auto px-4 py-12 opacity-80 my-2">
+        <h1 className="text-4xl font-bold text-gray-100 mb-8">
           تماس با ما
         </h1>
 
@@ -27,7 +27,7 @@ export default function ContactUs() {
                 </p>
               </div>
               <p className="text-lg font-medium">
-                <strong>ایمیل:</strong>{" "}
+                <strong>ایمیل:</strong>
                 <Link
                   href="mailto:sadjad.ghasemi@gmail.com"
                   className="text-blue-600 hover:underline"

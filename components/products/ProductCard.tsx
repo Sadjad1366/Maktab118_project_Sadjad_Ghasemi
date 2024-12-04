@@ -1,5 +1,4 @@
 import React from "react";
-import NumberFormat from "react-number-format";
 
 export const ProductCard: React.FC<
   { product: IProduct } & React.HTMLAttributes<HTMLElement>

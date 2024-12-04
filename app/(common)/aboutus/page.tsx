@@ -3,9 +3,9 @@ import Link from "next/link";
 
 export default function AboutUs() {
   return (
-    <div className="rounded-lg mt-2">
+    <div className="my-2">
       {/* Mission Section */}
-      <section className="bg-gray-300 py-16 px-6 rtl">
+      <section className="bg-gray-300 py-16 px-6 rtl rounded-t-lg">
         <h2 className="text-4xl font-bnazanin text-gray-900 text-center">
           ماموریت ما
         </h2>
@@ -74,7 +74,7 @@ export default function AboutUs() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-gray-300 py-16 px-6 rtl">
+      <section className="bg-gray-300 py-16 px-6 rtl rounded-b-lg">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-800">ارتباط با ما</h2>
           <p className="mt-6 text-lg text-gray-700">

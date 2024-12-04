@@ -4,7 +4,7 @@ import Image from "next/image";
 const CategoryList: React.FC = () => {
   return (
     <div className="bg-slate-700 py-5 rounded-lg">
-      <div className="grid grid-cols-2 gap-4 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
         {/* Automatic Watches */}
         <div className="relative bg-slate-300 rounded-lg h-40 overflow-hidden">
           <Image

@@ -6,11 +6,13 @@ import ImageSlider from "@/container/sliding";
 
 export default function Home() {
   return (
-    <div className="px-2 py-2">
+    <div className="px-6 py-2">
       <Navbar />
-      <ImageSlider />
-      <CategoryList />
-      <ExtraInfoComp />
+      <div className="container mx-auto">
+        <ImageSlider />
+        <CategoryList />
+        <ExtraInfoComp />
+      </div>
       <Footer />
     </div>
   );
