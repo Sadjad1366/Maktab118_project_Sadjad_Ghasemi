@@ -1,6 +1,9 @@
+// src/pages/admin/OrderPage.tsx
 "use client";
+
 import { useState } from "react";
 import { getAllOrdersReq } from "@/apis/order.service";
+import { getAllUsers } from "@/apis/user.service"; // Import the user service
 import Link from "next/link";
 import React from "react";
 import { FaSort } from "react-icons/fa";
@@ -9,19 +12,29 @@ import { toJalaali } from "jalaali-js";
 export default function OrderPage() {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterStatus, setFilterStatus] = useState<
-    "all" | "delivered" | "pending"
-  >("all");
+  const [filterStatus, setFilterStatus] = useState<"all" | "delivered" | "pending">("all");
   const [loading, setLoading] = useState(true);
   const ordersPerPage = 6;
+  const [usersMap, setUsersMap] = useState<Record<string, string>>({}); // Map for userId to username
 
   React.useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        const map: Record<string, string> = {};
+        users.forEach((user) => {
+          map[user._id] = user.username; // Adjust based on your user model
+        });
+        setUsersMap(map);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
     const fetchOrders = async () => {
       try {
         const response = await getAllOrdersReq();
         console.log(response.data.orders);
-        // getAllUsersReq();
-
         setOrders(response.data.orders);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -29,8 +42,11 @@ export default function OrderPage() {
         setLoading(false);
       }
     };
+
+    fetchUsers();
     fetchOrders();
   }, []);
+
   const formattedDate = (date: string): string => {
     const gregorianDate: any = new Date(date);
     const jalaaliDate: any = toJalaali(
@@ -40,19 +56,6 @@ export default function OrderPage() {
     );
     return `${jalaaliDate.jy}/${jalaaliDate.jm}/${jalaaliDate.jd}`;
   };
-  //   React.useEffect(() =>{
-  //     const fetchUserById = async() =>{
-  // try {
-  //   const response = await getUserById("6742321931d4b43f86964197");
-  //   console.log(response);
-
-  // } catch (error) {
-  // console.log(error);
-
-  // }
-  // }
-  // fetchUserById();
-  //   },[])
 
   // Filter orders based on deliveryStatus
   const filteredOrders = orders.filter((order) => {
@@ -68,10 +71,7 @@ export default function OrderPage() {
   // Get current page orders
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(
-    indexOfFirstOrder,
-    indexOfLastOrder
-  );
+  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
   // Handle page change
   const handlePageChange = (pageNumber: number) => {
@@ -94,11 +94,9 @@ export default function OrderPage() {
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between items-center py-3 px-2">
-        <h2 className="text-slate-600 font-semibold text-xl">
-          مدیریت سفارش ها
-        </h2>
+        <h2 className="text-slate-600 font-semibold text-xl">مدیریت سفارش ها</h2>
         <div className="flex justify-center items-center gap-x-2">
-          <label className="text-sm text-slate-600" htmlFor="1">
+          <label className="text-sm font-semibold text-slate-600" htmlFor="1">
             همه سفارش ها
           </label>
           <input
@@ -110,7 +108,7 @@ export default function OrderPage() {
             onChange={handleFilterChange}
           />
 
-          <label className="text-sm text-slate-600" htmlFor="2">
+          <label className="text-sm font-semibold text-slate-600" htmlFor="2">
             سفارش های تحویل شده
           </label>
           <input
@@ -122,7 +120,7 @@ export default function OrderPage() {
             onChange={handleFilterChange}
           />
 
-          <label className="text-sm text-slate-600" htmlFor="3">
+          <label className="text-sm font-semibold text-slate-600" htmlFor="3">
             سفارش های در انتظار ارسال
           </label>
           <input
@@ -161,7 +159,7 @@ export default function OrderPage() {
                 scope="row"
                 className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
-                admin
+                {usersMap[order.user] || "Unknown User"}
               </td>
               <td className="px-2 py-4">
                 {order.totalPrice.toLocaleString()} تومان

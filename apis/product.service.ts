@@ -24,3 +24,13 @@ export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
 
   }
 };
+
+type GetAllCategoriesType = () => Promise<ICategory[]>;
+export const getAllCategories: GetAllCategoriesType = async () => {
+  try {
+    const response = await client.get(urls.category);
+    return response.data.data.categories; // Adjust based on your API response structure
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to fetch categories");
+  }
+};

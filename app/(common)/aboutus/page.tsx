@@ -1,3 +1,4 @@
+import { className } from "@/utils/classNames";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -83,7 +84,9 @@ export default function AboutUs() {
           </p>
           <Link
             href="/contact"
-            className="mt-6 inline-block bg-gray-800 hover:bg-gray-900 text-white rounded-lg px-8 py-3 text-lg transition duration-300 shadow-lg transform hover:scale-105"
+            className={className("mt-6 inline-block bg-gray-800 hover:bg-gray-900",
+              "text-white rounded-lg px-8 py-3 text-lg transition duration-300 shadow-lg",
+              "transform hover:scale-105")}
           >
             تماس با ما
           </Link>

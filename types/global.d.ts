@@ -1,4 +1,5 @@
 interface IGlobalRes<T> {
+  forEach: any;
   status: string;
   page: number;
   per_page: number;

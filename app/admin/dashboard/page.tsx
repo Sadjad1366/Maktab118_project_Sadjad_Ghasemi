@@ -21,6 +21,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { className } from "@/utils/classNames";
 
 // Register Chart.js components
 ChartJS.register(
@@ -71,7 +72,10 @@ const DashboardPage: React.FC = () => {
       "بهمن",
       "اسفند",
     ],
-    data: [70000000, 80000000, 75000000, 90000000, 85000000, 95000000, 100000000, 105000000, 98000000, 110000000, 115000000, 120000000],
+    data: [
+      70000000, 80000000, 75000000, 90000000, 85000000, 95000000, 100000000,
+      105000000, 98000000, 110000000, 115000000, 120000000,
+    ],
   };
 
   // Fake Dollar Price
@@ -255,19 +259,44 @@ const DashboardPage: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={className(
+                  "px-6 py-3 text-left text-xs",
+                  "font-medium text-gray-500 uppercase tracking-wider"
+                )}
+              >
                 سفارش شماره
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={className(
+                  "px-6 py-3 text-left text-xs",
+                  "font-medium text-gray-500 uppercase tracking-wider"
+                )}
+              >
                 کاربر
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={className(
+                  "px-6 py-3 text-left text-xs",
+                  "font-medium text-gray-500 uppercase tracking-wider"
+                )}
+              >
                 وضعیت
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={className(
+                  "px-6 py-3 text-left text-xs",
+                  "font-medium text-gray-500 uppercase tracking-wider"
+                )}
+              >
                 تاریخ
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th
+                className={className(
+                  "px-6 py-3 text-left text-xs",
+                  "font-medium text-gray-500 uppercase tracking-wider"
+                )}
+              >
                 مبلغ
               </th>
             </tr>
@@ -331,7 +360,9 @@ const DashboardPage: React.FC = () => {
                 className="w-12 h-12 rounded-full mr-4"
               />
               <div>
-                <p className="text-sm font-medium text-gray-900">{activity.user}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {activity.user}
+                </p>
                 <p className="text-sm text-gray-500">{activity.activity}</p>
                 <p className="text-xs text-gray-400">{activity.time}</p>
               </div>

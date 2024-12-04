@@ -3,18 +3,19 @@ import { client } from "./client";
 import { urls } from "./urls";
 
 const token = sessionStorage.getItem("accessToken");
-type getAllUsersReqType = () => Promise<IGlobalRes<{ users: IUser[] }>>;
-export const getAllUsersReq: getAllUsersReqType = async () => {
+// type getAllUsersReqType = () => Promise<IGlobalRes<{ users: IUser[] }>>;
+type GetAllUsersType = () => Promise<IUser[]>;
+
+export const getAllUsers: GetAllUsersType = async () => {
   try {
-    const response = await client.get(urls.user, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const response = await client.get(urls.user,{
+      headers : {
+        Authorization: `Bearer ${token}`
+      }
     });
-    console.log(response.data);
-    return response.data;
+    return response.data.data.users;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to get users");
+    throw new Error(error.response?.data?.message || "Failed to fetch users");
   }
 };
 

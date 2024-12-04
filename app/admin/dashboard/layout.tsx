@@ -193,7 +193,7 @@ export default function DashboardLayout({
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-y-auto">
         {/* Optional: Header for Mobile View */}
-        <div className="flex items-center justify-between mb-4 lg:hidden">
+        {/* <div className="flex items-center justify-between mb-4 sm:hidden">
           <button
             onClick={toggleSidebar}
             className="text-2xl text-blue-800 focus:outline-none"
@@ -201,7 +201,7 @@ export default function DashboardLayout({
             <FaBars />
           </button>
           <h1 className="text-xl font-bold">مدیریت</h1>
-        </div>
+        </div> */}
         <div className="flex justify-center items-center">
           {children}
         </div>

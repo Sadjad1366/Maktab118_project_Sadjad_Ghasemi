@@ -1,5 +1,8 @@
+// src/pages/admin/ProductPage.tsx
 "use client";
+
 import { getAllProductsReq } from "@/apis/product.service";
+import { getAllCategories } from "@/apis/product.service"; // Import the category service
 import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
@@ -9,9 +12,23 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
+  const [categoriesMap, setCategoriesMap] = React.useState<Record<string, string>>({});
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      const map: Record<string, string> = {};
+      categories.forEach((category:ICategory) => {
+        map[category._id] = category.name;
+      });
+      setCategoriesMap(map);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
   const fetchProducts = async (currentPage: number) => {
@@ -25,6 +42,7 @@ const ProductPage: React.FC = () => {
   };
 
   React.useEffect(() => {
+    fetchCategories();
     fetchProducts(currentPage);
   }, [currentPage]);
 
@@ -54,19 +72,13 @@ const ProductPage: React.FC = () => {
               نام محصول
             </th>
             <th scope="col" className="px-2 py-3">
-              <div
-                // onClick={() => handleSort("category")}
-                className="flex items-center"
-              >
+              <div className="flex items-center">
                 دسته بندی
                 <FaSort />
               </div>
             </th>
             <th scope="col" className="px-2 py-3">
-              <div
-                // onClick={() => handleSort("price")}
-                className="flex items-center"
-              >
+              <div className="flex items-center">
                 قیمت
                 <FaSort />
               </div>
@@ -95,7 +107,9 @@ const ProductPage: React.FC = () => {
               >
                 {product.name}
               </td>
-              <td className="px-2 py-4">{product.category}</td>
+              <td className="px-2 py-4">
+                {categoriesMap[product.category] || "Unknown Category"}
+              </td>
               <td className="px-2 py-4">
                 {Number(product.price).toLocaleString()} تومان
               </td>
@@ -117,6 +131,13 @@ const ProductPage: React.FC = () => {
               </td>
             </tr>
           ))}
+          {products.length === 0 && (
+            <tr>
+              <td colSpan={5} className="text-center py-4">
+                هیچ کالایی وجود ندارد.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       <div className="flex justify-between items-center gap-x-5 pt-2">

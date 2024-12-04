@@ -35,14 +35,24 @@ export default function entityPage() {
           ذخیره
         </button>
       </div>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 bg-gray-200 border-y-2 dark:bg-gray-700 dark:text-gray-400">
+      <table
+        className={className(
+          "w-full text-sm text-left",
+          "rtl:text-right text-gray-500 dark:text-gray-400"
+        )}
+      >
+        <thead
+          className={className(
+            "text-xs text-gray-700 bg-gray-200",
+            "border-y-2 dark:bg-gray-700 dark:text-gray-400"
+          )}
+        >
           <tr>
             <th scope="col" className="px-2 py-3">
               نام محصول
             </th>
             <th scope="col" className="px-2 py-3">
-              <div className="flex items-center">قیمت</div>
+              <div className="flex items-center">قیمت (تومان)</div>
             </th>
             <th scope="col" className="px-2 py-3">
               <div className="flex items-center">موجودی</div>
@@ -55,7 +65,7 @@ export default function entityPage() {
               <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {product.name}
               </td>
-              <td className="px-2 py-4">{product.price}</td>
+              <td className="px-2 py-4">{Number(product.price).toLocaleString()}</td>
               <td className="px-2 py-4">{product.quantity}</td>
             </tr>
           ))}
