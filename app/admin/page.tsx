@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IAdmin } from "@/types/user.type";
+import { IAdminReq } from "@/types/user.type";
 import { adminLoginReq } from "@/apis/auth.service";
 import { className } from "@/utils/classNames";
 import { useRouter } from "next/navigation";
@@ -14,13 +14,13 @@ const AdminLoginPage = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<IAdmin>({
+  } = useForm<IAdminReq>({
     resolver: zodResolver(AuthSchema),
   });
 
   const router = useRouter();
 
-  const submitHandler = async ({ username, password }: IAdmin) => {
+  const submitHandler = async ({ username, password }: IAdminReq) => {
     try {
       const response = await adminLoginReq({ username, password });
 

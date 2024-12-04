@@ -19,8 +19,9 @@ export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
       },
     });
     return response.data;
-  } catch (error) {
+  } catch (error:any) {
     console.log(error);
-    throw error; // Ensure the error propagates
+    throw new Error(error.response?.data?.message || "Failed to get products");
+
   }
 };

@@ -1,5 +1,6 @@
 export const urls = {
       admin:"/auth/login",
       product:"/products",
-      order:"/orders"
+      order:"/orders",
+      user:"/users"
 }

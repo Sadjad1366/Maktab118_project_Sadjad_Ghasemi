@@ -5,4 +5,4 @@ export const AuthSchema = z.object({
   password: z.string().min(8, "password must be at least 8 characters long")
   .regex(/.*\d.*/, 'Password must contain at least one number')
 })
-export type IAdmin = z.infer<typeof AuthSchema>
+export type IAdminReq = z.infer<typeof AuthSchema>
