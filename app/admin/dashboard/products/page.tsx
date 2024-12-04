@@ -34,7 +34,7 @@ const ProductPage: React.FC = () => {
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between py-3 px-2">
         <h2 className="text-slate-600 font-semibold text-xl">مدیریت کالا</h2>
-        <button className="bg-blue-600 text-white p-2 rounded-lg">
+        <button className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg">
           افزودن کالا
         </button>
       </div>
@@ -51,7 +51,7 @@ const ProductPage: React.FC = () => {
           )}
         >
           <tr>
-            <th>تصاویر</th>
+            <th className="px-5">تصاویر</th>
             <th scope="col" className="px-2 py-3">
               نام محصول
             </th>
@@ -127,10 +127,9 @@ const ProductPage: React.FC = () => {
           disabled={currentPage === 1}
           type="button"
           className={className(
-            "text-white bg-blue-700 hover:bg-blue-800",
+            "text-white bg-gray-700 hover:bg-gray-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
-            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           )}
         >
@@ -143,7 +142,7 @@ const ProductPage: React.FC = () => {
               onClick={() => handlePageChange(page)}
               className={`px-3 mx-2 py-1 rounded ${
                 page === currentPage
-                  ? "bg-blue-600 text-white mx-1"
+                  ? "bg-gray-600 text-white mx-1"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
@@ -156,10 +155,9 @@ const ProductPage: React.FC = () => {
           disabled={currentPage === totalPages}
           type="button"
           className={className(
-            "text-white bg-blue-700 hover:bg-blue-800",
+            "text-white bg-gray-700 hover:bg-gray-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
-            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
             currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
           )}
         >

@@ -31,7 +31,7 @@ export default function entityPage() {
         <h2 className="text-slate-600 font-semibold text-xl">
           مدیریت موجودی و قیمت
         </h2>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+        <button className="bg-gray-600 text-white px-4 py-2 rounded-lg">
           ذخیره
         </button>
       </div>
@@ -67,10 +67,10 @@ export default function entityPage() {
           disabled={currentPage === 1}
           type="button"
           className={className(
-            "text-white bg-blue-700 hover:bg-blue-800",
+            "text-white bg-gray-700 hover:bg-gray-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
-            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+            "dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800",
             currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
           )}
         >
@@ -84,7 +84,7 @@ export default function entityPage() {
                 onClick={() => handlePageChange(page)}
                 className={`px-3 mx-2 py-1 rounded ${
                   page === currentPage
-                    ? "bg-blue-600 text-white"
+                    ? "bg-gray-600 text-white"
                     : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
@@ -98,10 +98,10 @@ export default function entityPage() {
           disabled={currentPage === totalPages}
           type="button"
           className={className(
-            "text-white bg-blue-700 hover:bg-blue-800",
+            "text-white bg-gray-700 hover:bg-gray-800",
             "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-center",
             "gap-2 flex-row-reverse",
-            "dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800",
+            "dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800",
             currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
           )}
         >

@@ -155,8 +155,8 @@ export default  function OrderPage() {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`px-4 py-2 bg-blue-500 text-white rounded ${
-            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+          className={`px-4 py-2 bg-gray-500 text-white rounded ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-600"
           }`}
         >
           قبلی
@@ -168,7 +168,7 @@ export default  function OrderPage() {
               onClick={() => handlePageChange(page)}
               className={`px-3 mx-2 py-1 rounded ${
                 page === currentPage
-                  ? "bg-blue-600 text-white"
+                  ? "bg-gray-600 text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
@@ -179,8 +179,8 @@ export default  function OrderPage() {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`px-4 py-2 bg-blue-500 text-white rounded ${
-            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+          className={`px-4 py-2 bg-gray-500 text-white rounded ${
+            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-600"
           }`}
         >
           بعدی
