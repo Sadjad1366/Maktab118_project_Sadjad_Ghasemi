@@ -8,7 +8,6 @@ export const getAllOrdersReq: getAllOrdersReqType = async () => {
     return response.data;
 
   } catch (error: any) {
-    console.log(error);
     throw new Error(error.response?.data?.message || "Failed to get orders");
   }
 };

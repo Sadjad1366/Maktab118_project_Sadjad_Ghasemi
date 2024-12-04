@@ -25,7 +25,7 @@ const AdminLoginPage = () => {
       const response = await adminLoginReq({ username, password });
 
       const { accessToken, refreshToken } = response.token;
-      console.log(response.token);
+      // console.log(response.token);
 
       // Store tokens in sessionStorage
       sessionStorage.setItem("accessToken", accessToken);

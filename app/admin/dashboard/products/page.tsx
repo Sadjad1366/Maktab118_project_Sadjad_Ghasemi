@@ -24,8 +24,6 @@ const ProductPage: React.FC = () => {
     }
   };
 
-
-
   React.useEffect(() => {
     fetchProducts(currentPage);
   }, [currentPage]);

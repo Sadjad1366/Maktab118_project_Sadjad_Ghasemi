@@ -1,21 +1,27 @@
-"use client"
-import { useState, useEffect } from "react";
+"use client";
+import { useState } from "react";
 import { getAllOrdersReq } from "@/apis/order.service";
 import Link from "next/link";
 import React from "react";
 import { FaSort } from "react-icons/fa";
+import { toJalaali } from "jalaali-js";
 
-export default  function OrderPage() {
+export default function OrderPage() {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterStatus, setFilterStatus] = useState<"all" | "delivered" | "pending">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "delivered" | "pending"
+  >("all");
   const [loading, setLoading] = useState(true);
   const ordersPerPage = 6;
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await getAllOrdersReq();
+        console.log(response.data.orders);
+        // getAllUsersReq();
+
         setOrders(response.data.orders);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -23,9 +29,30 @@ export default  function OrderPage() {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, []);
+  const formattedDate = (date: string): string => {
+    const gregorianDate: any = new Date(date);
+    const jalaaliDate: any = toJalaali(
+      gregorianDate.getFullYear(),
+      gregorianDate.getMonth() + 1,
+      gregorianDate.getDate()
+    );
+    return `${jalaaliDate.jy}/${jalaaliDate.jm}/${jalaaliDate.jd}`;
+  };
+  //   React.useEffect(() =>{
+  //     const fetchUserById = async() =>{
+  // try {
+  //   const response = await getUserById("6742321931d4b43f86964197");
+  //   console.log(response);
+
+  // } catch (error) {
+  // console.log(error);
+
+  // }
+  // }
+  // fetchUserById();
+  //   },[])
 
   // Filter orders based on deliveryStatus
   const filteredOrders = orders.filter((order) => {
@@ -41,7 +68,10 @@ export default  function OrderPage() {
   // Get current page orders
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredOrders.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder
+  );
 
   // Handle page change
   const handlePageChange = (pageNumber: number) => {
@@ -64,7 +94,9 @@ export default  function OrderPage() {
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between items-center py-3 px-2">
-        <h2 className="text-slate-600 font-semibold text-xl">مدیریت سفارش ها</h2>
+        <h2 className="text-slate-600 font-semibold text-xl">
+          مدیریت سفارش ها
+        </h2>
         <div className="flex justify-center items-center gap-x-2">
           <label className="text-sm text-slate-600" htmlFor="1">
             همه سفارش ها
@@ -121,19 +153,26 @@ export default  function OrderPage() {
         </thead>
         <tbody>
           {currentOrders.map((order) => (
-            <tr key={order._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr
+              key={order._id}
+              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
               <td
                 scope="row"
                 className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
               >
                 admin
               </td>
-              <td className="px-2 py-4">{order.totalPrice.toLocaleString()} تومان</td>
-              <td className="px-2 py-4">{new Date(order.createdAt).toLocaleString()}</td>
+              <td className="px-2 py-4">
+                {order.totalPrice.toLocaleString()} تومان
+              </td>
+              <td className="px-2 py-4">
+                {formattedDate(order.createdAt)}
+              </td>
               <td className="px-1 py-4 text-right">
                 <Link
                   href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 underline"
+                  className="font-medium text-blue-600 underline"
                 >
                   بررسی سفارش
                 </Link>
@@ -156,31 +195,37 @@ export default  function OrderPage() {
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={`px-4 py-2 bg-gray-500 text-white rounded ${
-            currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-600"
+            currentPage === 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-600"
           }`}
         >
           قبلی
         </button>
         <div className="flex space-x-2">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`px-3 mx-2 py-1 rounded ${
-                page === currentPage
-                  ? "bg-gray-600 text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 mx-2 py-1 rounded ${
+                  page === currentPage
+                    ? "bg-gray-600 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                {page}
+              </button>
+            )
+          )}
         </div>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={`px-4 py-2 bg-gray-500 text-white rounded ${
-            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-600"
+            currentPage === totalPages
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-600"
           }`}
         >
           بعدی
