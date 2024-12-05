@@ -252,11 +252,11 @@ const DashboardPage: React.FC = () => {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white shadow rounded-lg p-6 mb-8">
+      {/* <div className="bg-white shadow rounded-lg p-6 mb-8">
         <h2 className="text-xl font-semibold mb-4 flex items-center">
           <FaShoppingCart className="mr-2" /> سفارشات اخیر
         </h2>
-        <table className="min-w-full divide-y divide-gray-200">
+        <table className="min-w-full divide-y divide-white">
           <thead className="bg-gray-100">
             <tr>
               <th
@@ -301,7 +301,7 @@ const DashboardPage: React.FC = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-white">
             {recentOrders.map((order, index) => (
               <tr key={index}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -330,9 +330,9 @@ const DashboardPage: React.FC = () => {
                   {order.amount}
                 </td>
               </tr>
-            ))}
+            ))} */}
             {/* If no orders */}
-            {recentOrders.length === 0 && (
+            {/* {recentOrders.length === 0 && (
               <tr>
                 <td
                   colSpan={5}
@@ -344,7 +344,7 @@ const DashboardPage: React.FC = () => {
             )}
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {/* User Activity Log */}
       <div className="bg-white shadow rounded-lg p-6">

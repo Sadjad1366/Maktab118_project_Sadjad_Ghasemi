@@ -176,8 +176,8 @@ export default function DashboardLayout({
           <div className="flex items-center mb-4">
             {isSidebarOpen && (
               <div>
-                <p className="text-sm font-medium">مدیر</p>
-                <p className="text-xs text-gray-300">admin@example.com</p>
+                <p className="text-lg font-medium">مدیر</p>
+                <p className="text-lg text-gray-300">admin@example.com</p>
               </div>
             )}
           </div>
