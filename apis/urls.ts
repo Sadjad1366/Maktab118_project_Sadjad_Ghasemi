@@ -1,5 +1,7 @@
 export const urls = {
-  admin: "/auth/login",
+  auth:{adminLog: "/auth/login",
+    tokenGen:"/auth/token"
+  },
   product: "/products",
   order: "/orders",
   user: "/users",

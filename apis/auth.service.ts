@@ -4,28 +4,31 @@ import { urls } from "./urls";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 
-export const adminLoginReq = async ({ username, password }: IAdminReq): Promise<IAdminRes> => {
+export const adminLoginReq = async ({
+  username,
+  password,
+}: IAdminReq): Promise<IAdminRes> => {
   try {
-    const response = await client.post(urls.admin, {
+    const response = await client.post(urls.auth.adminLog, {
       username,
       password,
     });
 
     const { accessToken, refreshToken } = response.data.token;
-// console.log(response.data.token);
+    // console.log(response.data.token);
 
-  // Set access and refresh tokens in cookies
-  Cookies.set("accessToken", accessToken, {
-    secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-    sameSite: "Strict", // Prevent CSRF
-    expires: 1 / 24, // Expires in 1 hour
-  });
+    // Set access and refresh tokens in cookies
+    Cookies.set("accessToken", accessToken, {
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Strict",
+      expires: 1 / (24*2), // Expires in 1 hour
+    });
 
-  Cookies.set("refreshToken", refreshToken, {
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-    expires: 7, // Expires in 7 days
-  });
+    Cookies.set("refreshToken", refreshToken, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      expires: 1 / 24, // Expires in 1 hour
+    });
 
     return response.data;
   } catch (error: any) {
@@ -37,3 +40,11 @@ export const adminLoginReq = async ({ username, password }: IAdminReq): Promise<
     throw new Error("خطا از طرف سرور میباشد.چند دقیقه دیگر دوباره تلاش کنید");
   }
 };
+// type tokenGeneratorType = (refToken: string) => Promise<ITokenGenerator>;
+// export const tokenGenerator: tokenGeneratorType = async (refToken) => {
+
+//   const response = await client.post(urls.auth.tokenGen, {
+//     refToken,
+//   });
+//   return response.data.token.value
+// };
