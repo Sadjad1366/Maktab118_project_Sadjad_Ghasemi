@@ -22,7 +22,7 @@ export interface IAdminRes {
       createdAt: string;
       updatedAt: string;
       __v: 0;
-      refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDIzMjE5MzFkNGI0M2Y4Njk2NDE5NyIsImlhdCI6MTczMzMyNjg1NywiZXhwIjoxNzMzOTMxNjU3fQ.bZCOzugMz8nMuUx2wzQnTSHOOYUXy81QPtNEBJaTDQ8";
+      refreshToken: string
     };
   };
 }

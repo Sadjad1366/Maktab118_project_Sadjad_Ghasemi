@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-
+import toast, { Toaster } from 'react-hot-toast';
 
 const bnazaninFont = localFont({
   src: "../fonts/BNazanin.woff2",
@@ -25,7 +25,7 @@ export default function RootLayout({
       <body
         className={`${bnazaninFont.variable} antialiased font-bnazanin`}
       >
-
+<Toaster position="top-left" reverseOrder={false} />
         {children}
       </body>
     </html>

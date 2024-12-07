@@ -12,7 +12,9 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
-  const [categoriesMap, setCategoriesMap] = React.useState<Record<string, string>>({});
+  const [categoriesMap, setCategoriesMap] = React.useState<
+    Record<string, string>
+  >({});
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -22,7 +24,7 @@ const ProductPage: React.FC = () => {
     try {
       const categories = await getAllCategories();
       const map: Record<string, string> = {};
-      categories.forEach((category:ICategory) => {
+      categories.forEach((category: ICategory) => {
         map[category._id] = category.name;
       });
       setCategoriesMap(map);
@@ -154,20 +156,10 @@ const ProductPage: React.FC = () => {
         >
           قبلی
         </button>
-        <div className="flex space-x-2">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`px-3 mx-2 py-1 rounded ${
-                page === currentPage
-                  ? "bg-gray-600 text-white mx-1"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-600 font-semibold">
+            صفحه {currentPage} از {totalPages}
+          </span>
         </div>
         <button
           onClick={() => handlePageChange(currentPage + 1)}

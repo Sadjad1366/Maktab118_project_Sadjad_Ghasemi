@@ -86,22 +86,10 @@ export default function entityPage() {
         >
           قبلی
         </button>
-        <div className="flex space-x-2">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-            (page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-3 mx-2 py-1 rounded ${
-                  page === currentPage
-                    ? "bg-gray-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {page}
-              </button>
-            )
-          )}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-600 font-semibold">
+            صفحه {currentPage} از {totalPages}
+          </span>
         </div>
         <button
           onClick={() => handlePageChange(currentPage + 1)}

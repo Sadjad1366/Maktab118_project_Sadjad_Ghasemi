@@ -1,6 +1,7 @@
 // app/admin/layout.tsx
 "use client";
 
+import AdminGuard from "@/components/AdminGaurd";
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -37,6 +38,7 @@ export default function DashboardLayout({
   };
 
   return (
+    <AdminGuard>
     <div className="flex h-screen bg-bretling-pattern">
       {/* Sidebar */}
       <div
@@ -192,20 +194,10 @@ export default function DashboardLayout({
 
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-y-auto">
-        {/* Optional: Header for Mobile View */}
-        {/* <div className="flex items-center justify-between mb-4 sm:hidden">
-          <button
-            onClick={toggleSidebar}
-            className="text-2xl text-blue-800 focus:outline-none"
-          >
-            <FaBars />
-          </button>
-          <h1 className="text-xl font-bold">مدیریت</h1>
-        </div> */}
         <div className="flex justify-center items-center">
           {children}
         </div>
       </div>
     </div>
-  );
+    </AdminGuard> );
 }
