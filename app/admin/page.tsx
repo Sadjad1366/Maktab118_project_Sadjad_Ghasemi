@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IAdminReq } from "@/types/user.type";
@@ -8,8 +8,11 @@ import { className } from "@/utils/classNames";
 import { useRouter } from "next/navigation";
 import { AuthSchema } from "@/utils/validations/zodValidation";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
+import AdminGuard from "@/components/AdminGaurd";
 
-const AdminLoginPage = () => {
+const AdminLoginPage:React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -18,24 +21,20 @@ const AdminLoginPage = () => {
     resolver: zodResolver(AuthSchema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   const submitHandler = async ({ username, password }: IAdminReq) => {
     try {
-      const response = await adminLoginReq({ username, password });
+      await adminLoginReq({ username, password });
 
-      const { accessToken, refreshToken } = response.token;
-      // console.log(response.token);
+      toast.success("ورود موفقیت‌آمیز بود! 🎉");
 
-      // Store tokens in sessionStorage
-      sessionStorage.setItem("accessToken", accessToken);
-      sessionStorage.setItem("refreshToken", refreshToken);
-
-      // Redirect after successful login
       router.push("/admin/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
-      // Optionally, handle global form errors here
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -57,16 +56,19 @@ const AdminLoginPage = () => {
             <label className="block mb-2 text-lg font-semibold text-gray-900">
               نام کاربری
             </label>
-            <input
-              type="text"
-              {...register("username")}
-              className={className(
-                "bg-gray-50 border shadow-md text-gray-900 text-sm rounded-lg",
-                "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5",
-                errors.username ? "border-red-500" : "border-gray-300"
-              )}
-              placeholder="نام کاربری"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                {...register("username")}
+                className={className(
+                  "bg-gray-50 border shadow-md text-gray-900 text-sm rounded-lg pr-10",
+                  "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5",
+                  errors.username ? "border-red-500" : "border-gray-300"
+                )}
+                placeholder="نام کاربری"
+              />
+              <FaUser className="absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400" />
+            </div>
             {errors.username && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.username.message}
@@ -79,16 +81,30 @@ const AdminLoginPage = () => {
             <label className="block mb-2 text-lg font-semibold text-gray-900">
               رمز عبور
             </label>
-            <input
-              type="password"
-              {...register("password")}
-              className={className(
-                "bg-gray-50 border shadow-md text-gray-900 text-sm rounded-lg",
-                "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5",
-                errors.password ? "border-red-500" : "border-gray-300"
-              )}
-              placeholder="رمز عبور"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password")}
+                className={className(
+                  "bg-gray-50 border shadow-md text-gray-900 text-sm rounded-lg pl-10 pr-10",
+                  "focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5",
+                  errors.password ? "border-red-500" : "border-gray-300"
+                )}
+                placeholder="رمز عبور"
+              />
+              <FaEye
+                onClick={togglePasswordVisibility}
+                className={`absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400 cursor-pointer ${
+                  showPassword ? "hidden" : "block"
+                }`}
+              />
+              <FaEyeSlash
+                onClick={togglePasswordVisibility}
+                className={`absolute right-3 top-2/4 transform -translate-y-2/4 text-gray-400 cursor-pointer ${
+                  showPassword ? "block" : "hidden"
+                }`}
+              />
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.password.message}
@@ -112,11 +128,11 @@ const AdminLoginPage = () => {
           </div>
         </form>
         <div className="text-end text-blue-700 font-medium hover:underline">
-        <Link href="/">بازگشت به سایت</Link>
+          <Link href="/">بازگشت به سایت</Link>
         </div>
       </div>
     </div>
-  );
+    );
 };
 
 export default AdminLoginPage;

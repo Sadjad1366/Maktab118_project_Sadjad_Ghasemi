@@ -1,8 +1,8 @@
 import {z} from 'zod';
 
 export const AuthSchema = z.object({
-  username:z.string().trim().min(5, "username must be at least 5 characters long"),
-  password: z.string().min(8, "password must be at least 8 characters long")
-  .regex(/.*\d.*/, 'Password must contain at least one number')
+  username:z.string().trim().min(5, "نام کاربری حداقل باید 5 کاراکتر باشد"),
+  password: z.string().min(8, "پسورد باید حداقل 8 کاراکتر باشد")
+  .regex(/.*\d.*/, 'پسورد باید شامل حداقل یک عدد باشد')
 })
 export type IAdminReq = z.infer<typeof AuthSchema>

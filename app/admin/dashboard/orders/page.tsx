@@ -12,7 +12,9 @@ import { toJalaali } from "jalaali-js";
 export default function OrderPage() {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterStatus, setFilterStatus] = useState<"all" | "delivered" | "pending">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "delivered" | "pending"
+  >("all");
   const [loading, setLoading] = useState(true);
   const ordersPerPage = 6;
   const [usersMap, setUsersMap] = useState<Record<string, string>>({}); // Map for userId to username
@@ -71,7 +73,10 @@ export default function OrderPage() {
   // Get current page orders
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const currentOrders = filteredOrders.slice(
+    indexOfFirstOrder,
+    indexOfLastOrder
+  );
 
   // Handle page change
   const handlePageChange = (pageNumber: number) => {
@@ -94,7 +99,9 @@ export default function OrderPage() {
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between items-center py-3 px-2">
-        <h2 className="text-slate-600 font-semibold text-xl">مدیریت سفارش ها</h2>
+        <h2 className="text-slate-600 font-semibold text-xl">
+          مدیریت سفارش ها
+        </h2>
         <div className="flex justify-center items-center gap-x-2">
           <label className="text-sm font-semibold text-slate-600" htmlFor="1">
             همه سفارش ها
@@ -164,14 +171,9 @@ export default function OrderPage() {
               <td className="px-2 py-4">
                 {order.totalPrice.toLocaleString()} تومان
               </td>
-              <td className="px-2 py-4">
-                {formattedDate(order.createdAt)}
-              </td>
+              <td className="px-2 py-4">{formattedDate(order.createdAt)}</td>
               <td className="px-1 py-4 text-right">
-                <Link
-                  href="#"
-                  className="font-medium text-blue-600 underline"
-                >
+                <Link href="#" className="font-medium text-blue-600 underline">
                   بررسی سفارش
                 </Link>
               </td>
@@ -200,22 +202,10 @@ export default function OrderPage() {
         >
           قبلی
         </button>
-        <div className="flex space-x-2">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-            (page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-3 mx-2 py-1 rounded ${
-                  page === currentPage
-                    ? "bg-gray-600 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {page}
-              </button>
-            )
-          )}
+        <div className="flex items-center space-x-2">
+          <span className="text-gray-600 font-semibold">
+            صفحه {currentPage} از {totalPages}
+          </span>
         </div>
         <button
           onClick={() => handlePageChange(currentPage + 1)}

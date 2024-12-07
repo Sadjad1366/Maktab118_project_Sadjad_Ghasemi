@@ -14,15 +14,23 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-600 shadow-lg rounded-lg">
-      <nav className="flex justify-between items-center container mx-auto py-4 px-6">
+    <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10">
+      <nav className="flex justify-between items-center container mx-auto px-6">
         {/* Logo Section */}
-        <div className="flex items-center gap-x-20">
+        <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden text-gray-800 focus:outline-none"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <FiX className="text-gray-300" size={48} /> : <FiMenu size={48} className="relative text-gray-300"/>}
+          </button>
           <div className="flex items-center gap-x-3">
 
-              <img src="/images/logo/ninja.svg" />
+              <img className="size-36" src="/images/logo/ninja.svg" />
 
-            <p className="hidden sm:block text-slate-100 text-2xl font-semibold tracking-wide">
+            <p className="hidden md:block text-slate-100 text-2xl font-semibold tracking-wide">
               گالری ساعت نینجا
             </p>
           </div>
@@ -31,25 +39,25 @@ const Navbar: React.FC = () => {
           <div className="hidden lg:flex gap-x-6">
             <Link
               href="/"
-              className="text-slate-100 hover:underline transition duration-300"
+              className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
               صفحه اصلی
             </Link>
             <Link
               href="/products"
-              className="text-slate-100 hover:underline transition duration-300"
+              className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
               فروشگاه
             </Link>
             <Link
               href="/aboutus"
-              className="text-slate-100 hover:underline transition duration-300"
+              className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
               درباره ما
             </Link>
             <Link
               href="/contactus"
-              className="text-slate-100 hover:underline transition duration-300"
+              className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
               تماس با ما
             </Link>
@@ -82,45 +90,38 @@ const Navbar: React.FC = () => {
             <span className="text-md size-7">(0)</span>
           </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-gray-800 focus:outline-none"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
+
         </div>
       </nav>
 
       {/* Mobile Navigation Links */}
       {isOpen && (
-        <div className="md:hidden bg-white shadow-lg rounded-b-lg">
+        <div className="lg:hidden  bg-white shadow-lg h-screen rounded-b-lg fixed z-20 left-0 right-1">
           <nav className="flex flex-col items-center gap-y-4 py-4">
             <Link
               href="/"
-              className="text-gray-800 hover:text-indigo-600 transition duration-300"
+              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
               onClick={() => setIsOpen(false)}
             >
               صفحه اصلی
             </Link>
             <Link
               href="/products"
-              className="text-gray-800 hover:text-indigo-600 transition duration-300"
+              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
               onClick={() => setIsOpen(false)}
             >
               فروشگاه
             </Link>
             <Link
               href="/aboutus"
-              className="text-gray-800 hover:text-indigo-600 transition duration-300"
+              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
               onClick={() => setIsOpen(false)}
             >
               درباره ما
             </Link>
             <Link
               href="/contactus"
-              className="text-gray-800 hover:text-indigo-600 transition duration-300"
+              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
               onClick={() => setIsOpen(false)}
             >
               تماس با ما
@@ -136,7 +137,7 @@ const Navbar: React.FC = () => {
               href="/auth/login"
             >
               <GrLogin className="text-xl" />
-              <p className="pb-2">ورود</p>
+              <p className="pb-2 md:text-3xl">ورود</p>
             </Link>
 
             <Link
@@ -147,7 +148,7 @@ const Navbar: React.FC = () => {
               )}
               href="/carts"
             >
-              <span className="text-md">سبد خرید</span>
+              <span className="text-md md:text-3xl">سبد خرید</span>
             </Link>
           </div>
         </div>
