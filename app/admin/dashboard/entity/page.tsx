@@ -7,10 +7,11 @@ export default function entityPage() {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
+  const perPage = 6;
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const response = await getAllProductsReq(currentPage);
+      const response = await getAllProductsReq(currentPage,perPage);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
     } catch (error) {
