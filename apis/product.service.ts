@@ -1,17 +1,18 @@
 import { client } from "./client";
 import { urls } from "./urls";
 
+//============================= GET PRODUCTS ============================
 type getAllProductReqType = (
   page: number,
   limit?: number,
-  sort?: string // Add an optional sort parameter
-) => Promise<IGlobalRes<{ products: IProduct[] }>>;
+) => Promise<IGlobalRes<{
+  totalPages: number; products: IProduct[]
+}>>;
 
 export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
-  //  sort
   ) => {
   try {
-    const response = await client.get(urls.product, {
+    const response = await client.get(urls.product.getAll, {
       params: {
         page: page,
         limit: limit,
@@ -24,7 +25,7 @@ export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
 
   }
 };
-
+//============================= GET CATEGORIES ============================
 type GetAllCategoriesType = () => Promise<ICategory[]>;
 export const getAllCategories: GetAllCategoriesType = async () => {
   try {
@@ -34,3 +35,17 @@ export const getAllCategories: GetAllCategoriesType = async () => {
     throw new Error(error.response?.data?.message || "Failed to fetch categories");
   }
 };
+
+//========================== GET PRODUCT BY ID ========================
+type getProductByIdType = (id:string) => Promise<IProductById>
+export const getProductById:getProductByIdType = async(id) => {
+  try {
+    const response = await client.get(urls.product.getById(id));
+    console.log(response.data);
+
+     return response.data
+  } catch (error:any) {
+    throw new Error("خطا از طرف سرور میباشد.چند دقیقه دیگر دوباره تلاش کنید");
+  }
+
+}

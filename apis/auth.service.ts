@@ -6,13 +6,12 @@ import { AxiosError } from "axios";
 
 export const adminLoginReq = async ({ username, password }: IAdminReq): Promise<IAdminRes> => {
   try {
-    const response = await client.post(urls.admin, {
+    const response = await client.post(urls.auth.admin, {
       username,
       password,
     });
 
     const { accessToken, refreshToken } = response.data.token;
-// console.log(response.data.token);
 
   // Set access and refresh tokens in cookies
   Cookies.set("accessToken", accessToken, {
@@ -24,7 +23,7 @@ export const adminLoginReq = async ({ username, password }: IAdminReq): Promise<
   Cookies.set("refreshToken", refreshToken, {
     secure: process.env.NODE_ENV === "production",
     sameSite: "Strict",
-    expires: 7, // Expires in 7 days
+    expires: 1, // Expires in 7 days
   });
 
     return response.data;
