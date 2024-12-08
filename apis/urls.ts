@@ -1,6 +1,6 @@
 export const urls = {
   auth:{
-   admin: "/auth/login"
+   adminLog: "/auth/login"
   },
   product:{
     getAll:"/products",
