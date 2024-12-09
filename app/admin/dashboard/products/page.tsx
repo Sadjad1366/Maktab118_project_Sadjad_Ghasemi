@@ -1,11 +1,12 @@
 // src/pages/admin/ProductPage.tsx
 "use client";
 
-import { getAllProductsReq } from "@/apis/product.service";
+import { deleteProductById, getAllProductsReq } from "@/apis/product.service";
 import { getAllCategories } from "@/apis/product.service"; // Import the category service
+import DeleteModal from "@/components/modals/deleteModal";
 import { className } from "@/utils/classNames";
-import Link from "next/link";
 import React from "react";
+import toast from "react-hot-toast";
 import { FaSort } from "react-icons/fa";
 
 const ProductPage: React.FC = () => {
@@ -15,11 +16,30 @@ const ProductPage: React.FC = () => {
   const [categoriesMap, setCategoriesMap] = React.useState<
     Record<string, string>
   >({});
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(
+    null
+  );
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  //======== Modal handling functions =============
+  const openDeleteModal = (product: IProduct) => {
+    setProductToDelete(product);
+    setIsModalOpen(true);
   };
 
+  const closeDeleteModal = () => {
+    setIsModalOpen(false);
+    setProductToDelete(null);
+  };
+
+  const confirmDelete = async () => {
+    if (productToDelete) {
+      await deleteProduct(productToDelete._id);
+      closeDeleteModal();
+    }
+  };
+
+  //============================ fetch categories
   const fetchCategories = async () => {
     try {
       const categories = await getAllCategories();
@@ -33,6 +53,7 @@ const ProductPage: React.FC = () => {
     }
   };
 
+  //============================ fetch products
   const fetchProducts = async (currentPage: number) => {
     try {
       const response = await getAllProductsReq(currentPage, 6);
@@ -43,19 +64,41 @@ const ProductPage: React.FC = () => {
     }
   };
 
+  //=================== delete product function =======
+  const deleteProduct = async (id: string) => {
+    try {
+      const response = await deleteProductById(id);
+      toast.success("حذف با موفقیت انجام گردید");
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product._id !== id)
+      );
+      fetchProducts(currentPage);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
+  //================================================ pagination handling
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   React.useEffect(() => {
     fetchCategories();
     fetchProducts(currentPage);
   }, [currentPage]);
 
   return (
+
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
+      <div className={isModalOpen ? "filter blur-sm" : ""}>
       <div className="flex justify-between py-3 px-2">
         <h2 className="text-slate-600 font-semibold text-xl">مدیریت کالا</h2>
         <button className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg">
           افزودن کالا
         </button>
       </div>
+
       <table
         className={className(
           "w-full text-sm text-left",
@@ -117,18 +160,17 @@ const ProductPage: React.FC = () => {
               </td>
               <td className="px-1 py-4 text-right">
                 <div className="flex gap-x-2">
-                  <Link
-                    href="#"
-                    className="font-medium text-blue-800 dark:text-blue-500 hover:underline"
-                  >
+                  <button className="font-medium text-blue-800 dark:text-blue-500 hover:underline">
                     ویرایش
-                  </Link>
-                  <Link
-                    href="#"
-                    className="font-medium px-3 space-x-1 text-blue-400 dark:text-blue-500 hover:underline"
+                  </button>
+                  <button
+                    onClick={() => openDeleteModal(product)}
+                    className="font-lg px-3 space-x-1 text-red-400 dark:text-blue-500 hover:underline"
                   >
                     حذف
-                  </Link>
+                  </button>
+                  {/* Modal */}
+
                 </div>
               </td>
             </tr>
@@ -142,6 +184,8 @@ const ProductPage: React.FC = () => {
           )}
         </tbody>
       </table>
+
+
       <div className="flex justify-between items-center gap-x-5 pt-2">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -175,6 +219,16 @@ const ProductPage: React.FC = () => {
           بعدی
         </button>
       </div>
+      </div>
+      <DeleteModal
+        isOpen={isModalOpen}
+        onClose={closeDeleteModal}
+        title="تأیید حذف کالا"
+        onConfirm={confirmDelete}
+
+      >
+        <p>آیا مطمئن هستید که می‌خواهید "{productToDelete?.name}" را حذف کنید؟</p>
+      </DeleteModal>
     </div>
   );
 };
