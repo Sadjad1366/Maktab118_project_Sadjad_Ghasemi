@@ -4,7 +4,8 @@ export const urls = {
   },
   product:{
     getAll:"/products",
-    getById: (id: string) => `/products/${id}`
+    getById: (id: string) => `/products/${id}`,
+    delById : (id: string) => `/products/${id}`,
   } ,
   order: "/orders",
   user: "/users",

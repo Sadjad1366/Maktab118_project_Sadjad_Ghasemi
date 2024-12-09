@@ -49,3 +49,11 @@ export const getProductById:getProductByIdType = async(id) => {
   }
 
 }
+//=========================== DELETE BY ID =========================
+export const deleteProductById = async(id:string):Promise<void> =>{
+  try {
+    const response = await client.delete(urls.product.delById(id))
+  } catch (error) {
+    throw new Error("حذف با خطا روبرو شد");
+  }
+}
