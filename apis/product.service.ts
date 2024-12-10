@@ -1,3 +1,4 @@
+"use client"
 import { client } from "./client";
 import { urls } from "./urls";
 
@@ -5,8 +6,7 @@ import { urls } from "./urls";
 type getAllProductReqType = (
   page: number,
   limit?: number,
-) => Promise<IGlobalRes<{
-  totalPages: number; products: IProduct[]
+) => Promise<IGlobalRes<{products: IProduct[]
 }>>;
 
 export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
@@ -32,7 +32,18 @@ export const getAllCategories: GetAllCategoriesType = async () => {
     const response = await client.get(urls.category);
     return response.data.data.categories; // Adjust based on your API response structure
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to fetch categories");
+    throw new Error(error.response?.data?.message || "خطا در دریافت دسته بندی ها");
+  }
+};
+
+//============================= GET SUBCATEGORIES ============================
+type GetAllSubCategoriesType = () => Promise<ISubCategory[]>;
+export const getAllSubCategories: GetAllSubCategoriesType = async () => {
+  try {
+    const response = await client.get(urls.subcategory);
+    return response.data.data.subcategories; // Adjust based on your API response structure
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "خطا در دریافت زیر دسته بندی ها");
   }
 };
 
@@ -56,4 +67,33 @@ export const deleteProductById = async(id:string):Promise<void> =>{
   } catch (error) {
     throw new Error("حذف با خطا روبرو شد");
   }
+}
+//=========================== UPDATE BY ID
+// export const updateProductById = async (
+//   id: string,
+//   data: Partial<IProduct>
+// ): Promise<IProductById> => {
+//   try {
+//     const response = await client.patch(urls.product.updateById(id), data);
+//     console.log(response.data.data.product);
+
+//     return response.data.data.product;
+//   } catch (error) {
+//     throw new Error("بروز رسانی با خطا روبرو شد");
+//   }
+// };
+export const updateProductById = async(id:string, formData:FormData):Promise<IProduct> =>{
+try{
+  const response = await client.patch(urls.product.updateById(id), formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },});
+  console.log(response.data.data.product);
+  return response.data;
+
+} catch(error:any){
+  console.error("API Error:", error.response?.data || error.message);
+    throw new Error("بروز رسانی با خطا روبرو شد");
+
+}
 }
