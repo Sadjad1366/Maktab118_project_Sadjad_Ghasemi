@@ -1,6 +1,7 @@
 "use client"
 import { client } from "./client";
 import { urls } from "./urls";
+import Cookies from 'js-cookie';
 
 //============================= GET PRODUCTS ============================
 type getAllProductReqType = (
@@ -69,19 +70,6 @@ export const deleteProductById = async(id:string):Promise<void> =>{
   }
 }
 //=========================== UPDATE BY ID
-// export const updateProductById = async (
-//   id: string,
-//   data: Partial<IProduct>
-// ): Promise<IProductById> => {
-//   try {
-//     const response = await client.patch(urls.product.updateById(id), data);
-//     console.log(response.data.data.product);
-
-//     return response.data.data.product;
-//   } catch (error) {
-//     throw new Error("بروز رسانی با خطا روبرو شد");
-//   }
-// };
 export const updateProductById = async(id:string, formData:FormData):Promise<IProduct> =>{
 try{
   const response = await client.patch(urls.product.updateById(id), formData, {
@@ -94,6 +82,25 @@ try{
 } catch(error:any){
   console.error("API Error:", error.response?.data || error.message);
     throw new Error("بروز رسانی با خطا روبرو شد");
+}
+}
 
-}
-}
+//=========================== CREATE PRODUCT
+export const createNewProduct = async (formData: FormData): Promise<IProduct> => {
+  try {
+    // Add the image file using the correct field name
+    const response = await client.post(urls.product.create, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${Cookies.get('accessToken')}`, // Include token
+      },
+    });
+
+    console.log(response.data.data.product);
+    return response.data.data.product;
+
+  } catch (error: any) {
+    console.error("API Error:", error.response?.data || error.message);
+    throw new Error("کالایی اضافه نگردید.");
+  }
+};

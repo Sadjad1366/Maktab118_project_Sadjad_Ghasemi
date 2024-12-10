@@ -6,12 +6,14 @@ import { FaSort } from "react-icons/fa";
 import UpdateModal from "@/components/modals/updateModal";
 import DeleteModal from "@/components/modals/deleteModal";
 import {
+  createNewProduct,
   deleteProductById,
   getAllProductsReq,
   updateProductById,
 } from "@/apis/product.service";
 import { getAllCategories, getAllSubCategories } from "@/apis/product.service";
 import { className } from "@/utils/classNames";
+import CreateModal from "@/components/modals/createModal";
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
@@ -31,6 +33,21 @@ const ProductPage: React.FC = () => {
   const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(
     null
   );
+  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
+  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
+    null
+  );
+
+  // Open and close create modal
+  const openCreateModal = () => {
+    setIsCreateModalOpen(true);
+    setProductToCreate(null); // Explicitly pass null if no initial value is needed
+  };
+
+  const closeCreateModal = () => {
+    setIsCreateModalOpen(false);
+    setProductToCreate(null);
+  };
 
   // Open and close update modal
   const openUpdateModal = (product: IProduct) => {
@@ -52,19 +69,6 @@ const ProductPage: React.FC = () => {
   const closeDeleteModal = () => {
     setIsModalOpen(false);
     setProductToDelete(null);
-  };
-
-  // Delete product
-  const deleteProduct = async (id: string) => {
-    try {
-      await deleteProductById(id);
-      toast.success("حذف با موفقیت انجام شد");
-      setProducts((prev) => prev.filter((product) => product._id !== id));
-      fetchProducts(currentPage); // Refresh product list
-      closeDeleteModal(); // Close the modal
-    } catch (error: any) {
-      toast.error(error.message || "خطا در حذف کالا");
-    }
   };
 
   // Fetch products
@@ -105,6 +109,19 @@ const ProductPage: React.FC = () => {
     }
   };
 
+  // create product
+  const createProduct = async (formData: FormData) => {
+    try {
+      await createNewProduct(formData);
+      toast.success("محصول با موفقیت ایجاد گردید");
+      fetchProducts(currentPage); // Refresh product list
+      closeCreateModal(); // Close the modal
+    } catch (error) {
+      toast.error("خطا در ایجاد کالا");
+      console.error(error);
+    }
+  };
+
   // Update product
   const updateProduct = async (id: string, formData: FormData) => {
     try {
@@ -115,6 +132,18 @@ const ProductPage: React.FC = () => {
     } catch (error) {
       toast.error("خطا در بروزرسانی کالا");
       console.error(error);
+    }
+  };
+  // Delete product
+  const deleteProduct = async (id: string) => {
+    try {
+      await deleteProductById(id);
+      toast.success("حذف با موفقیت انجام شد");
+      setProducts((prev) => prev.filter((product) => product._id !== id));
+      fetchProducts(currentPage); // Refresh product list
+      closeDeleteModal(); // Close the modal
+    } catch (error: any) {
+      toast.error(error.message || "خطا در حذف کالا");
     }
   };
 
@@ -134,7 +163,10 @@ const ProductPage: React.FC = () => {
       <div className={isModalOpen ? "filter blur-sm" : ""}>
         <div className="flex justify-between py-3 px-2">
           <h2 className="text-slate-600 font-semibold text-xl">مدیریت کالا</h2>
-          <button className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg">
+          <button
+            onClick={openCreateModal}
+            className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded-lg"
+          >
             افزودن کالا
           </button>
         </div>
@@ -245,7 +277,9 @@ const ProductPage: React.FC = () => {
         title="حذف کالا"
         onConfirm={() => deleteProduct(productToDelete?._id || "")}
       >
-        <p>آیا مطمئن هستید که می‌خواهید "{productToDelete?.name}" را حذف کنید؟</p>
+        <p>
+          آیا مطمئن هستید که می‌خواهید "{productToDelete?.name}" را حذف کنید؟
+        </p>
       </DeleteModal>
 
       <UpdateModal
@@ -255,6 +289,14 @@ const ProductPage: React.FC = () => {
         subcategories={subCategoriesMap}
         onClose={closeUpdateModal}
         onUpdate={updateProduct}
+      />
+      <CreateModal
+        isOpen={isCreateModalOpen}
+        product={productToCreate}
+        categories={categoriesMap}
+        subcategories={subCategoriesMap}
+        onClose={closeCreateModal}
+        onCreate={createProduct}
       />
     </div>
   );

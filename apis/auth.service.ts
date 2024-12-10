@@ -29,7 +29,7 @@ export const adminLoginReq = async ({
     Cookies.set("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 24, // Expires in 1 hour
+      expires: 1 / 12, // Expires in 2 hour
     });
 
 
