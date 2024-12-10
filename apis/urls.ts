@@ -1,20 +1,16 @@
 export const urls = {
-<<<<<<< HEAD
-  auth:{adminLog: "/auth/login",
-    tokenGen:"/auth/token"
-  },
-  product: "/products",
-=======
   auth:{
-admin: "/auth/login"
-  }
-  ,
+   adminLog: "/auth/login"
+  },
   product:{
+    create:"/products",
     getAll:"/products",
-    getById: (id: string) => `/products/${id}`
+    getById: (id: string) => `/products/${id}`,
+    delById : (id: string) => `/products/${id}`,
+    updateById: (id:string) => `/products/${id}`,
   } ,
->>>>>>> feature/product-card
   order: "/orders",
   user: "/users",
   category: "/categories",
+  subcategory:"/subcategories"
 };

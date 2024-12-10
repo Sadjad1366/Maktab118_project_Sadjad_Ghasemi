@@ -9,20 +9,14 @@ export const adminLoginReq = async ({
   password,
 }: IAdminReq): Promise<IAdminRes> => {
   try {
-<<<<<<< HEAD
+
     const response = await client.post(urls.auth.adminLog, {
-=======
-    const response = await client.post(urls.auth.admin, {
->>>>>>> feature/product-card
+
       username,
       password,
     });
 
     const { accessToken, refreshToken } = response.data.token;
-<<<<<<< HEAD
-    // console.log(response.data.token);
-=======
->>>>>>> feature/product-card
 
     // Set access and refresh tokens in cookies
     Cookies.set("accessToken", accessToken, {
@@ -31,19 +25,13 @@ export const adminLoginReq = async ({
       expires: 1 / (24*2), // Expires in 1 hour
     });
 
-<<<<<<< HEAD
+
     Cookies.set("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 24, // Expires in 1 hour
+      expires: 1 / 12, // Expires in 2 hour
     });
-=======
-  Cookies.set("refreshToken", refreshToken, {
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-    expires: 1, // Expires in 7 days
-  });
->>>>>>> feature/product-card
+
 
     return response.data;
   } catch (error: any) {

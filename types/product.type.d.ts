@@ -16,7 +16,7 @@ interface IProduct {
   createdAt: string;
   updatedAt: string;
   slugname: string;
-  discount?: number; // New property
+  __v?: number;
 }
 interface ICategory {
   _id: string;
@@ -27,6 +27,14 @@ interface ICategory {
   slugname: string;
 }
 
+interface ISubCategory {
+  _id: string;
+  category: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  slugname: string;
+}
 interface IOrder {
   _id: string;
   user: string;
