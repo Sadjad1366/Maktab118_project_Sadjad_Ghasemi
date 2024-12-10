@@ -26,7 +26,7 @@ const CreateModal: React.FC<ICreateModal> = ({
     quantity: 0,
     brand: "",
     description: "",
-    images:[],
+    images: [],
   });
   const [imageFile, setImageFile] = React.useState<File | null>(null);
 
@@ -69,7 +69,7 @@ const CreateModal: React.FC<ICreateModal> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-slate-200 p-8 rounded-md shadow-lg max-w-lg w-full">
         <h2 className="text-xl font-semibold text-gray-700 mb-6">
-          ویرایش محصول
+          ایجاد محصول
         </h2>
         <div className="space-y-4">
           <div>
@@ -140,29 +140,31 @@ const CreateModal: React.FC<ICreateModal> = ({
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              قیمت
-            </label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              تعداد
-            </label>
-            <input
-              type="number"
-              name="quantity"
-              value={formData.quantity}
-              onChange={handleChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2"
-            />
+          <div className="flex justify-between">
+            <div>
+              <label className="text-sm font-medium text-gray-700 p-1">
+                قیمت
+              </label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 p-1">
+                تعداد
+              </label>
+              <input
+                type="number"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleChange}
+                className="w-full border-gray-300 rounded-md shadow-sm p-2"
+              />
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 p-1">
@@ -181,7 +183,7 @@ const CreateModal: React.FC<ICreateModal> = ({
               تصویر
             </label>
             <input
-            required
+              required
               type="file"
               accept="image/*"
               onChange={handleFileChange}
@@ -189,7 +191,7 @@ const CreateModal: React.FC<ICreateModal> = ({
             />
           </div>
         </div>
-        <div className="mt-6 flex justify-end gap-4">
+        <div className="mt-6 flex justify-center gap-x-8">
           <button
             onClick={onClose}
             className="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-600 transition"

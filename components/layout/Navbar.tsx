@@ -16,7 +16,6 @@ const Navbar: React.FC = () => {
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10">
       <nav className="flex justify-between items-center container mx-auto px-6">
-        {/* Logo Section */}
         <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
           {/* Mobile Menu Button */}
           <button
@@ -24,11 +23,11 @@ const Navbar: React.FC = () => {
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
-            {isOpen ? <FiX className="text-gray-300" size={48} /> : <FiMenu size={48} className="relative text-gray-300"/>}
+            {isOpen ? <FiX className="text-gray-300" size={48} /> : <FiMenu size={36} className="relative text-gray-300"/>}
           </button>
           <div className="flex items-center gap-x-3">
 
-              <img className="size-36" src="/images/logo/ninja.svg" />
+              <img className="w-24 h-[140px] sm:size-48" src="/images/logo/ninja.svg" />
 
             <p className="hidden md:block text-slate-100 text-2xl font-semibold tracking-wide">
               گالری ساعت نینجا

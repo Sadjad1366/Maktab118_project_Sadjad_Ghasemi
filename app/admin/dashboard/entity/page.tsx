@@ -1,30 +1,66 @@
-"use client";
-import { getAllProductsReq } from "@/apis/product.service";
+"use client"
+import { getAllProductsReq, updateProductById } from "@/apis/product.service";
 import { className } from "@/utils/classNames";
 import React from "react";
+import toast from "react-hot-toast";
 
-export default function entityPage() {
+export default function EntityPage() {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
+  const [updates, setUpdates] = React.useState<Record<string, { price: number; quantity: number }>>({}); // To track changes
   const perPage = 6;
 
   const fetchProducts = async (currentPage: number) => {
     try {
-      const response = await getAllProductsReq(currentPage,perPage);
+      const response = await getAllProductsReq(currentPage, perPage);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
     } catch (error) {
       console.log("Error fetching products:", error);
     }
   };
-  // Handle page change
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
   React.useEffect(() => {
     fetchProducts(currentPage);
   }, [currentPage]);
+
+  // Handle input changes for price or quantity
+  const handleInputChange = (id: string, field: "price" | "quantity", value: number) => {
+    setUpdates((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
+
+  // Save all updates
+  const handleSave = async () => {
+    const updatePromises: Promise<IProduct>[] = Object.entries(updates).map(([id, update]) => {
+      const formData = new FormData();
+      formData.append("price", update.price.toString());
+      formData.append("quantity", update.quantity.toString());
+
+      return updateProductById(id, formData); // Pass FormData to the API function
+    });
+
+    try {
+      await Promise.all(updatePromises);
+      toast.success("بروزرسانی با موفقیت صورت گرفت");
+      fetchProducts(currentPage); // Refresh products after save
+      setUpdates({}); // Clear updates after saving
+    } catch (error) {
+      console.error("Error saving updates:", error);
+      toast.error("خطا صورت گرفت.دوباره تلاش کنید");
+    }
+  };
+
 
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
@@ -32,7 +68,7 @@ export default function entityPage() {
         <h2 className="text-slate-600 font-semibold text-xl">
           مدیریت موجودی و قیمت
         </h2>
-        <button className="bg-gray-600 text-white px-4 py-2 rounded-lg">
+        <button onClick={handleSave} className="bg-gray-600 text-white px-4 py-2 rounded-lg">
           ذخیره
         </button>
       </div>
@@ -50,6 +86,9 @@ export default function entityPage() {
         >
           <tr>
             <th scope="col" className="px-2 py-3">
+              تصویر کالا
+            </th>
+            <th scope="col" className="px-2 py-3">
               نام محصول
             </th>
             <th scope="col" className="px-2 py-3">
@@ -62,12 +101,33 @@ export default function entityPage() {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr key={product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td>
+                <img
+                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                  alt={product.name}
+                  width="50px"
+                />
+              </td>
               <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                 {product.name}
               </td>
-              <td className="px-2 py-4">{Number(product.price).toLocaleString()}</td>
-              <td className="px-2 py-4">{product.quantity}</td>
+              <td className="px-2 py-4">
+                <input
+                  type="number"
+                  value={updates[product._id]?.price || product.price}
+                  onChange={(e) => handleInputChange(product._id, "price", Number(e.target.value))}
+                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
+                />
+              </td>
+              <td className="px-2 py-4">
+                <input
+                  type="number"
+                  value={updates[product._id]?.quantity || product.quantity}
+                  onChange={(e) => handleInputChange(product._id, "quantity", Number(e.target.value))}
+                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
+                />
+              </td>
             </tr>
           ))}
         </tbody>
