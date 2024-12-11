@@ -57,9 +57,9 @@ const CreateModal: React.FC<ICreateModal> = ({
     if (imageFile) {
       form.append("images", imageFile);
     }
-    for (const [key, value] of form.entries()) {
-      console.log(`${key}: ${value}`); // Log all fields
-    }
+    // for (const [key, value] of form.entries()) {
+    //   console.log(`${key}: ${value}`); // Log all fields
+    // }
     onCreate(form); // Pass id and formData
   };
 
@@ -104,7 +104,7 @@ const CreateModal: React.FC<ICreateModal> = ({
                   </option>
                 ))}
               </select>
-              {formData.category}
+              {/* {formData.category} */}
             </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700 p-1">
@@ -125,7 +125,7 @@ const CreateModal: React.FC<ICreateModal> = ({
                   </option>
                 ))}
               </select>
-              {formData.subcategory}
+              {/* {formData.subcategory} */}
             </div>
           </div>
           <div>

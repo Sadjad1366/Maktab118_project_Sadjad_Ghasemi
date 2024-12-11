@@ -24,7 +24,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       )}
     >
       {/* Product Image and Discount Badge */}
-      <div className="relative h-48">
+      <div className="relative h-40 size-36 mx-auto">
         <Link href={`/products/${product._id}`}>
           <img
             className="w-full h-full object-cover cursor-pointer rounded-t-lg"
@@ -61,7 +61,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Product Price and Stock Status */}
         <div className="flex justify-between items-center mt-2">
           <span className="text-lg font-bold text-indigo-600">
-            {product.price} تومان
+          {Number(product.price).toLocaleString()} تومان
           </span>
           {isOutOfStock ? (
             <span className="text-red-500 text-sm font-semibold">ناموجود</span>
