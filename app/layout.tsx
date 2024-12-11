@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
+import Provider from "@/provider/queryProvider";
 
 const bnazaninFont = localFont({
   src: "../fonts/BNazanin.woff2",
   variable: "--font-BNazanin",
   weight: "400 900",
 });
-
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,11 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl">
-      <body
-        className={`${bnazaninFont.variable} antialiased font-bnazanin`}
-      >
-<Toaster position="top-left" reverseOrder={false} />
-        {children}
+      <body className={`${bnazaninFont.variable} antialiased font-bnazanin`}>
+        <Toaster position="top-left" reverseOrder={false} />
+        <Provider> {children}</Provider>
       </body>
     </html>
   );

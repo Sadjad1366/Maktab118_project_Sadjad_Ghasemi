@@ -41,12 +41,12 @@ const ProductPage: React.FC = () => {
   // Open and close create modal
   const openCreateModal = () => {
     setIsCreateModalOpen(true);
-    setProductToCreate(null); // Explicitly pass null if no initial value is needed
+    // setProductToCreate(null); // Explicitly pass null if no initial value is needed
   };
 
   const closeCreateModal = () => {
     setIsCreateModalOpen(false);
-    setProductToCreate(null);
+    // setProductToCreate(null);
   };
 
   // Open and close update modal

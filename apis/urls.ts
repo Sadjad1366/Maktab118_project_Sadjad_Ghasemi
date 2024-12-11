@@ -11,6 +11,11 @@ export const urls = {
   } ,
   order: "/orders",
   user: "/users",
-  category: "/categories",
-  subcategory:"/subcategories"
+  category: {
+    getCategories :"/categories",
+    getProductsByCategory:"/products"
+  },
+  subcategory:{
+    getSubCategories:"/subcategories"
+  },
 };

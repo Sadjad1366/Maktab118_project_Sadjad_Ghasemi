@@ -22,7 +22,7 @@ export const adminLoginReq = async ({
     Cookies.set("accessToken", accessToken, {
       secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
       sameSite: "Strict",
-      expires: 1 / (24*2), // Expires in 1 hour
+      expires: 1 / (24), // Expires in 1 hour
     });
 
 
