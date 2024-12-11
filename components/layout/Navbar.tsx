@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
 
               <img className="w-24 h-[140px] sm:size-36" src="/images/logo/ninja.svg" />
 
-            <p className="hidden md:block text-slate-100 text-2xl font-semibold tracking-wide">
+            <p className="hidden xl:block text-slate-100 text-2xl font-semibold tracking-wide">
               گالری ساعت نینجا
             </p>
           </div>
@@ -53,6 +53,12 @@ const Navbar: React.FC = () => {
               className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
               دسته بندی
+            </Link>
+            <Link
+              href="/gallery"
+              className="text-slate-100 hover:underline transition duration-300 text-lg"
+            >
+              گالری
             </Link>
             <Link
               href="/aboutus"
@@ -116,6 +122,13 @@ const Navbar: React.FC = () => {
               onClick={() => setIsOpen(false)}
             >
               فروشگاه
+            </Link>
+            <Link
+              href="/category"
+              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
+              onClick={() => setIsOpen(false)}
+            >
+              دسته بندی
             </Link>
             <Link
               href="/aboutus"

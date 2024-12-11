@@ -30,7 +30,7 @@ export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
 type GetAllCategoriesType = () => Promise<ICategory[]>;
 export const getAllCategories: GetAllCategoriesType = async () => {
   try {
-    const response = await client.get(urls.category);
+    const response = await client.get(urls.category.getCategories);
     return response.data.data.categories; // Adjust based on your API response structure
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "خطا در دریافت دسته بندی ها");
@@ -41,7 +41,7 @@ export const getAllCategories: GetAllCategoriesType = async () => {
 type GetAllSubCategoriesType = () => Promise<ISubCategory[]>;
 export const getAllSubCategories: GetAllSubCategoriesType = async () => {
   try {
-    const response = await client.get(urls.subcategory);
+    const response = await client.get(urls.subcategory.getSubCategories);
     return response.data.data.subcategories; // Adjust based on your API response structure
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "خطا در دریافت زیر دسته بندی ها");

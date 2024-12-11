@@ -1,5 +1,7 @@
 "use client";
+import { className } from "@/utils/classNames";
 import React, { useState, useEffect } from "react";
+import { FiUpload } from "react-icons/fi";
 
 interface IUpdateModal {
   isOpen: boolean;
@@ -30,8 +32,6 @@ const UpdateModal: React.FC<IUpdateModal> = ({
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null); // For previewing the image
 
-
-
   useEffect(() => {
     // Populate formData and set the preview when the modal opens
     if (product) {
@@ -52,7 +52,6 @@ const UpdateModal: React.FC<IUpdateModal> = ({
     }
   }, [product]);
 
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -69,7 +68,6 @@ const UpdateModal: React.FC<IUpdateModal> = ({
       setImagePreview(URL.createObjectURL(file)); // Create a preview for the new image
     }
   };
-
 
   const handleSubmit = () => {
     if (!product) return;
@@ -123,7 +121,6 @@ const UpdateModal: React.FC<IUpdateModal> = ({
                 onChange={handleChange}
                 className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               >
-
                 {Object.entries(categories).map(([id, name]) => (
                   <option key={id} value={id}>
                     {name}
@@ -141,7 +138,6 @@ const UpdateModal: React.FC<IUpdateModal> = ({
                 onChange={handleChange}
                 className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               >
-
                 {Object.entries(subcategories).map(([id, name]) => (
                   <option key={id} value={id}>
                     {name}
@@ -202,21 +198,38 @@ const UpdateModal: React.FC<IUpdateModal> = ({
             <label className="block text-sm font-medium text-gray-700 p-1">
               تصویر
             </label>
-       <div className="flex justify-center items-center">
-       {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-16 h-16 object-cover mb-4"
-              />
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2"
-            />
-       </div>
+            <div className="flex gap-x-6 items-center">
+              <div className="flex items-center bg-grey-lighter">
+                <label
+                  className={className(
+                    "w-48 h-16 flex flex-col items-center px-4 py-1",
+                    "bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border",
+                    "border-blue cursor-pointer hover:bg-blue"
+                  )}
+                >
+                  <FiUpload />
+                  <span className="mt-2 text-base leading-normal">
+                    یک عکس انتخاب کنید
+                  </span>
+                  <input
+                    required
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+              <div className="flex justify-center items-center">
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div className="mt-6 flex justify-center gap-x-8">

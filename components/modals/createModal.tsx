@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-
+import { FiUpload } from "react-icons/fi";
 interface ICreateModal {
   isOpen: boolean;
   product: IProduct | null;
@@ -67,8 +67,8 @@ const CreateModal: React.FC<ICreateModal> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-slate-200 p-8 rounded-md shadow-lg max-w-lg w-full">
-        <h2 className="text-xl font-semibold text-gray-700 mb-6">
+      <div className="bg-slate-200 p-6 rounded-md shadow-lg max-w-lg w-full">
+        <h2 className="text-xl font-semibold text-gray-700 mb-1">
           ایجاد محصول
         </h2>
         <div className="space-y-4">
@@ -150,7 +150,7 @@ const CreateModal: React.FC<ICreateModal> = ({
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
+                className="w-full border-gray-300 rounded-md shadow-sm p-2"
               />
             </div>
             <div>
@@ -174,7 +174,7 @@ const CreateModal: React.FC<ICreateModal> = ({
               name="description"
               value={formData.description}
               onChange={handleChange}
-              rows={4}
+              rows={3}
               className="w-full border-gray-300 rounded-md shadow-sm p-2"
             />
           </div>
@@ -182,13 +182,21 @@ const CreateModal: React.FC<ICreateModal> = ({
             <label className="block text-sm font-medium text-gray-700 p-1">
               تصویر
             </label>
-            <input
-              required
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2"
-            />
+            <div className="flex w-full items-center bg-grey-lighter">
+             <label className="w-48 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+              <FiUpload />
+                <span className="mt-2 text-base leading-normal">
+                  یک عکس انتخاب کنید
+                </span>
+                <input
+                  required
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </div>
         </div>
         <div className="mt-6 flex justify-center gap-x-8">

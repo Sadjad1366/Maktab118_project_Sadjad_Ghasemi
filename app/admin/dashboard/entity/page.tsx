@@ -50,7 +50,7 @@ export default function EntityPage() {
         [field]: value,
       },
     }));  console.log(updates);
-    
+
   };
 
   const handleSave = async () => {
@@ -125,52 +125,53 @@ export default function EntityPage() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr
-              key={product._id}
-              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-            >
-              <td>
-                <img
-                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-                  alt={product.name}
-                  width="50px"
-                />
-              </td>
-              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {product.name}
-              </td>
-              <td className="px-2 py-4">
-                <input
-                  type="number"
-                  value={updates[product._id]?.price || product.price}
-                  onChange={(e) =>
-                    handleInputChange(
-                      product._id,
-                      "price",
-                      Number(e.target.value)
-                    )
-                  }
-                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
-                />
-              </td>
-              <td className="px-2 py-4">
-                <input
-                  type="number"
-                  value={updates[product._id]?.quantity || product.quantity}
-                  onChange={(e) =>
-                    handleInputChange(
-                      product._id,
-                      "quantity",
-                      Number(e.target.value)
-                    )
-                  }
-                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  {products.map((product) => (
+    <tr
+      key={product._id}
+      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+    >
+      <td>
+        <img
+          src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+          alt={product.name}
+          width="50px"
+        />
+      </td>
+      <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+        {product.name}
+      </td>
+      <td className="px-2 py-4">
+        <input
+          type="number"
+          value={
+            updates[product._id]?.price !== undefined
+              ? updates[product._id]?.price
+              : product.price
+          }
+          onChange={(e) =>
+            handleInputChange(product._id, "price", Number(e.target.value))
+          }
+          className="w-full border-gray-300 rounded-md shadow-sm p-1"
+        />
+      </td>
+      <td className="px-2 py-4">
+        <input
+          type="number"
+          value={
+            updates[product._id]?.quantity !== undefined
+              ? updates[product._id]?.quantity
+              : product.quantity
+          }
+          onChange={(e) =>
+            handleInputChange(product._id, "quantity", Number(e.target.value))
+          }
+          className="w-full border-gray-300 rounded-md shadow-sm p-1"
+        />
+      </td>
+    </tr>
+  ))}
+</tbody>
+
       </table>
       <div className="flex justify-between items-center gap-x-5 pt-2">
         <button
