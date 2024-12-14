@@ -6,7 +6,7 @@ import { IAdminReq } from "@/types/user.type";
 import { adminLoginReq } from "@/apis/auth.service";
 import { className } from "@/utils/classNames";
 import { useRouter } from "next/navigation";
-import { AuthSchema } from "@/utils/validations/zodValidation";
+import { AuthSchema } from "@/utils/validations/zodAuthValidation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
