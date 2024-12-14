@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
-import { FiUpload } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiUpload, FiX } from "react-icons/fi";
+
 interface ICreateModal {
   isOpen: boolean;
   product: IProduct | null;
@@ -18,7 +19,7 @@ const CreateModal: React.FC<ICreateModal> = ({
   onClose,
   onCreate,
 }) => {
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: "",
     category: "",
     price: 0,
@@ -28,7 +29,8 @@ const CreateModal: React.FC<ICreateModal> = ({
     description: "",
     images: [],
   });
-  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]); // Store multiple files
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Store image previews
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -40,9 +42,19 @@ const CreateModal: React.FC<ICreateModal> = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImageFile(e.target.files[0]); // Save the selected file
+    if (e.target.files) {
+      const files = Array.from(e.target.files); // Convert FileList to Array
+      const newFiles = [...imageFiles, ...files];
+      const newPreviews = [...imagePreviews, ...files.map((file) => URL.createObjectURL(file))];
+
+      setImageFiles(newFiles); // Add new files to the state
+      setImagePreviews(newPreviews); // Add new previews
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index)); // Remove the file
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index)); // Remove the preview
   };
 
   const handleSubmit = () => {
@@ -54,26 +66,23 @@ const CreateModal: React.FC<ICreateModal> = ({
     form.append("quantity", formData.quantity.toString());
     form.append("price", formData.price.toString());
     form.append("description", formData.description);
-    if (imageFile) {
-      form.append("images", imageFile);
-    }
-    // for (const [key, value] of form.entries()) {
-    //   console.log(`${key}: ${value}`); // Log all fields
-    // }
-    onCreate(form); // Pass id and formData
+    imageFiles.forEach((file) => form.append("images", file)); // Append all selected images
+
+    onCreate(form); // Pass formData to onCreate callback
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-slate-200 p-6 rounded-md shadow-lg max-w-lg w-full">
-        <h2 className="text-xl font-semibold text-gray-700 mb-1">
+    <div className="fixed inset-0 flex justify-start items-start bg-black bg-opacity-50 z-50 p-6">
+      <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-sm mx-auto mt-1">
+        <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
           ایجاد محصول
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-3">
+          {/* Product Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
+            <label className="block text-sm font-medium text-gray-700">
               نام محصول
             </label>
             <input
@@ -84,9 +93,10 @@ const CreateModal: React.FC<ICreateModal> = ({
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
             />
           </div>
-          <div className="flex gap-x-3">
+          {/* Category and Subcategory */}
+          <div className="flex gap-2">
             <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 p-1">
+              <label className="block text-sm font-medium text-gray-700">
                 دسته‌بندی
               </label>
               <select
@@ -104,10 +114,9 @@ const CreateModal: React.FC<ICreateModal> = ({
                   </option>
                 ))}
               </select>
-              {/* {formData.category} */}
             </div>
             <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 p-1">
+              <label className="block text-sm font-medium text-gray-700">
                 زیر دسته‌بندی
               </label>
               <select
@@ -125,11 +134,11 @@ const CreateModal: React.FC<ICreateModal> = ({
                   </option>
                 ))}
               </select>
-              {/* {formData.subcategory} */}
             </div>
           </div>
+          {/* Brand */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
+            <label className="block text-sm font-medium text-gray-700">
               برند
             </label>
             <input
@@ -140,9 +149,10 @@ const CreateModal: React.FC<ICreateModal> = ({
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
             />
           </div>
-          <div className="flex justify-between">
-            <div>
-              <label className="text-sm font-medium text-gray-700 p-1">
+          {/* Price and Quantity */}
+          <div className="flex gap-2">
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700">
                 قیمت
               </label>
               <input
@@ -150,11 +160,11 @@ const CreateModal: React.FC<ICreateModal> = ({
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full border-gray-300 rounded-md shadow-sm p-2"
+                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               />
             </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 p-1">
+            <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700">
                 تعداد
               </label>
               <input
@@ -162,53 +172,72 @@ const CreateModal: React.FC<ICreateModal> = ({
                 name="quantity"
                 value={formData.quantity}
                 onChange={handleChange}
-                className="w-full border-gray-300 rounded-md shadow-sm p-2"
+                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               />
             </div>
           </div>
+          {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
+            <label className="block text-sm font-medium text-gray-700">
               توضیحات
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              rows={3}
+              rows={2}
               className="w-full border-gray-300 rounded-md shadow-sm p-2"
             />
           </div>
+          {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              تصویر
+            <label className="block text-sm font-medium text-gray-700">
+              تصاویر
             </label>
-            <div className="flex w-full items-center bg-grey-lighter">
-             <label className="w-48 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
-              <FiUpload />
-                <span className="mt-2 text-base leading-normal">
-                  یک عکس انتخاب کنید
-                </span>
+            <div className="flex flex-wrap gap-3 mt-2">
+              {/* Display Uploaded Images */}
+              {imagePreviews.map((preview, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={preview}
+                    alt={`Uploaded ${index}`}
+                    className="w-16 h-16 object-cover rounded-md shadow"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="absolute top-0 left-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+              ))}
+              {/* File Upload */}
+              <label className="flex items-center justify-center px-4 py-2 text-sm text-blue-600 bg-white border border-blue-500 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50">
+                <FiUpload className="mr-2" />
+                انتخاب فایل
                 <input
-                  required
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
+                  multiple
                 />
               </label>
             </div>
           </div>
         </div>
-        <div className="mt-6 flex justify-center gap-x-8">
+        {/* Actions */}
+        <div className="mt-4 flex justify-center gap-4">
           <button
             onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-600 transition"
+            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
           >
             لغو
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
           >
             ذخیره
           </button>
