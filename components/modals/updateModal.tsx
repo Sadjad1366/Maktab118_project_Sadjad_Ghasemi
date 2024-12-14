@@ -92,74 +92,79 @@ const UpdateModal: React.FC<IUpdateModal> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-slate-200 p-8 rounded-md shadow-lg max-w-lg w-full">
-        <h2 className="text-xl font-semibold text-gray-700 mb-6">
-          ویرایش محصول
-        </h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              نام محصول
+    <div className="fixed inset-0 flex justify-center items-start bg-black bg-opacity-50 z-50 overflow-y-auto p-6">
+    <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-sm mx-auto mt-16">
+      <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
+        ویرایش محصول
+      </h2>
+      <div className="space-y-3">
+        {/* Name Field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            نام محصول
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
+          />
+        </div>
+        {/* Category and Subcategory */}
+        <div className="flex gap-2">
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
+              دسته‌بندی
             </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
+            <select
+              name="category"
+              value={formData.category}
               onChange={handleChange}
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
-            />
+            >
+              {Object.entries(categories).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="flex gap-x-3">
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 p-1">
-                دسته‌بندی
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
-              >
-                {Object.entries(categories).map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 p-1">
-                زیر دسته‌بندی
-              </label>
-              <select
-                name="subcategory"
-                value={formData.subcategory}
-                onChange={handleChange}
-                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
-              >
-                {Object.entries(subcategories).map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              برند
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
+              زیر دسته‌بندی
             </label>
-            <input
-              type="text"
-              name="brand"
-              value={formData.brand}
+            <select
+              name="subcategory"
+              value={formData.subcategory}
               onChange={handleChange}
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
-            />
+            >
+              {Object.entries(subcategories).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+            </select>
           </div>
-          {/* <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
+        </div>
+        {/* Brand Field */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            برند
+          </label>
+          <input
+            type="text"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
+          />
+        </div>
+        {/* Price and Quantity */}
+        <div className="flex gap-2">
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
               قیمت
             </label>
             <input
@@ -170,8 +175,8 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
               تعداد
             </label>
             <input
@@ -181,73 +186,65 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               onChange={handleChange}
               className="w-full border-gray-300 rounded-md shadow-sm p-2"
             />
-          </div> */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              توضیحات
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows={4}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 p-1">
-              تصویر
-            </label>
-            <div className="flex gap-x-6 items-center">
-              <div className="flex items-center bg-grey-lighter">
-                <label
-                  className={className(
-                    "w-48 h-16 flex flex-col items-center px-4 py-1",
-                    "bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border",
-                    "border-blue cursor-pointer hover:bg-blue"
-                  )}
-                >
-                  <FiUpload />
-                  <span className="mt-2 text-base leading-normal">
-                    یک عکس انتخاب کنید
-                  </span>
-                  <input
-                    required
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-              <div className="flex justify-center items-center">
-                {imagePreview && (
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="w-16 h-16 object-cover rounded-lg"
-                  />
-                )}
-              </div>
-            </div>
           </div>
         </div>
-        <div className="mt-6 flex justify-center gap-x-8">
-          <button
-            onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-600 transition"
-          >
-            لغو
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
-          >
-            ذخیره
-          </button>
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            توضیحات
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={2}
+            className="w-full border-gray-300 rounded-md shadow-sm p-2"
+          />
+        </div>
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            تصویر
+          </label>
+          <div className="flex items-center gap-4">
+            <label className="flex items-center justify-center px-4 py-2 text-sm text-blue-600 bg-white border border-blue-500 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50">
+              <FiUpload className="mr-2" />
+              انتخاب فایل
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-12 h-12 object-cover rounded-md"
+              />
+            )}
+          </div>
         </div>
       </div>
+      {/* Actions */}
+      <div className="mt-4 flex justify-center gap-4">
+        <button
+          onClick={onClose}
+          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+        >
+          لغو
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          ذخیره
+        </button>
+      </div>
     </div>
+  </div>
+
   );
 };
 
