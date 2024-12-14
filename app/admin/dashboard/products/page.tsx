@@ -139,13 +139,24 @@ const ProductPage: React.FC = () => {
     try {
       await deleteProductById(id);
       toast.success("حذف با موفقیت انجام شد");
-      setProducts((prev) => prev.filter((product) => product._id !== id));
+
+      // Temporarily filter the product list to simulate deletion
+      const updatedProducts = products.filter((product) => product._id !== id);
+
+      // If the page becomes empty and it's not the first page, go to the previous page
+      if (updatedProducts.length === 0 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1); // Navigate to the previous page
+      } else {
+        setProducts(updatedProducts); // Update product list without navigating
+      }
+
       fetchProducts(currentPage); // Refresh product list
       closeDeleteModal(); // Close the modal
     } catch (error: any) {
       toast.error(error.message || "خطا در حذف کالا");
     }
   };
+
 
   // Pagination handling
   const handlePageChange = (page: number) => {
