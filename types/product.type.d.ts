@@ -84,7 +84,7 @@ interface IProductById {
       brand: string;
       description: string;
       thumbnail: string;
-      images: string;
+      images: string[];
       createdAt: string;
       updatedAt: string;
       slugname: string;
