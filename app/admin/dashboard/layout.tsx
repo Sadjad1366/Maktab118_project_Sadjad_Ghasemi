@@ -15,6 +15,8 @@ import {
   FaChevronUp,
   FaBars,
 } from "react-icons/fa";
+import Cookies from "js-cookie";
+import { redirect } from "next/navigation";
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
@@ -36,6 +38,12 @@ export default function DashboardLayout({
   const toggleSettings = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
+  const logOut = () => {
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+    redirect('/admin')
+
+  }
 
   return (
     <AdminGuard>
@@ -183,12 +191,12 @@ export default function DashboardLayout({
               </div>
             )}
           </div>
-          <Link href="/logout">
-            <div className="flex">
+          {/* <Link href="/logout"> */}
+            <div onClick={logOut} className="flex items-center gap-x-2 hover:cursor-pointer">
               <FaSignOutAlt className="text-lg" />
               {isSidebarOpen && <span className="ml-3">خروج</span>}
             </div>
-          </Link>
+          {/* </Link> */}
         </div>
       </div>
 
