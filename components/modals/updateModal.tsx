@@ -1,5 +1,4 @@
 "use client";
-import { className } from "@/utils/classNames";
 import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
 
@@ -7,7 +6,7 @@ interface IUpdateModal {
   isOpen: boolean;
   product: IProduct | null;
   categories: Record<string, string>;
-  subcategories: Record<string, string>;
+  subcategories: Record<string, string[]>;
   onClose: () => void;
   onUpdate: (id: string, updatedProduct: FormData) => void; // Expecting FormData for file upload
 }
@@ -31,6 +30,18 @@ const UpdateModal: React.FC<IUpdateModal> = ({
   });
   const [imageFiles, setImageFiles] = React.useState<File[]>([]); // Store multiple files
   const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Store multiple previews
+const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
+    []
+  );
+
+ useEffect(() => {
+    if (formData.category) {
+      // Filter subcategories based on the selected category
+      setFilteredSubcategories(subcategories[formData.category] || []);
+    } else {
+      setFilteredSubcategories([]);
+    }
+  }, [formData.category, subcategories]);
 
   useEffect(() => {
     // Populate formData and set the preview when the modal opens
@@ -149,9 +160,12 @@ const UpdateModal: React.FC<IUpdateModal> = ({
                 onChange={handleChange}
                 className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               >
-                {Object.entries(subcategories).map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
+                <option value="" disabled>
+                  انتخاب کنید
+                </option>
+                {filteredSubcategories.map((subcategory, index) => (
+                  <option key={index} value={subcategory}>
+                    {subcategory}
                   </option>
                 ))}
               </select>
@@ -234,9 +248,11 @@ const UpdateModal: React.FC<IUpdateModal> = ({
                 </div>
               ))}
               {/* File Upload */}
-              <label className="flex items-center justify-center px-4 py-2 text-sm text-blue-600 bg-white border border-blue-500 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50">
-                <FiUpload className="mr-2" />
-                انتخاب فایل‌ها
+              <label
+                htmlFor="imageUpload"
+                className="bg-blue-500 text-white rounded-md px-3 py-2 cursor-pointer flex items-center gap-2"
+              >                <FiUpload className="mr-2" />
+                انتخاب تصاویر
                 <input
                   type="file"
                   accept="image/*"

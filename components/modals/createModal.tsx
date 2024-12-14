@@ -1,14 +1,13 @@
-"use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
 
 interface ICreateModal {
   isOpen: boolean;
   product: IProduct | null;
   categories: Record<string, string>;
-  subcategories: Record<string, string>;
+  subcategories: Record<string, string[]>;
   onClose: () => void;
-  onCreate: (createdProduct: FormData) => void; // Expecting FormData for file upload
+  onCreate: (createdProduct: FormData) => void;
 }
 
 const CreateModal: React.FC<ICreateModal> = ({
@@ -29,8 +28,20 @@ const CreateModal: React.FC<ICreateModal> = ({
     description: "",
     images: [],
   });
-  const [imageFiles, setImageFiles] = useState<File[]>([]); // Store multiple files
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Store image previews
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
+    []
+  );
+
+  useEffect(() => {
+    if (formData.category) {
+      // Filter subcategories based on the selected category
+      setFilteredSubcategories(subcategories[formData.category] || []);
+    } else {
+      setFilteredSubcategories([]);
+    }
+  }, [formData.category, subcategories]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -43,18 +54,21 @@ const CreateModal: React.FC<ICreateModal> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const files = Array.from(e.target.files); // Convert FileList to Array
+      const files = Array.from(e.target.files);
       const newFiles = [...imageFiles, ...files];
-      const newPreviews = [...imagePreviews, ...files.map((file) => URL.createObjectURL(file))];
+      const newPreviews = [
+        ...imagePreviews,
+        ...files.map((file) => URL.createObjectURL(file)),
+      ];
 
-      setImageFiles(newFiles); // Add new files to the state
-      setImagePreviews(newPreviews); // Add new previews
+      setImageFiles(newFiles);
+      setImagePreviews(newPreviews);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index)); // Remove the file
-    setImagePreviews((prev) => prev.filter((_, i) => i !== index)); // Remove the preview
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = () => {
@@ -66,9 +80,9 @@ const CreateModal: React.FC<ICreateModal> = ({
     form.append("quantity", formData.quantity.toString());
     form.append("price", formData.price.toString());
     form.append("description", formData.description);
-    imageFiles.forEach((file) => form.append("images", file)); // Append all selected images
+    imageFiles.forEach((file) => form.append("images", file));
 
-    onCreate(form); // Pass formData to onCreate callback
+    onCreate(form);
   };
 
   if (!isOpen) return null;
@@ -128,9 +142,9 @@ const CreateModal: React.FC<ICreateModal> = ({
                 <option value="" disabled>
                   انتخاب کنید
                 </option>
-                {Object.entries(subcategories).map(([id, name]) => (
-                  <option key={id} value={id}>
-                    {name}
+                {filteredSubcategories.map((subcategory, index) => (
+                  <option key={index} value={subcategory}>
+                    {subcategory}
                   </option>
                 ))}
               </select>
@@ -195,7 +209,6 @@ const CreateModal: React.FC<ICreateModal> = ({
               تصاویر
             </label>
             <div className="flex flex-wrap gap-3 mt-2">
-              {/* Display Uploaded Images */}
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative">
                   <img
@@ -206,41 +219,44 @@ const CreateModal: React.FC<ICreateModal> = ({
                   <button
                     type="button"
                     onClick={() => handleRemoveImage(index)}
-                    className="absolute top-0 left-0 bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center"
+                    className="absolute top-0 left-0 bg-red-500 text-white rounded-full p-1"
                   >
                     <FiX />
                   </button>
                 </div>
               ))}
-              {/* File Upload */}
-              <label className="flex items-center justify-center px-4 py-2 text-sm text-blue-600 bg-white border border-blue-500 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50">
-                <FiUpload className="mr-2" />
-                انتخاب فایل
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  multiple
-                />
+              <label
+                htmlFor="imageUpload"
+                className="bg-blue-500 text-white rounded-md px-3 py-2 cursor-pointer flex items-center gap-2"
+              >
+                <FiUpload />
+                انتخاب تصاویر
               </label>
+              <input
+                id="imageUpload"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </div>
           </div>
-        </div>
-        {/* Actions */}
-        <div className="mt-4 flex justify-center gap-4">
-          <button
-            onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
-          >
-            لغو
-          </button>
-          <button
-            onClick={handleSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            ذخیره
-          </button>
+          {/* Actions */}
+          <div className="mt-4 flex justify-center gap-4">
+            <button
+              onClick={onClose}
+              className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+            >
+              انصراف
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              ایجاد محصول
+            </button>
+          </div>
         </div>
       </div>
     </div>

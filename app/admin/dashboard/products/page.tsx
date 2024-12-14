@@ -19,24 +19,14 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
-  const [categoriesMap, setCategoriesMap] = React.useState<
-    Record<string, string>
-  >({});
-  const [subCategoriesMap, setSubCategoriesMap] = React.useState<
-    Record<string, string>
-  >({});
+  const [categoriesMap, setCategoriesMap] = React.useState<Record<string, string>>({});
+  const [subCategoriesMap, setSubCategoriesMap] = React.useState<Record<string, string[]>>({}); // Change to array of strings
   const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
-  const [productToUpdate, setProductToUpdate] = React.useState<IProduct | null>(
-    null
-  );
+  const [productToUpdate, setProductToUpdate] = React.useState<IProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(
-    null
-  );
+  const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
-  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
-    null
-  );
+  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(null);
 
   // Open and close create modal
   const openCreateModal = () => {
@@ -99,15 +89,20 @@ const ProductPage: React.FC = () => {
   const fetchSubCategories = async () => {
     try {
       const subCategories = await getAllSubCategories();
-      const map: Record<string, string> = {};
+      const map: Record<string, string[]> = {}; // Use an array of strings
       subCategories.forEach((subcategory: ISubCategory) => {
-        map[subcategory._id] = subcategory.name;
+        // Add subcategories to their respective category
+        if (!map[subcategory.category]) {
+          map[subcategory.category] = [];
+        }
+        map[subcategory.category].push(subcategory.name);
       });
       setSubCategoriesMap(map);
     } catch (error) {
       console.error("خطا در دریافت زیر دسته‌بندی‌ها:", error);
     }
   };
+
 
   // create product
   const createProduct = async (formData: FormData) => {
