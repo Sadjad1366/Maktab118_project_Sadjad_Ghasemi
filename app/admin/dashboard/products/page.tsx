@@ -19,14 +19,27 @@ const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
-  const [categoriesMap, setCategoriesMap] = React.useState<Record<string, string>>({});
-  const [subCategoriesMap, setSubCategoriesMap] = React.useState<Record<string, string[]>>({}); // Change to array of strings
+  const [categoriesMap, setCategoriesMap] = React.useState<
+    Record<string, string>
+  >({});
+  const [subCategoriesMap, setSubCategoriesMap] = React.useState<
+    Record<string, string[]>
+  >({}); // Change to array of strings for handling subcategory in Modalas
+  const [subCatMap, setSubCatMap] = React.useState<
+  Record<string, string>
+>({});
   const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
-  const [productToUpdate, setProductToUpdate] = React.useState<IProduct | null>(null);
+  const [productToUpdate, setProductToUpdate] = React.useState<IProduct | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(null);
+  const [productToDelete, setProductToDelete] = React.useState<IProduct | null>(
+    null
+  );
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
-  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(null);
+  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
+    null
+  );
 
   // Open and close create modal
   const openCreateModal = () => {
@@ -89,20 +102,24 @@ const ProductPage: React.FC = () => {
   const fetchSubCategories = async () => {
     try {
       const subCategories = await getAllSubCategories();
-      const map: Record<string, string[]> = {}; // Use an array of strings
+      const map: Record<string, string[]> = {}; // Map category ID -> subcategory names
+      const map2: Record<string, string> = {}; // Map2 category ID -> subcategory name
+
       subCategories.forEach((subcategory: ISubCategory) => {
         // Add subcategories to their respective category
         if (!map[subcategory.category]) {
           map[subcategory.category] = [];
         }
         map[subcategory.category].push(subcategory.name);
+        map2[subcategory._id] = subcategory.name;
       });
-      setSubCategoriesMap(map);
+
+      setSubCategoriesMap(map); // Store the map in state
+      setSubCatMap(map2);
     } catch (error) {
       console.error("خطا در دریافت زیر دسته‌بندی‌ها:", error);
     }
   };
-
 
   // create product
   const createProduct = async (formData: FormData) => {
@@ -152,12 +169,10 @@ const ProductPage: React.FC = () => {
     }
   };
 
-
   // Pagination handling
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
   React.useEffect(() => {
     fetchProducts(currentPage);
     fetchCategories();
@@ -223,8 +238,9 @@ const ProductPage: React.FC = () => {
                 <td className="px-2 py-4">{product.name}</td>
                 <td className="px-2 py-4">{categoriesMap[product.category]}</td>
                 <td className="px-2 py-4">
-                  {subCategoriesMap[product.subcategory]}
+                  {subCatMap[product.subcategory]}
                 </td>
+
                 <td className="px-2 py-4">
                   {Number(product.price).toLocaleString()} تومان
                 </td>
