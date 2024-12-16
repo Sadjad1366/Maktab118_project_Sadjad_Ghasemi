@@ -1,16 +1,29 @@
 "use client";
+
 import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux//slices/basketSlice";
 
 interface ProductCardProps {
   product: IProduct;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const dispatch = useDispatch();
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent the Link navigation
-    console.log(`Added ${product.name} to cart!`);
+    dispatch(
+      addToCart({
+        id: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: 1, // Default to adding 1 item
+        image: product.images[0],
+      })
+    );
   };
 
   const isOutOfStock = product.quantity === 0;
@@ -31,35 +44,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             alt={product.name}
           />
         </Link>
-        {/* {product.discount && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            {product.discount}% تخفیف
-          </div>
-        )} */}
       </div>
 
       {/* Product Details */}
       <div className="p-4">
-        {/* Product Name */}
         <h3 className="text-lg font-semibold mb-2 text-gray-800 truncate">
           {product.name}
         </h3>
-
-        {/* Product Description */}
         <p className="text-sm text-gray-600 truncate mb-2">
           {product.description || "No description available"}
         </p>
-
-        {/* Rating */}
-        {product.rating && (
-          <div className="flex items-center mb-2">
-            <span className="ml-2 text-gray-600 text-xs">
-              ({product.rating.count} نظر)
-            </span>
-          </div>
-        )}
-
-        {/* Product Price and Stock Status */}
         <div className="flex justify-between items-center mt-2">
           <span className="text-lg font-bold text-indigo-600">
             {Number(product.price).toLocaleString()} تومان
@@ -70,8 +64,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <span className="text-green-500 text-sm font-semibold">موجود</span>
           )}
         </div>
-
-        {/* Add to Cart Button */}
         <button
           className={className(
             "mt-4 w-full px-4 py-2 rounded-lg text-white shadow",
@@ -80,7 +72,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               : "bg-indigo-600 hover:bg-indigo-700 transition duration-300"
           )}
           onClick={handleAddToCart}
-          disabled={isOutOfStock} // Disables the button if out of stock
+          disabled={isOutOfStock}
         >
           افزودن به سبد خرید
         </button>

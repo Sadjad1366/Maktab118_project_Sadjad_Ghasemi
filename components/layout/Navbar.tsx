@@ -5,6 +5,8 @@ import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 import { GrLogin } from "react-icons/gr";
 import { FiMenu, FiX } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +14,7 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const items = useSelector((state: RootState) => state.basket.items);
 
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10">
@@ -95,10 +98,10 @@ const Navbar: React.FC = () => {
               "bg-gray-400 hover:bg-gray-500 text-white",
               "rounded-lg px-5 py-2 transition duration-300 shadow-md"
             )}
-            href="/carts"
+            href="/cart"
           >
             <IoMdCart className="text-lg" />
-            <span className="text-md size-7">(0)</span>
+            <span className="text-md size-7">({items.length})</span>
           </Link>
 
 
@@ -160,13 +163,14 @@ const Navbar: React.FC = () => {
 
             <Link
               className={className(
-                "flex justify-center gap-x-2",
+                "flex justify-center items-center gap-x-2",
                 "bg-gray-400 hover:bg-gray-500 text-white",
-                "rounded-lg px-5 py-2 transition duration-300 shadow-md"
+                "rounded-lg px-2 py-2 transition duration-300 shadow-md"
               )}
-              href="/carts"
+              href="/cart"
             >
               <span className="text-md md:text-3xl">سبد خرید</span>
+              {/* <span className="text-xl">({items.length})</span> */}
             </Link>
           </div>
         </div>
