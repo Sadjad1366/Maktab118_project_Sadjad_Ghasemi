@@ -23,8 +23,10 @@ const ProductPage: React.FC = () => {
     Record<string, string>
   >({});
   const [subCategoriesMap, setSubCategoriesMap] = React.useState<
-    Record<string, string[]>
-  >({}); // Change to array of strings for handling subcategory in Modalas
+  Record<string, { _id: string; name: string }[]>
+>({});
+
+
   const [subCatMap, setSubCatMap] = React.useState<
   Record<string, string>
 >({});
@@ -102,24 +104,31 @@ const ProductPage: React.FC = () => {
   const fetchSubCategories = async () => {
     try {
       const subCategories = await getAllSubCategories();
-      const map: Record<string, string[]> = {}; // Map category ID -> subcategory names
-      const map2: Record<string, string> = {}; // Map2 category ID -> subcategory name
+
+      const map: Record<string, { _id: string; name: string }[]> = {};
+      const flatMap: Record<string, string> = {}; // For ID -> Name mapping
 
       subCategories.forEach((subcategory: ISubCategory) => {
-        // Add subcategories to their respective category
+        // Populate `subCategoriesMap` for category-to-subcategories
         if (!map[subcategory.category]) {
           map[subcategory.category] = [];
         }
-        map[subcategory.category].push(subcategory.name);
-        map2[subcategory._id] = subcategory.name;
+        map[subcategory.category].push({
+          _id: subcategory._id,
+          name: subcategory.name,
+        });
+
+        // Populate `subCatMap` for ID-to-name mapping
+        flatMap[subcategory._id] = subcategory.name;
       });
 
-      setSubCategoriesMap(map); // Store the map in state
-      setSubCatMap(map2);
+      setSubCategoriesMap(map);
+      setSubCatMap(flatMap); // Ensure this is populated
     } catch (error) {
-      console.error("خطا در دریافت زیر دسته‌بندی‌ها:", error);
+      console.error("Error fetching subcategories:", error);
     }
   };
+
 
   // create product
   const createProduct = async (formData: FormData) => {

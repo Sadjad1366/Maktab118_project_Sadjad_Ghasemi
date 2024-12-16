@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
 
@@ -6,9 +7,9 @@ interface IUpdateModal {
   isOpen: boolean;
   product: IProduct | null;
   categories: Record<string, string>;
-  subcategories: Record<string, string[]>;
+  subcategories: Record<string, { _id: string; name: string }[]>;
   onClose: () => void;
-  onUpdate: (id: string, updatedProduct: FormData) => void; // Expecting FormData for file upload
+  onUpdate: (id: string, updatedProduct: FormData) => void; // Accepting FormData for file uploads
 }
 
 const UpdateModal: React.FC<IUpdateModal> = ({
@@ -28,23 +29,24 @@ const UpdateModal: React.FC<IUpdateModal> = ({
     brand: "",
     description: "",
   });
-  const [imageFiles, setImageFiles] = React.useState<File[]>([]); // Store multiple files
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Store multiple previews
-const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
-    []
-  );
 
- useEffect(() => {
+  const [imageFiles, setImageFiles] = useState<File[]>([]); // Handle image files
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Image previews
+  const [filteredSubcategories, setFilteredSubcategories] = useState<
+    { _id: string; name: string }[]
+  >([]);
+
+  // Filter subcategories based on selected category
+  useEffect(() => {
     if (formData.category) {
-      // Filter subcategories based on the selected category
       setFilteredSubcategories(subcategories[formData.category] || []);
     } else {
       setFilteredSubcategories([]);
     }
   }, [formData.category, subcategories]);
 
+  // Populate formData and previews when modal opens
   useEffect(() => {
-    // Populate formData and set the preview when the modal opens
     if (product) {
       setFormData({
         name: product.name || "",
@@ -56,14 +58,12 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
         description: product.description || "",
       });
 
-      // Set the current images as the preview
-      if (product.images?.length) {
-        setImagePreviews(
-          product.images.map(
-            (img) => `http://localhost:8000/images/products/images/${img}` // Adjust URL based on your backend
-          )
-        );
-      }
+      // Populate image previews
+      setImagePreviews(
+        product.images?.map(
+          (img) => `http://localhost:8000/images/products/images/${img}`
+        ) || []
+      );
     }
   }, [product]);
 
@@ -78,17 +78,17 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const files = Array.from(e.target.files); // Convert FileList to Array
-      const filePreviews = files.map((file) => URL.createObjectURL(file));
+      const files = Array.from(e.target.files);
+      const newPreviews = files.map((file) => URL.createObjectURL(file));
 
-      setImageFiles((prev) => [...prev, ...files]); // Add new files to the state
-      setImagePreviews((prev) => [...prev, ...filePreviews]); // Add new previews
+      setImageFiles((prev) => [...prev, ...files]);
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index)); // Remove the file
-    setImagePreviews((prev) => prev.filter((_, i) => i !== index)); // Remove the preview
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = () => {
@@ -103,17 +103,17 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
     form.append("price", formData.price.toString());
     form.append("description", formData.description);
 
-    // Append all image files
+    // Append image files
     imageFiles.forEach((file) => form.append("images", file));
 
-    onUpdate(product._id, form); // Pass id and formData
+    onUpdate(product._id, form);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-start items-start bg-black bg-opacity-50 z-50 p-6">
-      <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-sm mx-auto mt-1">
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
+      <div className="bg-slate-100 p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
           ویرایش محصول
         </h2>
@@ -133,7 +133,7 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
           </div>
           {/* Category and Subcategory */}
           <div className="flex gap-2">
-            <div className="w-full">
+            <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
                 دسته‌بندی
               </label>
@@ -143,6 +143,9 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                 onChange={handleChange}
                 className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               >
+                <option value="" disabled>
+                  انتخاب کنید
+                </option>
                 {Object.entries(categories).map(([id, name]) => (
                   <option key={id} value={id}>
                     {name}
@@ -150,7 +153,7 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                 ))}
               </select>
             </div>
-            <div className="w-full">
+            <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
                 زیر دسته‌بندی
               </label>
@@ -163,9 +166,9 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                 <option value="" disabled>
                   انتخاب کنید
                 </option>
-                {filteredSubcategories.map((subcategory, index) => (
-                  <option key={index} value={subcategory}>
-                    {subcategory}
+                {filteredSubcategories.map((subcategory) => (
+                  <option key={subcategory._id} value={subcategory._id}>
+                    {subcategory.name}
                   </option>
                 ))}
               </select>
@@ -186,7 +189,7 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
           </div>
           {/* Price and Quantity */}
           <div className="flex gap-2">
-            <div className="w-full">
+            <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
                 قیمت
               </label>
@@ -198,7 +201,7 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                 className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               />
             </div>
-            <div className="w-full">
+            <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
                 تعداد
               </label>
@@ -207,7 +210,7 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                 name="quantity"
                 value={formData.quantity}
                 onChange={handleChange}
-                className="w-full border-gray-300 rounded-md shadow-sm p-2"
+                className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
               />
             </div>
           </div>
@@ -220,8 +223,8 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
               name="description"
               value={formData.description}
               onChange={handleChange}
-              rows={2}
-              className="w-full border-gray-300 rounded-md shadow-sm p-2"
+              rows={3}
+              className="w-full border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded-md shadow-sm p-2"
             />
           </div>
           {/* Image Upload */}
@@ -230,7 +233,6 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
               تصاویر
             </label>
             <div className="flex flex-wrap gap-3 mt-2">
-              {/* Existing Previews */}
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative">
                   <img
@@ -247,11 +249,8 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
                   </button>
                 </div>
               ))}
-              {/* File Upload */}
-              <label
-                htmlFor="imageUpload"
-                className="bg-blue-500 text-white rounded-md px-3 py-2 cursor-pointer flex items-center gap-2"
-              >                <FiUpload className="mr-2" />
+              <label className="bg-blue-500 text-white rounded-md px-3 py-2 cursor-pointer flex items-center gap-2">
+                <FiUpload />
                 انتخاب تصاویر
                 <input
                   type="file"
@@ -268,13 +267,13 @@ const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
         <div className="mt-4 flex justify-center gap-4">
           <button
             onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
+            className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
           >
             لغو
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
           >
             ذخیره
           </button>

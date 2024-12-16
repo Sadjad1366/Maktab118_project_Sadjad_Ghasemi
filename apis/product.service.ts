@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 
 //============================= GET PRODUCTS ============================
 type getAllProductReqType = (
-  page: number,
+  page?: number,
   limit?: number,
 ) => Promise<IGlobalRes<{products: IProduct[]
 }>>;

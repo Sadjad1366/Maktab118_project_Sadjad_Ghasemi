@@ -5,10 +5,11 @@ interface ICreateModal {
   isOpen: boolean;
   product: IProduct | null;
   categories: Record<string, string>;
-  subcategories: Record<string, string[]>;
+  subcategories: Record<string, { _id: string; name: string }[]>; // Updated type
   onClose: () => void;
   onCreate: (createdProduct: FormData) => void;
 }
+
 
 const CreateModal: React.FC<ICreateModal> = ({
   isOpen,
@@ -30,18 +31,18 @@ const CreateModal: React.FC<ICreateModal> = ({
   });
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [filteredSubcategories, setFilteredSubcategories] = useState<string[]>(
-    []
-  );
+  const [filteredSubcategories, setFilteredSubcategories] = React.useState<
+  { _id: string; name: string }[]
+>([]);
+useEffect(() => {
+  if (formData.category) {
+    const subcategoryObjects = subcategories[formData.category] || [];
+    setFilteredSubcategories(subcategoryObjects);
+  } else {
+    setFilteredSubcategories([]);
+  }
+}, [formData.category, subcategories]);
 
-  useEffect(() => {
-    if (formData.category) {
-      // Filter subcategories based on the selected category
-      setFilteredSubcategories(subcategories[formData.category] || []);
-    } else {
-      setFilteredSubcategories([]);
-    }
-  }, [formData.category, subcategories]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -49,7 +50,11 @@ const CreateModal: React.FC<ICreateModal> = ({
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,10 +77,11 @@ const CreateModal: React.FC<ICreateModal> = ({
   };
 
   const handleSubmit = () => {
+    console.log("Form Data:", formData);
     const form = new FormData();
     form.append("name", formData.name);
     form.append("category", formData.category);
-    form.append("subcategory", formData.subcategory);
+    form.append("subcategory", formData.subcategory); // Should be `_id`
     form.append("brand", formData.brand);
     form.append("quantity", formData.quantity.toString());
     form.append("price", formData.price.toString());
@@ -88,8 +94,8 @@ const CreateModal: React.FC<ICreateModal> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-start items-start bg-black bg-opacity-50 z-50 p-6">
-      <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-sm mx-auto mt-1">
+    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
+      <div className="bg-slate-100 p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
           ایجاد محصول
         </h2>
@@ -142,9 +148,9 @@ const CreateModal: React.FC<ICreateModal> = ({
                 <option value="" disabled>
                   انتخاب کنید
                 </option>
-                {filteredSubcategories.map((subcategory, index) => (
-                  <option key={index} value={subcategory}>
-                    {subcategory}
+                {filteredSubcategories.map((subcategory) => (
+                  <option key={subcategory._id} value={subcategory._id}>
+                    {subcategory.name}
                   </option>
                 ))}
               </select>
