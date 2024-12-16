@@ -9,6 +9,7 @@ export default function ProductDetailsPage() {
     IProductById["data"]["product"] | null
   >(null);
   const [quantity, setQuantity] = useState(0); // Track the selected quantity
+  const [activeImage, setActiveImage] = useState<string | undefined>(undefined); // Active main image
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : "";
 
@@ -20,6 +21,9 @@ export default function ProductDetailsPage() {
         const response = await getProductById(id);
         if (response?.data?.product) {
           setProduct(response.data.product);
+          setActiveImage(
+            `http://localhost:8000/images/products/images/${response.data.product.images[0]}`
+          ); // Set the first image as the default active image
         } else {
           console.error("Product data is missing in response:", response);
         }
@@ -46,6 +50,10 @@ export default function ProductDetailsPage() {
     }
   };
 
+  const handleThumbnailClick = (imageUrl: string) => {
+    setActiveImage(imageUrl);
+  };
+
   if (!product) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -59,20 +67,32 @@ export default function ProductDetailsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Images */}
         <div className="relative">
+          {/* Main Product Image */}
           <img
             className="w-full rounded-lg shadow-md"
-            src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+            src={activeImage ?? ""}
             alt={product.name}
           />
-          {/* Thumbnail Carousel (if more images are available) */}
 
-          <div className="flex mt-4 space-x-2 overflow-x-scroll">
-            <img
-              className={className("w-16 h-16 object-cover rounded-lg cursor-pointer",
-                "border border-gray-300 hover:border-indigo-600 transition")}
-              src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-              alt={product.name}
-            />
+          {/* Thumbnail Carousel */}
+          <div className="flex mt-4 space-x-2 overflow-x-auto">
+            {product.images?.map((image, index) => {
+              const imageUrl = `http://localhost:8000/images/products/images/${image}`;
+              return (
+                <img
+                  key={index}
+                  className={className(
+                    "w-16 h-16 object-cover rounded-lg cursor-pointer border",
+                    activeImage === imageUrl
+                      ? "border-indigo-600"
+                      : "border-gray-300 hover:border-indigo-600"
+                  )}
+                  src={imageUrl}
+                  alt={`Thumbnail ${index}`}
+                  onClick={() => handleThumbnailClick(imageUrl)}
+                />
+              );
+            })}
           </div>
         </div>
 
@@ -82,11 +102,7 @@ export default function ProductDetailsPage() {
             {product.name}
           </h1>
           <p className="text-gray-600 text-lg mb-4">
-            {product.description}ساعت‌های غواصی Islander از برندهای محبوب و
-            باکیفیت در دنیای ساعت‌های غواصی هستند که به دلیل طراحی خاص، مقاومت
-            بالا، و عملکرد استثنایی‌شان شناخته می‌شوند. این ساعت‌ها معمولاً برای
-            علاقه‌مندان به غواصی و کسانی که به ساعت‌های اسپرت و مقاوم علاقه
-            دارند، مناسب هستند.
+            {product.description}
           </p>
 
           {/* Ratings */}
@@ -121,8 +137,10 @@ export default function ProductDetailsPage() {
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className={className("w-full bg-indigo-600 text-white px-6 py-3",
-              "rounded-lg hover:bg-indigo-700 transition duration-300 shadow")}
+            className={className(
+              "w-full bg-indigo-600 text-white px-6 py-3",
+              "rounded-lg hover:bg-indigo-700 transition duration-300 shadow"
+            )}
           >
             افزودن به سبد خرید
           </button>

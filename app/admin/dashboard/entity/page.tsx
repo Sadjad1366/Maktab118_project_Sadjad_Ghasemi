@@ -13,13 +13,22 @@ export default function EntityPage() {
   >({});
   const perPage = 6;
 
+  const isSaveDisabled = React.useMemo(() => {
+    return !Object.entries(updates).some(([id, update]) => {
+      const product = products.find((p) => p._id === id);
+      return (
+        product &&
+        (update.price !== product.price || update.quantity !== product.quantity)
+      );
+    });
+  }, [updates, products]);
+
   const fetchProducts = async (currentPage: number) => {
     try {
       const response = await getAllProductsReq(currentPage, perPage);
       setProducts(response.data.products);
       setTotalPages(response.total_pages);
 
-      // Initialize updates with the fetched product data
       setUpdates(
         response.data.products.reduce(
           (acc: Record<string, { price: number; quantity: number }>, product: IProduct) => ({
@@ -35,6 +44,13 @@ export default function EntityPage() {
   };
 
   const handlePageChange = (pageNumber: number) => {
+    // Check for unsaved changes
+    if (!isSaveDisabled) {
+      toast.error("ابتدا تغییرات را ذخیره کنید");
+      return;
+    }
+
+    // Allow page change if no unsaved changes
     setCurrentPage(pageNumber);
   };
 
@@ -49,8 +65,7 @@ export default function EntityPage() {
         ...prev[id],
         [field]: value,
       },
-    }));  console.log(updates);
-
+    }));
   };
 
   const handleSave = async () => {
@@ -92,7 +107,11 @@ export default function EntityPage() {
         </h2>
         <button
           onClick={handleSave}
-          className="bg-gray-600 text-white px-4 py-2 rounded-lg"
+          disabled={isSaveDisabled}
+          className={className(
+            "bg-gray-600 text-white px-4 py-2 rounded-lg",
+            isSaveDisabled ? "opacity-50 cursor-not-allowed" : ""
+          )}
         >
           ذخیره
         </button>
@@ -125,53 +144,52 @@ export default function EntityPage() {
           </tr>
         </thead>
         <tbody>
-  {products.map((product) => (
-    <tr
-      key={product._id}
-      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-    >
-      <td>
-        <img
-          src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-          alt={product.name}
-          width="50px"
-        />
-      </td>
-      <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-        {product.name}
-      </td>
-      <td className="px-2 py-4">
-        <input
-          type="number"
-          value={
-            updates[product._id]?.price !== undefined
-              ? updates[product._id]?.price
-              : product.price
-          }
-          onChange={(e) =>
-            handleInputChange(product._id, "price", Number(e.target.value))
-          }
-          className="w-full border-gray-300 rounded-md shadow-sm p-1"
-        />
-      </td>
-      <td className="px-2 py-4">
-        <input
-          type="number"
-          value={
-            updates[product._id]?.quantity !== undefined
-              ? updates[product._id]?.quantity
-              : product.quantity
-          }
-          onChange={(e) =>
-            handleInputChange(product._id, "quantity", Number(e.target.value))
-          }
-          className="w-full border-gray-300 rounded-md shadow-sm p-1"
-        />
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+          {products.map((product) => (
+            <tr
+              key={product._id}
+              className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <td>
+                <img
+                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                  alt={product.name}
+                  width="50px"
+                />
+              </td>
+              <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {product.name}
+              </td>
+              <td className="px-2 py-4">
+                <input
+                  type="number"
+                  value={
+                    updates[product._id]?.price !== undefined
+                      ? updates[product._id]?.price
+                      : product.price
+                  }
+                  onChange={(e) =>
+                    handleInputChange(product._id, "price", Number(e.target.value))
+                  }
+                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
+                />
+              </td>
+              <td className="px-2 py-4">
+                <input
+                  type="number"
+                  value={
+                    updates[product._id]?.quantity !== undefined
+                      ? updates[product._id]?.quantity
+                      : product.quantity
+                  }
+                  onChange={(e) =>
+                    handleInputChange(product._id, "quantity", Number(e.target.value))
+                  }
+                  className="w-full border-gray-300 rounded-md shadow-sm p-1"
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className="flex justify-between items-center gap-x-5 pt-2">
         <button

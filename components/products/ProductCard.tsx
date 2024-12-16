@@ -5,7 +5,6 @@ import React from "react";
 
 interface ProductCardProps {
   product: IProduct;
-
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
@@ -54,14 +53,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Rating */}
         {product.rating && (
           <div className="flex items-center mb-2">
-            <span className="ml-2 text-gray-600 text-xs">({product.rating.count} نظر)</span>
+            <span className="ml-2 text-gray-600 text-xs">
+              ({product.rating.count} نظر)
+            </span>
           </div>
         )}
 
         {/* Product Price and Stock Status */}
         <div className="flex justify-between items-center mt-2">
           <span className="text-lg font-bold text-indigo-600">
-          {Number(product.price).toLocaleString()} تومان
+            {Number(product.price).toLocaleString()} تومان
           </span>
           {isOutOfStock ? (
             <span className="text-red-500 text-sm font-semibold">ناموجود</span>
@@ -71,17 +72,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Add to Cart Button */}
-        {!isOutOfStock && (
-          <button
-            className={className(
-              "mt-4 w-full bg-indigo-600 text-white px-4 py-2 rounded-lg",
-              "hover:bg-indigo-700 transition duration-300 shadow"
-            )}
-            onClick={handleAddToCart}
-          >
-            افزودن به سبد خرید
-          </button>
-        )}
+        <button
+          className={className(
+            "mt-4 w-full px-4 py-2 rounded-lg text-white shadow",
+            isOutOfStock
+              ? "bg-indigo-400 cursor-not-allowed"
+              : "bg-indigo-600 hover:bg-indigo-700 transition duration-300"
+          )}
+          onClick={handleAddToCart}
+          disabled={isOutOfStock} // Disables the button if out of stock
+        >
+          افزودن به سبد خرید
+        </button>
       </div>
     </div>
   );

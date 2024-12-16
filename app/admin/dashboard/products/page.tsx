@@ -23,8 +23,13 @@ const ProductPage: React.FC = () => {
     Record<string, string>
   >({});
   const [subCategoriesMap, setSubCategoriesMap] = React.useState<
-    Record<string, string>
-  >({});
+  Record<string, { _id: string; name: string }[]>
+>({});
+
+
+  const [subCatMap, setSubCatMap] = React.useState<
+  Record<string, string>
+>({});
   const [isUpdateModalOpen, setIsUpdateModalOpen] = React.useState(false);
   const [productToUpdate, setProductToUpdate] = React.useState<IProduct | null>(
     null
@@ -99,15 +104,31 @@ const ProductPage: React.FC = () => {
   const fetchSubCategories = async () => {
     try {
       const subCategories = await getAllSubCategories();
-      const map: Record<string, string> = {};
+
+      const map: Record<string, { _id: string; name: string }[]> = {};
+      const flatMap: Record<string, string> = {}; // For ID -> Name mapping
+
       subCategories.forEach((subcategory: ISubCategory) => {
-        map[subcategory._id] = subcategory.name;
+        // Populate `subCategoriesMap` for category-to-subcategories
+        if (!map[subcategory.category]) {
+          map[subcategory.category] = [];
+        }
+        map[subcategory.category].push({
+          _id: subcategory._id,
+          name: subcategory.name,
+        });
+
+        // Populate `subCatMap` for ID-to-name mapping
+        flatMap[subcategory._id] = subcategory.name;
       });
+
       setSubCategoriesMap(map);
+      setSubCatMap(flatMap); // Ensure this is populated
     } catch (error) {
-      console.error("خطا در دریافت زیر دسته‌بندی‌ها:", error);
+      console.error("Error fetching subcategories:", error);
     }
   };
+
 
   // create product
   const createProduct = async (formData: FormData) => {
@@ -139,7 +160,17 @@ const ProductPage: React.FC = () => {
     try {
       await deleteProductById(id);
       toast.success("حذف با موفقیت انجام شد");
-      setProducts((prev) => prev.filter((product) => product._id !== id));
+
+      // Temporarily filter the product list to simulate deletion
+      const updatedProducts = products.filter((product) => product._id !== id);
+
+      // If the page becomes empty and it's not the first page, go to the previous page
+      if (updatedProducts.length === 0 && currentPage > 1) {
+        setCurrentPage((prev) => prev - 1); // Navigate to the previous page
+      } else {
+        setProducts(updatedProducts); // Update product list without navigating
+      }
+
       fetchProducts(currentPage); // Refresh product list
       closeDeleteModal(); // Close the modal
     } catch (error: any) {
@@ -151,7 +182,6 @@ const ProductPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
   React.useEffect(() => {
     fetchProducts(currentPage);
     fetchCategories();
@@ -217,8 +247,9 @@ const ProductPage: React.FC = () => {
                 <td className="px-2 py-4">{product.name}</td>
                 <td className="px-2 py-4">{categoriesMap[product.category]}</td>
                 <td className="px-2 py-4">
-                  {subCategoriesMap[product.subcategory]}
+                  {subCatMap[product.subcategory]}
                 </td>
+
                 <td className="px-2 py-4">
                   {Number(product.price).toLocaleString()} تومان
                 </td>
