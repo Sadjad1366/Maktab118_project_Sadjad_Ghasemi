@@ -1,5 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
+import { z } from "zod";
+
+const addProductValidationSchema = z.object({
+  category: z.string().trim(),
+  subcategory: z.string().trim(),
+  name: z.string().trim(),
+  price: z.string(),
+  quantity: z.string(),
+  brand: z.string().trim(),
+  description: z.string().trim(),
+  images: z.array(
+    z
+      .instanceof(File) // Ensure each image is an instance of File
+      .refine((file) => file.size > 0, "فیلد عکس نمیتواند خالی باشد") // Custom validation for file size
+  ).min(1, "حداقل یک عکس لازم است"), // At least one image is required
+});
+
 
 interface ICreateModal {
   isOpen: boolean;

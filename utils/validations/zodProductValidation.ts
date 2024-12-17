@@ -4,8 +4,8 @@ export const addProductValidationSchema = z.object({
   category: z.string().trim(),
   subcategory: z.string().trim(),
   name: z.string().trim(),
-  price: z.number(),
-  quantity: z.number(),
+  price: z.string(),
+  quantity: z.string(),
   brand: z.string().trim(),
   description: z.string().trim(),
   images: z.array(
@@ -20,8 +20,8 @@ export const updateProductValidationSchema = z.object({
       category: z.string().trim(),
       subcategory: z.string().trim(),
       name: z.string().trim(),
-      price: z.number(),
-      quantity: z.number(),
+      price: z.string(),
+      quantity: z.string(),
       brand: z.string().trim(),
       description: z.string().trim(),
       images: z.array(
