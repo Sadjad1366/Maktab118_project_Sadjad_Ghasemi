@@ -15,6 +15,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent the Link navigation
+
     dispatch(
       addToCart({
         id: product._id,
@@ -66,10 +67,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         <button
           className={className(
-            "mt-4 w-full px-4 py-2 rounded-lg text-white shadow",
+            "mt-4 w-full px-4 py-2 rounded-lg text-white shadow transform transition duration-150",
             isOutOfStock
               ? "bg-indigo-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700 transition duration-300"
+              : "bg-indigo-600 hover:bg-indigo-700 active:translate-y-1 active:scale-95"
           )}
           onClick={handleAddToCart}
           disabled={isOutOfStock}
