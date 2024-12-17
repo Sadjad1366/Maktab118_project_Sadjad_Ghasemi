@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 export const addProductValidationSchema = z.object({
-  category: z.string().trim(),
-  subcategory: z.string().trim(),
-  name: z.string().trim(),
-  price: z.number(),
-  quantity: z.number(),
-  brand: z.string().trim(),
-  description: z.string().trim(),
+  category: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+  subcategory: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+  name: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+  price: z.string().min(3,"حداقل سه کاراکتر وارد کنید"),
+  quantity: z.string().min(3,"حداقل سه کاراکتر وارد کنید"),
+  brand: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+  description: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
   images: z.array(
     z
       .instanceof(File) // Ensure each image is an instance of File
@@ -17,13 +17,13 @@ export const addProductValidationSchema = z.object({
 
 
 export const updateProductValidationSchema = z.object({
-      category: z.string().trim(),
-      subcategory: z.string().trim(),
-      name: z.string().trim(),
-      price: z.number(),
-      quantity: z.number(),
-      brand: z.string().trim(),
-      description: z.string().trim(),
+      category: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+      subcategory: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+      name: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+      price: z.string().min(3,"حداقل سه کاراکتر وارد کنید"),
+      quantity: z.string().min(3,"حداقل سه کاراکتر وارد کنید"),
+      brand: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
+      description: z.string().min(3,"حداقل سه کاراکتر وارد کنید").trim(),
       images: z.array(
         z
           .instanceof(File) // Ensure each image is an instance of File
