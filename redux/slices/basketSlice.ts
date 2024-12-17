@@ -12,15 +12,26 @@ interface BasketState {
   items: CartItem[];
 }
 
-const initialState: BasketState = {
-  items: [],
+// Function to load state from localStorage
+const loadState = (): BasketState => {
+  if (typeof window !== "undefined") {
+    const savedState = localStorage.getItem("basket");
+    return savedState ? JSON.parse(savedState) : { items: [] };
+  }
+  return { items: [] }; // Default state if localStorage is unavailable
 };
+
+// Function to save state to localStorage
+const saveState = (state: BasketState) => {
+  localStorage.setItem("basket", JSON.stringify(state));
+};
+
+const initialState: BasketState = loadState();
 
 const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
-    // Add item to cart
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const existingItem = state.items.find(
         (item) => item.id === action.payload.id
@@ -30,23 +41,23 @@ const basketSlice = createSlice({
       } else {
         state.items.push(action.payload);
       }
+      saveState(state); // Save updated state to localStorage
     },
-    // Remove item completely from cart
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
+      saveState(state);
     },
-    // Clear all items
     clearCart: (state) => {
       state.items = [];
+      saveState(state);
     },
-    // Increment quantity
     incrementQuantity: (state, action: PayloadAction<string>) => {
       const item = state.items.find((item) => item.id === action.payload);
       if (item) {
         item.quantity += 1;
       }
+      saveState(state);
     },
-    // Decrement quantity (remove if quantity is 1)
     decrementQuantity: (state, action: PayloadAction<string>) => {
       const item = state.items.find((item) => item.id === action.payload);
       if (item) {
@@ -56,6 +67,7 @@ const basketSlice = createSlice({
           state.items = state.items.filter((item) => item.id !== action.payload);
         }
       }
+      saveState(state);
     },
   },
 });

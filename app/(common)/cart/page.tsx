@@ -8,6 +8,7 @@ import { IoIosAdd, IoIosRemove, IoIosTrash } from "react-icons/io";
 const Basket: React.FC = () => {
   const dispatch = useDispatch();
   const items = useSelector((state: RootState) => state.basket.items);
+console.log(items);
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -89,7 +90,7 @@ const Basket: React.FC = () => {
                 {totalPrice.toLocaleString()} تومان
               </p>
             </div>
-            
+
           </div>
         </div>
       )}
