@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { className } from "@/utils/classNames";
 import Link from "next/link";
@@ -10,14 +11,16 @@ import { RootState } from "@/redux/store";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Track dropdown visibility
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   const items = useSelector((state: RootState) => state.basket.items);
 
   return (
-    <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10">
+    <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative">
       <nav className="flex justify-between items-center container mx-auto px-6">
         <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
           {/* Mobile Menu Button */}
@@ -26,12 +29,18 @@ const Navbar: React.FC = () => {
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
-            {isOpen ? <FiX className="text-gray-300" size={48} /> : <FiMenu size={36} className="relative text-gray-300"/>}
+            {isOpen ? (
+              <FiX className="text-gray-300" size={48} />
+            ) : (
+              <FiMenu size={36} className="relative text-gray-300" />
+            )}
           </button>
           <div className="flex items-center gap-x-3">
-
-              <img className="w-24 h-[140px] sm:size-36" src="/images/logo/ninja.svg" />
-
+            <img
+              className="w-24 h-[140px] sm:size-36"
+              src="/images/logo/ninja.svg"
+              alt="Logo"
+            />
             <p className="hidden xl:block text-slate-100 text-2xl font-semibold tracking-wide">
               گالری ساعت نینجا
             </p>
@@ -58,12 +67,6 @@ const Navbar: React.FC = () => {
               دسته بندی
             </Link>
             <Link
-              href="/gallery"
-              className="text-slate-100 hover:underline transition duration-300 text-lg"
-            >
-              گالری
-            </Link>
-            <Link
               href="/aboutus"
               className="text-slate-100 hover:underline transition duration-300 text-lg"
             >
@@ -79,7 +82,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-4 relative">
           <Link
             className={className(
               "hidden md:flex items-center justify-center",
@@ -92,89 +95,72 @@ const Navbar: React.FC = () => {
             <p className="pb-2">ورود</p>
           </Link>
 
-          <Link
-            className={className(
-              "hidden md:flex items-center gap-x-2",
-              "bg-gray-400 hover:bg-gray-500 text-white",
-              "rounded-lg px-5 py-2 transition duration-300 shadow-md"
-            )}
-            href="/cart"
+          {/* Cart Dropdown */}
+          <div
+            className="relative flex flex-col gap-y-2"
+            onMouseEnter={() => setIsDropdownOpen(true)} // Open dropdown on hover
+            onMouseLeave={() => setIsDropdownOpen(false)} // Close dropdown when leaving the wrapper
           >
-            <IoMdCart className="text-lg" />
-            <span className="text-md size-7">({items.length})</span>
-          </Link>
-
-
-        </div>
-      </nav>
-
-      {/* Mobile Navigation Links */}
-      {isOpen && (
-        <div className="lg:hidden  bg-white shadow-lg h-screen rounded-b-lg fixed z-20 left-0 right-1">
-          <nav className="flex flex-col items-center gap-y-4 py-4">
+            {/* Cart Link */}
             <Link
-              href="/"
-              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
-              onClick={() => setIsOpen(false)}
-            >
-              صفحه اصلی
-            </Link>
-            <Link
-              href="/products"
-              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
-              onClick={() => setIsOpen(false)}
-            >
-              فروشگاه
-            </Link>
-            <Link
-              href="/category"
-              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
-              onClick={() => setIsOpen(false)}
-            >
-              دسته بندی
-            </Link>
-            <Link
-              href="/aboutus"
-              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
-              onClick={() => setIsOpen(false)}
-            >
-              درباره ما
-            </Link>
-            <Link
-              href="/contactus"
-              className="text-gray-800 md:text-3xl hover:text-indigo-600 transition duration-300"
-              onClick={() => setIsOpen(false)}
-            >
-              تماس با ما
-            </Link>
-          </nav>
-          <div className="flex flex-col gap-y-2 p-2">
-            <Link
-              className={className(
-                "flex justify-center items-center",
-                "gap-x-2 bg-gray-400 hover:bg-gray-500 text-white",
-                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
-              )}
-              href="/auth/login"
-            >
-              <GrLogin className="text-xl" />
-              <p className="pb-2 md:text-3xl">ورود</p>
-            </Link>
-
-            <Link
-              className={className(
-                "flex justify-center items-center gap-x-2",
-                "bg-gray-400 hover:bg-gray-500 text-white",
-                "rounded-lg px-2 py-2 transition duration-300 shadow-md"
-              )}
               href="/cart"
+              className={className(
+                "hidden md:flex items-center gap-x-2",
+                "bg-gray-400 hover:bg-gray-500 text-white",
+                "rounded-lg px-5 py-2 transition duration-300 shadow-md"
+              )}
             >
-              <span className="text-md md:text-3xl">سبد خرید</span>
-              {/* <span className="text-xl">({items.length})</span> */}
+              <IoMdCart className="text-lg" />
+              <span className="text-md size-7">({items.length})</span>
             </Link>
+
+            {/* Dropdown Content */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-12 w-72 bg-slate-100 shadow-lg rounded-lg z-30 overflow-hidden">
+                {items.length === 0 ? (
+                  <p className="text-center py-4 text-gray-500">
+                    سبد خرید شما خالی است
+                  </p>
+                ) : (
+                  <ul className="divide-y divide-gray-200">
+                    {items.slice(0, 5).map((item) => (
+                      <li
+                        key={item.id}
+                        className="flex items-center justify-between p-2 hover:bg-gray-100"
+                      >
+                        <div className="flex items-center gap-x-2">
+                          <img
+                            src={`http://localhost:8000/images/products/images/${item.image}`}
+                            alt={item.name}
+                            className="w-10 h-10 object-cover rounded"
+                          />
+                          <div>
+                            <p className="text-sm font-semibold text-gray-700">
+                              {item.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {(item.quantity * item.price).toLocaleString()}{" "}
+                              تومان
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                    <li className="text-center bg-gray-100 py-2">
+                      <Link
+                        href="/cart"
+                        className="text-indigo-600 hover:underline text-sm"
+                      >
+                        مشاهده سبد خرید
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </nav>
     </div>
   );
 };
