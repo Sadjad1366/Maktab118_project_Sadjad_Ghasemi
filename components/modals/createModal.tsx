@@ -239,18 +239,18 @@ const CreateModal: React.FC<ICreateModal> = ({
             {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
           </div>
           {/* Images */}
-          <div>
-            <label>تصاویر</label>
+          <div className="flex gap-x-2">
+            <label className="w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+              <FiUpload/>
+              <span>انتخاب عکس</span>
             <input
               type="file"
               accept="image/*"
               multiple
               onChange={handleFileChange}
-              className="w-full p-2 border"
+              className="hidden"
             />
-            {errors.images && (
-              <p className="text-red-500 text-sm">{errors.images}</p>
-            )}
+            </label>
             <div className="flex flex-wrap gap-2 mt-2">
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative">
@@ -268,6 +268,10 @@ const CreateModal: React.FC<ICreateModal> = ({
                 </div>
               ))}
             </div>
+            {errors.images && (
+              <p className="text-red-500 text-sm">{errors.images}</p>
+            )}
+
           </div>
 
           {/* Actions */}

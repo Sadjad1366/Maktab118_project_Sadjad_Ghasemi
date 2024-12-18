@@ -1,14 +1,16 @@
 "use client";
 import { getProductById } from "@/apis/product.service";
+import { addToCart } from "@/redux/slices/basketSlice";
 import { className } from "@/utils/classNames";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function ProductDetailsPage() {
   const [product, setProduct] = useState<
     IProductById["data"]["product"] | null
   >(null);
-  const [quantity, setQuantity] = useState(0); // Track the selected quantity
+  const [quantity, setQuantity] = useState(1); // Track the selected quantity
   const [activeImage, setActiveImage] = useState<string | undefined>(undefined); // Active main image
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : "";
@@ -43,11 +45,19 @@ export default function ProductDetailsPage() {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 0));
   };
 
-  const handleAddToCart = () => {
-    if (product) {
-      console.log(`Added ${quantity} of ${product.name} to the cart!`);
-      // Integrate with global cart management or API call here
-    }
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent the Link navigation
+    dispatch(
+      addToCart({
+        id: product?._id || "",
+        name: product?.name || "",
+        price: product?.price || 0,
+        quantity: quantity,   // Default to adding 1 item
+        image: product?.images[0] || "",
+      })
+    );
   };
 
   const handleThumbnailClick = (imageUrl: string) => {
@@ -139,7 +149,8 @@ export default function ProductDetailsPage() {
             onClick={handleAddToCart}
             className={className(
               "w-full bg-indigo-600 text-white px-6 py-3",
-              "rounded-lg hover:bg-indigo-700 transition duration-300 shadow"
+              "rounded-lg hover:bg-indigo-700 transition duration-300 shadow",
+              "active:translate-y-1 active:scale-95"
             )}
           >
             افزودن به سبد خرید
