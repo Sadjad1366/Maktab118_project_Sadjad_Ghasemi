@@ -13,9 +13,7 @@ export const updateProductValidationSchema = z.object({
   quantity: z.coerce.number().min(1, "تعداد باید بیشتر از صفر باشد"),
   brand: z.string().min(3, "حداقل سه کاراکتر وارد کنید").trim(),
   description: z.string().min(3, "حداقل سه کاراکتر وارد کنید").trim(),
-  images: z
-    .array(z.instanceof(File))
-    .min(1, "حداقل یک عکس لازم است"),
+  images: z.array(z.instanceof(File)).min(1, "حداقل یک عکس لازم است"),
 });
 
 interface IUpdateModal {
@@ -114,9 +112,8 @@ const UpdateModal: React.FC<IUpdateModal> = ({
     const submissionData = { ...formData, images: imageFiles };
 
     // Validate using Zod
-    const validationResult = updateProductValidationSchema.safeParse(
-      submissionData
-    );
+    const validationResult =
+      updateProductValidationSchema.safeParse(submissionData);
 
     if (!validationResult.success) {
       const newErrors: Record<string, string> = {};
@@ -227,8 +224,8 @@ const UpdateModal: React.FC<IUpdateModal> = ({
             )}
           </div>
         </div>
-   {/* Brand */}
-   <div>
+        {/* Brand */}
+        <div>
           <label>برند</label>
           <input
             name="name"
@@ -255,15 +252,18 @@ const UpdateModal: React.FC<IUpdateModal> = ({
         </div>
 
         {/* Images */}
-        <div className="mt-4">
-          <label>تصاویر</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            multiple
-            className="w-full border rounded p-2"
-          />
+        <div className="mt-4 flex gap-x-2">
+          <label className="w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+            <FiUpload />
+            <span>انتخاب عکس</span>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
           {errors.images && <p className="text-red-500">{errors.images}</p>}
           <div className="flex gap-2 mt-2">
             {imagePreviews.map((src, index) => (
@@ -281,7 +281,7 @@ const UpdateModal: React.FC<IUpdateModal> = ({
         </div>
 
         {/* Actions */}
-        <div className="mt-6 flex justify-end gap-4">
+        <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={onClose}
             className="bg-gray-500 text-white px-4 py-2 rounded"
