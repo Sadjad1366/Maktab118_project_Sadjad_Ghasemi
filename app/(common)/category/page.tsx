@@ -20,7 +20,7 @@ const categoryNames = {
 
 export default function CategoryPage() {
   const [categories, setCategories] = useState<string[]>([]); // Array of category IDs
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {

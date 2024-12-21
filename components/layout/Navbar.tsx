@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
 
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative">
-      <nav className="flex justify-between items-center container mx-auto px-6">
+      <nav className="flex justify-between items-center container px-6">
         <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
           {/* Mobile Menu Button */}
           <button
@@ -116,7 +116,7 @@ const Navbar: React.FC = () => {
 
             {/* Dropdown Content */}
             {isDropdownOpen && (
-              <div className="absolute right-0 top-12 w-72 bg-slate-100 shadow-lg rounded-lg z-30 overflow-hidden">
+              <div className="absolute -right-36 top-12 w-72 bg-slate-100 shadow-lg rounded-lg z-30 overflow-hidden">
                 {items.length === 0 ? (
                   <p className="text-center py-4 text-gray-500">
                     سبد خرید شما خالی است
@@ -161,6 +161,71 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </nav>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div
+          className={className(
+            "lg:hidden flex flex-col bg-slate-300",
+            "text-black gap-2 rounded-md p-2 h-screen absolute top-full left-0 w-full shadow-lg z-20"
+          )}
+        >
+          <Link
+            href="/"
+            className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
+          >
+            صفحه اصلی
+          </Link>
+          <Link
+            href="/products"
+            className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
+          >
+            فروشگاه
+          </Link>
+          <Link
+            href="/category"
+            className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
+          >
+            دسته بندی
+          </Link>
+          <Link
+            href="/aboutus"
+            className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
+          >
+            درباره ما
+          </Link>
+          <Link
+            href="/contactus"
+            className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
+          >
+            تماس با ما
+          </Link>
+
+          <div className="flex flex-col gap-y-3 mt-">
+            <Link
+              className={className(
+                "flex items-center justify-center gap-x-2",
+                "bg-gray-400 hover:bg-gray-500 text-white",
+                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+              )}
+              href="/auth/login"
+            >
+              <GrLogin className="text-xl" />
+              <p>ورود</p>
+            </Link>
+            <Link
+              className={className(
+                "flex items-center justify-center gap-x-2",
+                "bg-gray-400 hover:bg-gray-500 text-white",
+                "rounded-lg px-5 py-2 transition duration-300 shadow-md"
+              )}
+              href="/cart"
+            >
+              <IoMdCart className="text-lg" />
+              <span>({items.length})</span>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
