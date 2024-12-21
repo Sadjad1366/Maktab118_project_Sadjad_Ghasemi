@@ -10,7 +10,6 @@ import { AuthSchema } from "@/utils/validations/zodAuthValidation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
-import AdminGuard from "@/components/AdminGaurd";
 
 const AdminLoginPage:React.FC = () => {
   const {

@@ -1,4 +1,9 @@
-import { IAdminReq, IAdminRes } from "@/types/user.type";
+import {
+  IAdminReq,
+  IAdminRes,
+  IUserSignupReq,
+  IUserSignupRes,
+} from "@/types/user.type";
 import { client } from "./client";
 import { urls } from "./urls";
 import Cookies from "js-cookie";
@@ -9,9 +14,7 @@ export const adminLoginReq = async ({
   password,
 }: IAdminReq): Promise<IAdminRes> => {
   try {
-
     const response = await client.post(urls.auth.adminLog, {
-
       username,
       password,
     });
@@ -22,16 +25,14 @@ export const adminLoginReq = async ({
     Cookies.set("accessToken", accessToken, {
       secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
       sameSite: "Strict",
-      expires: 1 / (24), // Expires in 1 hour
+      expires: 1 / 24, // Expires in 1 hour
     });
-
 
     Cookies.set("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       expires: 1 / 12, // Expires in 2 hour
     });
-
 
     return response.data;
   } catch (error: any) {
@@ -43,11 +44,34 @@ export const adminLoginReq = async ({
     throw new Error("خطا از طرف سرور میباشد.چند دقیقه دیگر دوباره تلاش کنید");
   }
 };
-// type tokenGeneratorType = (refToken: string) => Promise<ITokenGenerator>;
-// export const tokenGenerator: tokenGeneratorType = async (refToken) => {
 
-//   const response = await client.post(urls.auth.tokenGen, {
-//     refToken,
-//   });
-//   return response.data.token.value
-// };
+type userSignupReqType = ({
+  firstname,
+  lastname,
+  username,
+  password,
+  phoneNumber,
+  address,
+}: IUserSignupReq) => Promise<IUserSignupRes>;
+export const userSignupReq: userSignupReqType = async ({
+  firstname,
+  lastname,
+  username,
+  password,
+  phoneNumber,
+  address,
+}: IUserSignupReq) => {
+  try {
+    const response = await client.post(urls.auth.signup, {
+      firstname,
+      lastname,
+      username,
+      password,
+      phoneNumber,
+      address,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
