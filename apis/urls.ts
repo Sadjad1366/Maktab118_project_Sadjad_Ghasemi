@@ -1,7 +1,8 @@
 export const urls = {
   auth: {
-    adminLog: "/auth/login",
     signup: "/auth/signup",
+    login: "/auth/login",
+
   },
   product: {
     create: "/products",

@@ -5,6 +5,8 @@ import Link from "next/link";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux//slices/basketSlice";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 interface ProductCardProps {
   product: IProduct;
@@ -12,19 +14,23 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const dispatch = useDispatch();
+  // const token = Cookies.get("accessToken");
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent the Link navigation
-
-    dispatch(
-      addToCart({
-        id: product._id,
-        name: product.name,
-        price: product.price,
-        quantity: 1, // Default to adding 1 item
-        image: product.images[0],
-      })
-    );
+    // if (token) {
+      dispatch(
+        addToCart({
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: 1, // Default to adding 1 item
+          image: product.images[0],
+        })
+      );
+    // } else {
+    //   toast.error("ابتدا وارد صفحه کاربری شوید");
+    // }
   };
 
   const isOutOfStock = product.quantity === 0;

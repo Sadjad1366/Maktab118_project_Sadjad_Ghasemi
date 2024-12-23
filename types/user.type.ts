@@ -1,9 +1,22 @@
-export interface IAdminReq {
+export interface IUser {
+  "_id": string,
+  "firstname": string,
+  "lastname": string,
+  "username": string,
+  "phoneNumber":string,
+  "address": string,
+  "role": string,
+  "createdAt": string,
+  "updatedAt": string
+}
+
+
+export interface IUserLoginReq {
   username: string;
   password: string;
 }
 
-export interface IAdminRes {
+export interface IUserLoginRes {
   status: string;
   token: {
     accessToken: string;
