@@ -13,6 +13,7 @@ export const urls = {
   },
   order: "/orders",
   user: "/users",
+  editUser: (id: string) => `/users/${id}`,
   category: {
     getCategories: "/categories",
     getProductsByCategory: "/products",
