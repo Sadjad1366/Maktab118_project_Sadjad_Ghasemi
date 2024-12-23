@@ -10,8 +10,9 @@ const AdminGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get("accessToken");
+    const role = Cookies.get('role')
 
-    if (!token) {
+    if (role !== "ADMIN") {
       router.push("/"); // Redirect to home page if no token
     } else {
       setIsAuthorized(true); // User is authorized

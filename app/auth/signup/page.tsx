@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema } from "@/utils/validations/zodAuthValidation";
 import Link from "next/link";
 import { className } from "@/utils/classNames";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const {
@@ -18,6 +19,8 @@ export default function SignupPage() {
     resolver: zodResolver(SignupSchema),
   });
   const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
+
   const submitHandler = async ({
     firstname,
     lastname,
@@ -37,6 +40,7 @@ export default function SignupPage() {
         address,
       });
       toast.success("ثبت نام با موفقیت انجام شد!");
+      router.push("/");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "خطا در ثبت نام!");
       console.error("Signup Error:", error);

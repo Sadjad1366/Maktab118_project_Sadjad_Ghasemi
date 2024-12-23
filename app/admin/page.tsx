@@ -11,6 +11,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { FaUser, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 
+
 const AdminLoginPage: React.FC = () => {
   const {
     register,

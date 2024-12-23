@@ -19,6 +19,7 @@ export default {
         'luminox-pattern': "url('/images/brandstory/luminox1440.png')",
         'ingersoll-pattern': "url('/images/brandstory/ingersoll.jpg')",
         'signup-pattern': "url('/images/brandstory/signup.webp')",
+        'checkout-pattern': "url('/images/brandstory/brandstroy.jpg')",
 
       },
       fontFamily:{

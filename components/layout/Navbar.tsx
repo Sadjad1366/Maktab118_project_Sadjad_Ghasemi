@@ -8,19 +8,28 @@ import { GrLogin } from "react-icons/gr";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Track dropdown visibility
-
+  const token = Cookies.get("accessToken");
+  const router = useRouter();
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+  const exitHandler = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    Cookies.remove("role");
+    router.push("/");
   };
 
   const items = useSelector((state: RootState) => state.basket.items);
 
   return (
-    <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative">
+    <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative mb-5">
       <nav className="flex justify-between items-center container px-6">
         <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
           {/* Mobile Menu Button */}
@@ -83,17 +92,31 @@ const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-x-4 relative">
-          <Link
-            className={className(
-              "hidden md:flex items-center justify-center",
-              "gap-x-2 bg-gray-400 hover:bg-gray-500 text-white",
-              "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
-            )}
-            href="/auth/login"
-          >
-            <GrLogin className="text-xl" />
-            <p className="pb-2">ورود</p>
-          </Link>
+          {!token ? (
+            <Link
+              className={className(
+                "hidden md:flex items-center justify-center",
+                "gap-x-2 bg-gray-400 hover:bg-gray-500 text-white",
+                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+              )}
+              href="/auth/login"
+            >
+              <GrLogin className="text-xl" />
+              <p className="pb-2">ورود</p>
+            </Link>
+          ) : (
+            <button
+              onClick={exitHandler}
+              className={className(
+                "hidden md:flex items-center justify-center",
+                "gap-x-2 bg-red-400 hover:bg-red-500 text-white",
+                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+              )}
+            >
+              <GrLogin className="text-xl" />
+              <p className="pb-2">خروج</p>
+            </button>
+          )}
 
           {/* Cart Dropdown */}
           <div
@@ -201,6 +224,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           <div className="flex flex-col gap-y-3 mt-">
+          {!token ?  (
             <Link
               className={className(
                 "flex items-center justify-center gap-x-2",
@@ -212,6 +236,19 @@ const Navbar: React.FC = () => {
               <GrLogin className="text-xl" />
               <p>ورود</p>
             </Link>
+            ) :(
+            <button
+            onClick={exitHandler}
+              className={className(
+                "flex items-center justify-center gap-x-2",
+                "bg-gray-400 hover:bg-gray-500 text-white",
+                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+              )}
+            >
+              <GrLogin className="text-xl text-red-500" />
+              <p className="text-red-500">خروج</p>
+            </button>
+            )}
             <Link
               className={className(
                 "flex items-center justify-center gap-x-2",

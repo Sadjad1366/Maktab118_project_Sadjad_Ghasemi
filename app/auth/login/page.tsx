@@ -114,7 +114,11 @@ export default function LoginPage() {
             </p>
           )}
         </div>
-
+        <div className="text-center py-2">
+          <Link className="text-blue-500 underline" href="/auth/signup">
+            ثبت نام
+          </Link>
+        </div>
         {/* Submit button */}
         <div className="flex justify-center">
           <button

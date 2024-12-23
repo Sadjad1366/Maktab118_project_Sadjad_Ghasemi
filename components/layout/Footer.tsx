@@ -4,7 +4,7 @@ import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Footer:React.FC = () => {
   return (
-    <div className="rounded-lg">
+    <div className="rounded-lg mt-6">
       <footer className="bg-gray-400 rounded-lg">
           <div className="w-full grid grid-cols-1 gap-8 px-4 py-6 lg:py-8 md:grid-cols-2">
             <div>

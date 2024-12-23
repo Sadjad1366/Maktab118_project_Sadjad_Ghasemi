@@ -9,7 +9,6 @@ import { urls } from "./urls";
 import Cookies from "js-cookie";
 import { AxiosError } from "axios";
 
-
 //======================================= adminLogin =====================================
 export const adminLoginReq = async ({
   username,
@@ -22,6 +21,8 @@ export const adminLoginReq = async ({
     });
 
     const { accessToken, refreshToken } = response.data.token;
+    const { role } = response.data.data.user;
+    // console.log(role)
 
     // Set access and refresh tokens in cookies
     Cookies.set("accessToken", accessToken, {
@@ -34,6 +35,12 @@ export const adminLoginReq = async ({
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
       expires: 1 / 12, // Expires in 2 hour
+    });
+    // Set role in cookies
+    Cookies.set("role", role, {
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Strict",
+      // expires: 1 / 24, // Expires in 1 hour
     });
 
     return response.data;
@@ -73,6 +80,27 @@ export const userSignupReq: userSignupReqType = async ({
       phoneNumber,
       address,
     });
+    const { accessToken, refreshToken } = response.data.token;
+    const { role } = response.data.data.user;
+
+    // Set access and refresh tokens in cookies
+    Cookies.set("accessToken", accessToken, {
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Strict",
+      expires: 1 / 24, // Expires in 1 hour
+    });
+
+    Cookies.set("refreshToken", refreshToken, {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      expires: 1 / 12, // Expires in 2 hour
+    });
+    // Set role in cookies
+    Cookies.set("role", role, {
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Strict",
+      // expires: 1 / 24, // Expires in 1 hour
+    });
     return response.data;
   } catch (error) {
     console.error(error);
@@ -91,6 +119,7 @@ export const userlogin = async ({
     });
 
     const { accessToken, refreshToken } = response.data.token;
+    const { role,id } = response.data.data.user;
 
     // Set access and refresh tokens in cookies
     Cookies.set("accessToken", accessToken, {
@@ -104,7 +133,13 @@ export const userlogin = async ({
       sameSite: "Strict",
       expires: 1 / 12, // Expires in 2 hour
     });
-
+    // Set role in cookies
+    Cookies.set("role", role, {
+      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      sameSite: "Strict",
+      // expires: 1 / 24, // Expires in 1 hour
+    });
+    
     return response.data;
   } catch (error: any) {
     if (error instanceof AxiosError) {
