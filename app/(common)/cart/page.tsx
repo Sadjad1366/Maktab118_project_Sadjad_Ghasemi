@@ -2,13 +2,35 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { incrementQuantity, decrementQuantity, removeFromCart } from "@/redux/slices/basketSlice";
+import {
+  incrementQuantity,
+  decrementQuantity,
+  removeFromCart,
+} from "@/redux/slices/basketSlice";
 import { IoIosAdd, IoIosRemove, IoIosTrash } from "react-icons/io";
+import Link from "next/link";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
 
 const Basket: React.FC = () => {
   const dispatch = useDispatch();
   const items = useSelector((state: RootState) => state.basket.items);
-console.log(items);
+  const router = useRouter();
+  console.log(items);
+
+  const role = Cookies.get("role");
+  const onClickHandler = () => {
+    if(role === "ADMIN" || role === "USER"){
+      router.push("/cart/checkout")
+
+    } else {
+      toast.error("برای ادامه فرآیند وارد حساب کاربری شوید")
+      router.push("/auth/login")
+
+    }
+  }
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -44,7 +66,9 @@ console.log(items);
                         className="w-12 h-12 object-cover mx-auto rounded"
                       />
                     </td>
-                    <td className="p-3 border border-gray-200 text-center">{item.name}</td>
+                    <td className="p-3 border border-gray-200 text-center">
+                      {item.name}
+                    </td>
                     <td className="p-3 border border-gray-200 text-center">
                       <div className="flex items-center justify-center space-x-2">
                         <button
@@ -83,14 +107,23 @@ console.log(items);
           </div>
 
           {/* Total Price Box */}
-          <div className="flex justify-end">
+          <div className="flex gap-x-4 justify-end">
             <div className="bg-gray-100 p-4 rounded shadow-md w-64">
-              <h3 className="text-lg font-semibold mb-2 text-gray-700">مجموع قیمت</h3>
+              <h3 className="text-lg font-semibold mb-2 text-gray-700">
+                مجموع قیمت
+              </h3>
               <p className="text-2xl font-bold text-gray-800 text-right">
                 {totalPrice.toLocaleString()} تومان
               </p>
             </div>
-
+            {/* Proccess Checkout */}
+          <div
+          onClick={onClickHandler}
+          className="flex bg-green-500 rounded-lg px-4 items-center shadow-xl">
+                <button className="text-slate-100 font-bold">
+                  نهایی کردن خرید
+                </button>
+            </div>
           </div>
         </div>
       )}
