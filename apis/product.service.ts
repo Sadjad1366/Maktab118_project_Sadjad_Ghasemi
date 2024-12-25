@@ -28,7 +28,7 @@ export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,
     console.log('products in api: ',response.data);
     return response.data;
   } catch (error:any) {
-    throw new Error(error.response?.data?.message || "Failed to get products");
+    throw new Error(error.response?.data?.message || "خطا در دریافت محصولات");
 
   }
 };

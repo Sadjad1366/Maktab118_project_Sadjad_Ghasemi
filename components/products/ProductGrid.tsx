@@ -1,4 +1,5 @@
 "use client";
+
 import { getAllProductsReq } from "@/apis/product.service";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -6,12 +7,14 @@ import { SkeletonCard } from "../SkeletonCard";
 import { ProductCard } from "./ProductCard";
 import { GrSort } from "react-icons/gr";
 import { className } from "@/utils/classNames";
+import { useDebounce } from "@/utils/hooks/useDebounce";
 
 interface IFilter {
   name: string | undefined;
   brand: string | undefined;
   sort: string | undefined;
 }
+
 const ProductGrid: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [filters, setFilters] = React.useState<IFilter>({
@@ -19,23 +22,37 @@ const ProductGrid: React.FC = () => {
     brand: undefined,
     sort: undefined,
   });
+
   const perPageItems = 8;
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["products", currentPage, filters],
+  // Debounce the name and brand filters
+  const debouncedName = useDebounce(filters.name, 500);
+  const debouncedBrand = useDebounce(filters.brand, 500);
+
+  // Fetch products using useQuery
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      "products",
+      currentPage,
+      debouncedName,
+      debouncedBrand,
+      filters.sort,
+    ],
     queryFn: async () =>
       await getAllProductsReq(
         currentPage,
         perPageItems,
         filters.sort,
-        filters.name,
-        filters.brand
+        debouncedName,
+        debouncedBrand?.toUpperCase()
       ),
     enabled: true,
   });
+
   const products = data?.data.products;
   const totalPages = data?.total_pages;
 
+  // Pagination handlers
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -48,6 +65,7 @@ const ProductGrid: React.FC = () => {
     }
   };
 
+  // Filter handlers
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -141,7 +159,9 @@ const ProductGrid: React.FC = () => {
           <button
             className="text-white px-4 py-2 bg-indigo-500 rounded-full hover:bg-indigo-600 disabled:opacity-50"
             onClick={handlePrevious}
-            disabled={currentPage === 1 || isLoading || totalPages === undefined}
+            disabled={
+              currentPage === 1 || isLoading || totalPages === undefined
+            }
           >
             قبلی
           </button>
@@ -151,7 +171,11 @@ const ProductGrid: React.FC = () => {
           <button
             className="text-white px-4 py-2 bg-indigo-500 rounded-full hover:bg-indigo-600 disabled:opacity-50"
             onClick={handleNext}
-            disabled={currentPage === totalPages || isLoading || totalPages === undefined}
+            disabled={
+              currentPage === totalPages ||
+              isLoading ||
+              totalPages === undefined
+            }
           >
             بعدی
           </button>

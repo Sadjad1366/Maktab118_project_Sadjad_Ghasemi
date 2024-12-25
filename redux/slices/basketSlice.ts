@@ -6,22 +6,21 @@ interface CartItem {
   price: number;
   quantity: number;
   image: string;
+  stock: number; // Add a 'stock' property to track product availability
 }
 
 interface BasketState {
   items: CartItem[];
 }
 
-// Function to load state from localStorage
 const loadState = (): BasketState => {
   if (typeof window !== "undefined") {
     const savedState = localStorage.getItem("basket");
     return savedState ? JSON.parse(savedState) : { items: [] };
   }
-  return { items: [] }; // Default state if localStorage is unavailable
+  return { items: [] };
 };
 
-// Function to save state to localStorage
 const saveState = (state: BasketState) => {
   localStorage.setItem("basket", JSON.stringify(state));
 };
@@ -33,30 +32,28 @@ const basketSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existingItem = state.items.find(
-        (item) => item.id === action.payload.id
-      );
+      const { id, quantity, stock } = action.payload;
+      const existingItem = state.items.find((item) => item.id === id);
+
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
+        // Check stock limit
+        if (existingItem.quantity <= stock) {
+          existingItem.quantity += quantity;
+        } else {
+          existingItem.quantity = stock; // Set to max stock if exceeded
+        }
       } else {
-        state.items.push(action.payload);
+        // Ensure the quantity doesn't exceed stock for new items
+        state.items.push({ ...action.payload, quantity: Math.min(quantity, stock) });
       }
-      saveState(state); // Save updated state to localStorage
-    },
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
-      saveState(state);
-    },
-    clearCart: (state) => {
-      state.items = [];
       saveState(state);
     },
     incrementQuantity: (state, action: PayloadAction<string>) => {
       const item = state.items.find((item) => item.id === action.payload);
-      if (item) {
+      if (item && item.quantity < item.stock) {
         item.quantity += 1;
+        saveState(state);
       }
-      saveState(state);
     },
     decrementQuantity: (state, action: PayloadAction<string>) => {
       const item = state.items.find((item) => item.id === action.payload);
@@ -66,7 +63,15 @@ const basketSlice = createSlice({
         } else {
           state.items = state.items.filter((item) => item.id !== action.payload);
         }
+        saveState(state);
       }
+    },
+    removeFromCart: (state, action: PayloadAction<string>) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+      saveState(state);
+    },
+    clearCart: (state) => {
+      state.items = [];
       saveState(state);
     },
   },

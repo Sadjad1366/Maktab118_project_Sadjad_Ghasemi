@@ -3,12 +3,8 @@
 import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { addToCart } from "@/redux//slices/basketSlice";
-import Cookies from "js-cookie";
-import toast from "react-hot-toast";
-import { IoMdHeart } from "react-icons/io";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 interface ProductCardProps {
   product: IProduct;
@@ -16,7 +12,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isLike, setIsLike] = React.useState(false);
-  const toggleLike = () => setIsLike((prev) => !prev);
+  const toggleLike = ()=> {setIsLike((prev)=> !prev)};
   const isOutOfStock = product.quantity === 0;
 
   return (
@@ -26,15 +22,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         "hover:shadow-lg transition-shadow duration-300 cursor-pointer"
       )}
     >
-      {/* <IoMdHeartEmpty
-       className={className("absolute m-1",)} size={25} /> */}
-      {/* <IoMdHeart
-        onClick={toggleLike}
-        className="absolute m-1 text-red"
-        size={25}
-      /> */}
+      {isLike ? (
+        <>
+          <FaHeart onClick={toggleLike} className="text-red-600 p-1" size={36} />
+        </>
+      ) : (
+        <>
+          <CiHeart onClick={toggleLike} className="text-red-500" size={36} />
+        </>
+      )}
 
-      {/* Product Image and Discount Badge */}
+      {/* Product Image */}
       <div className="relative h-40 size-36 mx-auto">
         <Link href={`/products/${product._id}`}>
           <img
@@ -65,18 +63,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <span className="text-green-500 text-sm font-semibold">موجود</span>
           </div>
         )}
-        {/* <button
-          className={className(
-            "mt-4 w-full px-4 py-2 rounded-lg text-white shadow transform transition duration-150",
-            isOutOfStock
-              ? "bg-indigo-400 cursor-not-allowed"
-              : "bg-indigo-600 hover:bg-indigo-700 active:translate-y-1 active:scale-95"
-          )}
-          onClick={handleAddToCart}
-          disabled={isOutOfStock}
-        >
-          افزودن به سبد خرید
-        </button> */}
       </div>
     </div>
   );

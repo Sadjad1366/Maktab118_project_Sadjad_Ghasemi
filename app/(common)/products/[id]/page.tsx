@@ -34,22 +34,16 @@ export default function ProductDetailsPage() {
         console.error("Error fetching product details:", error.message);
       }
     };
-
     fetchProductDetails();
-
   }, [id]);
 
-  // React.useEffect(()=>{
-  //   console.log(isOutOfStock)
-  // },[])
+  // const handleIncrease = () => {
+  //   setQty((prev) => prev + 1);
+  // };
 
-  const handleIncrease = () => {
-    setQty((prev) => prev + 1);
-  };
-
-  const handleDecrease = () => {
-    setQty((prev) => (prev > 1 ? prev - 1 : 0));
-  };
+  // const handleDecrease = () => {
+  //   setQty((prev) => (prev > 1 ? prev - 1 : 0));
+  // };
 
   const dispatch = useDispatch();
 
@@ -62,6 +56,7 @@ export default function ProductDetailsPage() {
         price: product?.price || 0,
         quantity: qty || 1, // Default to adding 1 item
         image: product?.images[0] || "",
+        stock: product?.quantity || 0
       })
     );
     toast.success("برای نهایی کردن تعداد به صفحه خرید رجوع کنید")
@@ -80,7 +75,7 @@ export default function ProductDetailsPage() {
   }
 
   return (
-    <div className="bg-slate-100 container mx-auto py-10 px-4 lg:px-20">
+    <div className="bg-slate-100 rounded-lg container mx-auto py-10 px-4 lg:px-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Images */}
         <div className="relative">
@@ -128,12 +123,14 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Price */}
-          <p className="text-2xl font-bold text-indigo-600 mb-6">
-            {product.price} تومان
-          </p>
+        {product.quantity === 0? (<></>)
+       : (<p className="text-2xl font-bold text-indigo-600 mb-6">
+        {product.price} تومان
+      </p>)
+      }
 
           {/* Quantity Controls */}
-          <div className="flex items-center mb-6">
+          {/* <div className="flex items-center mb-6">
             <button
               onClick={handleDecrease}
               className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
@@ -147,7 +144,7 @@ export default function ProductDetailsPage() {
             >
               +
             </button>
-          </div>
+          </div> */}
 
           {/* Add to Cart Button */}
           {product.quantity === 0 ? (

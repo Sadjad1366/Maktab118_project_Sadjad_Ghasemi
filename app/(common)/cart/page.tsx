@@ -8,29 +8,24 @@ import {
   removeFromCart,
 } from "@/redux/slices/basketSlice";
 import { IoIosAdd, IoIosRemove, IoIosTrash } from "react-icons/io";
-import Link from "next/link";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
 
 const Basket: React.FC = () => {
   const dispatch = useDispatch();
   const items = useSelector((state: RootState) => state.basket.items);
   const router = useRouter();
-  console.log(items);
 
   const role = Cookies.get("role");
   const onClickHandler = () => {
-    if(role === "ADMIN" || role === "USER"){
-      router.push("/cart/checkout")
-
+    if (role === "ADMIN" || role === "USER") {
+      router.push("/cart/checkout");
     } else {
-      toast.error("برای ادامه فرآیند وارد حساب کاربری شوید")
-      router.push("/auth/login")
-
+      toast.error("برای ادامه فرآیند وارد حساب کاربری شوید");
+      router.push("/auth/login");
     }
-  }
+  };
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -79,13 +74,25 @@ const Basket: React.FC = () => {
                         </button>
                         <span className="pr-2">{item.quantity}</span>
                         <button
-                          onClick={() => dispatch(incrementQuantity(item.id))}
+                          onClick={() => {
+                            if (item.quantity < item.stock) {
+                              dispatch(incrementQuantity(item.id));
+                            } else {
+                              toast.error("خرید بیشتر از این مقدار مجاز نیست");
+                            }
+                          }}
                           className="p-1 bg-green-500 text-white rounded"
                         >
                           <IoIosAdd size={16} />
                         </button>
                       </div>
+                      {item.quantity >= item.stock && (
+                        <p className="text-red-500 text-xs">
+                          حداکثر میزان خرید
+                        </p>
+                      )}
                     </td>
+
                     <td className="p-3 border border-gray-200 text-center">
                       {item.price.toLocaleString()} تومان
                     </td>
@@ -117,12 +124,13 @@ const Basket: React.FC = () => {
               </p>
             </div>
             {/* Proccess Checkout */}
-          <div
-          onClick={onClickHandler}
-          className="flex bg-green-500 rounded-lg px-4 items-center shadow-xl">
-                <button className="text-slate-100 font-bold">
-                  نهایی کردن خرید
-                </button>
+            <div
+              onClick={onClickHandler}
+              className="flex bg-green-500 rounded-lg px-4 items-center shadow-xl"
+            >
+              <button className="text-slate-100 font-bold">
+                نهایی کردن خرید
+              </button>
             </div>
           </div>
         </div>

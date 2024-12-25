@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
           </button>
           <div className="flex items-center gap-x-3">
             <img
-              className="w-24 h-[140px] sm:size-36"
+              className="w-24 h-[100px] sm:w-36 sm:h-[120px]"
               src="/images/logo/ninja.svg"
               alt="Logo"
             />
