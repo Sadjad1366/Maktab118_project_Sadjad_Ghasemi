@@ -41,6 +41,8 @@ export default function DashboardLayout({
   const logOut = () => {
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');
+    Cookies.remove("role");
+    Cookies.remove("_id");
     redirect('/admin')
 
   }

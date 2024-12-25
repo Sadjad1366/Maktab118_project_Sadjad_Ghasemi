@@ -59,7 +59,7 @@ export default function ProductDetailsPage() {
         stock: product?.quantity || 0
       })
     );
-    toast.success("برای نهایی کردن تعداد به صفحه خرید رجوع کنید")
+    toast.success("برای نهایی کردن تعداد به سبد خرید رجوع کنید")
   };
 
   const handleThumbnailClick = (imageUrl: string) => {
