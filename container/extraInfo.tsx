@@ -1,8 +1,7 @@
 const ExtraInfoComp: React.FC = () => {
   return (
-    <div>
-      <div className="w-full bg-slate-700 grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-3 py-3 my-2 px-2 rounded-lg">
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg">
+      <div className="w-full bg-slate-200 grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-3 py-3 my-6 p-4 rounded-lg">
+        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
           <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
@@ -15,8 +14,8 @@ const ExtraInfoComp: React.FC = () => {
             پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
           </p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg">
-        <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
+        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
+        <h2 className="font-semibold text-lg p-2">ساعت های اسکلتون</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -28,8 +27,8 @@ const ExtraInfoComp: React.FC = () => {
             پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
           </p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg">
-        <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
+        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
+        <h2 className="font-semibold text-lg p-2">ساعت های هوشمند</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -41,8 +40,8 @@ const ExtraInfoComp: React.FC = () => {
             پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
           </p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg">
-        <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
+        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
+        <h2 className="font-semibold text-lg p-2">ساعت های کورنوگراف</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -55,7 +54,6 @@ const ExtraInfoComp: React.FC = () => {
           </p>
         </div>
       </div>
-    </div>
   );
 };
 

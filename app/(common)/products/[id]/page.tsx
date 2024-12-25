@@ -81,6 +81,8 @@ export default function ProductDetailsPage() {
         <div className="relative">
           {/* Main Product Image */}
           <img
+          width={48}
+          height={48}
             className="w-full rounded-lg shadow-md"
             src={activeImage ?? ""}
             alt={product.name}

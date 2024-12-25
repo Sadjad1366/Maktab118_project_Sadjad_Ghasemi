@@ -1,14 +1,15 @@
+import { className } from "@/utils/classNames";
 import Link from "next/link";
 import React from "react";
 import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
-    <div className="rounded-lg mt-6">
+    <div className="rounded-lg mt-6 mx-0">
       <footer className="bg-gray-400 rounded-lg">
-        <div className="w-full grid grid-cols-1 gap-8 px-4 py-6 lg:py-8 md:grid-cols-2">
+        <div className="w-full grid grid-cols-1 gap-8 px-8 py-6 lg:py-8 md:grid-cols-2">
           <div>
-            <h2 className="border-b-2 py-2 max-w-90 mb-6 text-xl font-semibold text-gray-900 uppercase dark:text-white">
+            <h2 className="border-b-2 py-2 max-w-90 mb-6 text-3xl font-semibold text-gray-900 uppercase dark:text-white">
               گالری ساعت نینجا
             </h2>
             <div className="text-justify max-w-90 px-2">
@@ -20,7 +21,8 @@ const Footer: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-col gap-y-2 rounded-b-lg">
-            <h2 className="border-b-2 py-2 max-w-90 mb-6 text-xl font-semibold text-gray-900 uppercase dark:text-white">
+            <h2 className={className("border-b-2 py-2 max-w-90 mb-6 text-3xl",
+              "font-semibold text-gray-900 uppercase dark:text-white")}>
               درباره ما
             </h2>
 
@@ -35,7 +37,8 @@ const Footer: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-col gap-y-2">
-            <h2 className="border-b-2 py-2 max-w-90 mb-6 text-xl font-semibold text-gray-900 uppercase dark:text-white">
+          <h2 className={className("border-b-2 py-2 max-w-90 mb-6 text-3xl",
+              "font-semibold text-gray-900 uppercase dark:text-white")}>
               شبکه های اجتماعی
             </h2>
 
@@ -45,21 +48,21 @@ const Footer: React.FC = () => {
                 target="_blank"
                 className="text-xl text-slate-800 hover:text-blue-600 transition-colors duration-300"
               >
-                <FaFacebook />
+                <FaFacebook size={48} />
               </Link>
               <Link
                 href="https://github.com/sadjad1366"
                 target="_blank"
                 className="text-xl text-slate-800 hover:text-blue-600 transition-colors duration-300"
               >
-                <FaGithub />
+                <FaGithub size={48} />
               </Link>
               <Link
                 href="https://t.me/SadjadQasemi66"
                 target="_blank"
                 className="text-xl text-slate-800 hover:text-blue-600 transition-colors duration-300"
               >
-                <FaTelegramPlane />
+                <FaTelegramPlane size={48} />
               </Link>
             </div>
           </div>

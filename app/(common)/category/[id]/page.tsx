@@ -35,7 +35,7 @@ export default function CategoryProductsPage() {
   return (
     <div>
       {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      <div className="bg-slate-100 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-8">
         {isLoading
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
               <SkeletonCard key={index} />
@@ -52,7 +52,7 @@ export default function CategoryProductsPage() {
           onClick={() => setPage((prev) => prev - 1)}
           className={`px-4 py-2 rounded ${
             page === 1
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed rounded-full"
               : "bg-indigo-600 text-white"
           }`}
         >
@@ -64,7 +64,7 @@ export default function CategoryProductsPage() {
         <button
           disabled={page === totalPages}
           onClick={() => setPage((prev) => prev + 1)}
-          className={`px-4 py-2 rounded ${
+          className={`px-4 py-2 rounded-full ${
             page === totalPages
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-indigo-600 text-white"

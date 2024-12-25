@@ -36,7 +36,7 @@ export default function CategoryPage() {
   };
 
   return (
-    <div className="mt-2 py-2 gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="mt-2 p-2 gap-2 rounded-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {categories.map((categoryId) => (
         <div
           key={categoryId}
