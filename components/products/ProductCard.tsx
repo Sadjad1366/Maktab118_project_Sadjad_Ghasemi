@@ -7,32 +7,16 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux//slices/basketSlice";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { IoMdHeart } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
 
 interface ProductCardProps {
   product: IProduct;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const dispatch = useDispatch();
-  // const token = Cookies.get("accessToken");
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent the Link navigation
-    // if (token) {
-      dispatch(
-        addToCart({
-          id: product._id,
-          name: product.name,
-          price: product.price,
-          quantity: 1, // Default to adding 1 item
-          image: product.images[0],
-        })
-      );
-    // } else {
-    //   toast.error("ابتدا وارد صفحه کاربری شوید");
-    // }
-  };
-
+  const [isLike, setIsLike] = React.useState(false);
+  const toggleLike = () => setIsLike((prev) => !prev);
   const isOutOfStock = product.quantity === 0;
 
   return (
@@ -42,11 +26,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         "hover:shadow-lg transition-shadow duration-300 cursor-pointer"
       )}
     >
+      {/* <IoMdHeartEmpty
+       className={className("absolute m-1",)} size={25} /> */}
+      {/* <IoMdHeart
+        onClick={toggleLike}
+        className="absolute m-1 text-red"
+        size={25}
+      /> */}
+
       {/* Product Image and Discount Badge */}
       <div className="relative h-40 size-36 mx-auto">
         <Link href={`/products/${product._id}`}>
           <img
-            className="w-full h-full object-cover cursor-pointer rounded-t-lg"
+            className="w-full h-full object-cover cursor-pointer rounded-t-lg mt-2"
             src={`http://localhost:8000/images/products/images/${product.images[0]}`}
             alt={product.name}
           />
@@ -61,17 +53,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <p className="text-sm text-gray-600 truncate mb-2">
           {product.description || "No description available"}
         </p>
-        <div className="flex justify-between items-center mt-2">
-          <span className="text-lg font-bold text-indigo-600">
-            {Number(product.price).toLocaleString()} تومان
-          </span>
-          {isOutOfStock ? (
-            <span className="text-red-500 text-sm font-semibold">ناموجود</span>
-          ) : (
+        {isOutOfStock ? (
+          <div className="flex justify-center items-center mt-2">
+            <span className="text-red-500 text-xl font-semibold">ناموجود</span>
+          </div>
+        ) : (
+          <div className="flex justify-between items-center mt-2">
+            <span className="text-lg font-bold text-indigo-600">
+              {Number(product.price).toLocaleString()} تومان
+            </span>
             <span className="text-green-500 text-sm font-semibold">موجود</span>
-          )}
-        </div>
-        <button
+          </div>
+        )}
+        {/* <button
           className={className(
             "mt-4 w-full px-4 py-2 rounded-lg text-white shadow transform transition duration-150",
             isOutOfStock
@@ -82,7 +76,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           disabled={isOutOfStock}
         >
           افزودن به سبد خرید
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -3,19 +3,20 @@ import { getProductById } from "@/apis/product.service";
 import { addToCart } from "@/redux/slices/basketSlice";
 import { className } from "@/utils/classNames";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 export default function ProductDetailsPage() {
-  const [product, setProduct] = useState<
+  const [product, setProduct] = React.useState<
     IProductById["data"]["product"] | null
   >(null);
-  const [quantity, setQuantity] = useState(1); // Track the selected quantity
-  const [activeImage, setActiveImage] = useState<string | undefined>(undefined); // Active main image
+  const [qty, setQty] = React.useState(0); // Track the selected quantity
+  const [activeImage, setActiveImage] = React.useState<string | undefined>(undefined); // Active main image
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : "";
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!id) return;
 
     const fetchProductDetails = async () => {
@@ -35,14 +36,19 @@ export default function ProductDetailsPage() {
     };
 
     fetchProductDetails();
+
   }, [id]);
 
+  // React.useEffect(()=>{
+  //   console.log(isOutOfStock)
+  // },[])
+
   const handleIncrease = () => {
-    setQuantity((prev) => prev + 1);
+    setQty((prev) => prev + 1);
   };
 
   const handleDecrease = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 0));
+    setQty((prev) => (prev > 1 ? prev - 1 : 0));
   };
 
   const dispatch = useDispatch();
@@ -54,10 +60,11 @@ export default function ProductDetailsPage() {
         id: product?._id || "",
         name: product?.name || "",
         price: product?.price || 0,
-        quantity: quantity,   // Default to adding 1 item
+        quantity: qty || 1, // Default to adding 1 item
         image: product?.images[0] || "",
       })
     );
+    toast.success("برای نهایی کردن تعداد به صفحه خرید رجوع کنید")
   };
 
   const handleThumbnailClick = (imageUrl: string) => {
@@ -73,7 +80,7 @@ export default function ProductDetailsPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 lg:px-20">
+    <div className="bg-slate-100 container mx-auto py-10 px-4 lg:px-20">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Images */}
         <div className="relative">
@@ -85,7 +92,7 @@ export default function ProductDetailsPage() {
           />
 
           {/* Thumbnail Carousel */}
-          <div className="flex mt-4 space-x-2 overflow-x-auto">
+          <div className="flex mt-4 space-x-2 gap-x-2 overflow-x-auto">
             {product.images?.map((image, index) => {
               const imageUrl = `http://localhost:8000/images/products/images/${image}`;
               return (
@@ -107,13 +114,11 @@ export default function ProductDetailsPage() {
         </div>
 
         {/* Product Information */}
-        <div>
+        <div className="flex flex-col justify-center pb-24">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
             {product.name}
           </h1>
-          <p className="text-gray-600 text-lg mb-4">
-            {product.description}
-          </p>
+          <p className="text-gray-600 text-lg mb-4">{product.description}</p>
 
           {/* Ratings */}
           <div className="flex items-center mb-4">
@@ -135,7 +140,7 @@ export default function ProductDetailsPage() {
             >
               -
             </button>
-            <span className="text-lg font-semibold px-2">{quantity}</span>
+            <span className="text-lg font-semibold px-2">{qty}</span>
             <button
               onClick={handleIncrease}
               className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
@@ -145,16 +150,28 @@ export default function ProductDetailsPage() {
           </div>
 
           {/* Add to Cart Button */}
-          <button
-            onClick={handleAddToCart}
-            className={className(
-              "w-full bg-indigo-600 text-white px-6 py-3",
-              "rounded-lg hover:bg-indigo-700 transition duration-300 shadow",
-              "active:translate-y-1 active:scale-95"
-            )}
-          >
-            افزودن به سبد خرید
-          </button>
+          {product.quantity === 0 ? (
+            <button
+              disabled
+              onClick={handleAddToCart}
+              className={className(
+                "w-full bg-indigo-300 cursor-not-allowed text-white px-6 py-3 rounded-lg",
+              )}
+            >
+              افزودن به سبد خرید
+            </button>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className={className(
+                "w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3",
+                "active:translate-y-1 active:scale-95 rounded-lg",
+                " hover:bg-indigo-700 transition duration-300 shadow",
+              )}
+            >
+              افزودن به سبد خرید
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -1,86 +1,41 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import { ProductCard } from "./ProductCard";
 import { getAllProductsReq } from "@/apis/product.service";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { SkeletonCard } from "../SkeletonCard";
+import { ProductCard } from "./ProductCard";
+import { GrSort } from "react-icons/gr";
+import { className } from "@/utils/classNames";
 
+interface IFilter {
+  name: string | undefined;
+  brand: string | undefined;
+  sort: string | undefined;
+}
 const ProductGrid: React.FC = () => {
-  const [products, setProducts] = useState<IProduct[]>([]); // All products from the API
-  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]); // Products after filtering/sorting
-  const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
-  const [loading, setLoading] = useState(true); // Loading state
-  const [filters, setFilters] = useState({ brand: "", name: "" }); // State for filters
-  const [sortOrder, setSortOrder] = useState<"low-to-high" | "high-to-low" | null>(null); // Sorting state
-  const itemsPerPage = 8; // Number of items per page
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [filters, setFilters] = React.useState<IFilter>({
+    name: undefined,
+    brand: undefined,
+    sort: undefined,
+  });
+  const perPageItems = 8;
 
-  // Fetch all products from the API once
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        // Pass a large value to fetch all products at once
-        const response = await getAllProductsReq(1, 1000); // Requesting all products
-        setProducts(response.data.products); // Save all products
-        setFilteredProducts(response.data.products); // Initialize filtered products
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["products", currentPage, filters],
+    queryFn: async () =>
+      await getAllProductsReq(
+        currentPage,
+        perPageItems,
+        filters.sort,
+        filters.name,
+        filters.brand
+      ),
+    enabled: true,
+  });
+  const products = data?.data.products;
+  const totalPages = data?.total_pages;
 
-    fetchProducts();
-  }, []);
-
-  // Apply filters and sorting whenever filters, sorting, or products change
-  useEffect(() => {
-    let filtered = [...products]; // Start with all products
-
-    // Filter by brand
-    if (filters.brand) {
-      filtered = filtered.filter((product) =>
-        product.brand?.toLowerCase().includes(filters.brand.toLowerCase())
-      );
-    }
-
-    // Filter by name
-    if (filters.name) {
-      filtered = filtered.filter((product) =>
-        product.name.toLowerCase().includes(filters.name.toLowerCase())
-      );
-    }
-
-    // Sort by price
-    if (sortOrder === "low-to-high") {
-      filtered.sort((a, b) => a.price - b.price); // Sort ascending
-    } else if (sortOrder === "high-to-low") {
-      filtered.sort((a, b) => b.price - a.price); // Sort descending
-    }
-
-    setFilteredProducts(filtered); // Update filtered products
-    setCurrentPage(1); // Reset to the first page after filters/sorting
-  }, [filters, sortOrder, products]);
-
-  // Calculate total pages and paginated products
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const paginatedProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Handle sorting
-  const handleSort = (order: "low-to-high" | "high-to-low") => {
-    setSortOrder(order); // Update sorting state
-  };
-
-  // Handle filter input changes
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value })); // Update specific filter
-  };
-
-  // Pagination controls
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -88,20 +43,29 @@ const ProductGrid: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < (totalPages ?? 0)) {
       setCurrentPage((prev) => prev + 1);
     }
   };
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSort = event.target.value;
+    setFilters((prev) => ({ ...prev, sort: selectedSort }));
+  };
+
   return (
     <div className="container mx-auto py-4 px-2 grid grid-cols-12 gap-4">
-      {/* Sidebar */}
       <aside className="col-span-3 bg-white p-4 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-4">فیلتر محصولات</h3>
-
-        {/* Filter by Brand */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">برند</label>
+          <label className="block text-sm font-medium text-gray-700">
+            برند
+          </label>
           <input
             type="text"
             name="brand"
@@ -111,10 +75,10 @@ const ProductGrid: React.FC = () => {
             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
-        {/* Filter by Name */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">نام محصول</label>
+          <label className="block text-sm font-medium text-gray-700">
+            نام محصول
+          </label>
           <input
             type="text"
             name="name"
@@ -124,69 +88,70 @@ const ProductGrid: React.FC = () => {
             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-
-        {/* Reset Filters */}
         <button
           className="w-full py-2 px-4 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition"
-          onClick={() => setFilters({ brand: "", name: "" })}
+          onClick={() =>
+            setFilters({ brand: undefined, name: undefined, sort: undefined })
+          }
         >
           ریست فیلترها
         </button>
       </aside>
 
-      {/* Product Grid */}
       <main className="col-span-9">
-        <h2 className="text-3xl bg-slate-300 font-bold mb-4 text-center rounded-lg">
+        <h2 className="text-3xl bg-slate-200 text-slate-600 font-bold mb-4 py-4 text-center rounded-md">
           محصولات
         </h2>
 
         {/* Sorting Controls */}
-        <div className="flex justify-start mb-4 gap-x-3">
-          <button
-            className={`px-4 py-2 mr-2 rounded-lg text-white ${
-              sortOrder === "low-to-high" ? "bg-indigo-700" : "bg-indigo-500"
-            } hover:bg-indigo-600 transition`}
-            onClick={() => handleSort("low-to-high")}
-          >
-            ارزان‌ترین
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg text-white ${
-              sortOrder === "high-to-low" ? "bg-indigo-700" : "bg-indigo-500"
-            } hover:bg-indigo-600 transition`}
-            onClick={() => handleSort("high-to-low")}
-          >
-            گران‌ترین
-          </button>
+        <div className="flex justify-start items-center mb-6 gap-4">
+          <label htmlFor="sort" className="text-sm font-medium text-gray-700">
+            مرتب‌سازی:
+          </label>
+          <div className="relative">
+            <select
+              name="sort"
+              value={filters.sort || undefined}
+              onChange={handleSortChange}
+              className={className(
+                "block w-full appearance-none bg-white",
+                "border border-gray-300 rounded-lg py-2 px-3 pl-8 shadow-sm",
+                "focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              )}
+            >
+              <option value="">انتخاب کنید</option>
+              <option value="price">ارزان ترین</option>
+              <option value="-price">گران ترین</option>
+            </select>
+            <div className="absolute inset-y-0 left-0 flex items-center px-2 pointer-events-none">
+              <GrSort />
+            </div>
+          </div>
         </div>
-
-        {/* Product Grid */}
-        <div className="p-2 rounded-lg bg-slate-300 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {loading
-            ? Array.from({ length: itemsPerPage }).map((_, index) => (
+        <div className="p-6 rounded-lg bg-slate-200 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {isLoading
+            ? Array.from({ length: perPageItems }).map((_, index) => (
                 <SkeletonCard key={index} />
               ))
-            : paginatedProducts.map((product, index) => (
+            : products?.map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
         </div>
-
-        {/* Pagination Controls */}
         <div className="flex justify-center items-center mt-4 space-x-4">
           <button
-            className="text-white px-4 py-2 bg-indigo-500 rounded hover:bg-indigo-600 disabled:opacity-50"
+            className="text-white px-4 py-2 bg-indigo-500 rounded-full hover:bg-indigo-600 disabled:opacity-50"
             onClick={handlePrevious}
-            disabled={currentPage === 1 || loading}
+            disabled={currentPage === 1 || isLoading || totalPages === undefined}
           >
             قبلی
           </button>
           <span className="pr-3 font-semibold text-gray-700">
-            صفحه {currentPage} از {totalPages}
+            صفحه {currentPage} از {totalPages ?? "-"}
           </span>
           <button
-            className="text-white px-4 py-2 bg-indigo-500 rounded hover:bg-indigo-600 disabled:opacity-50"
+            className="text-white px-4 py-2 bg-indigo-500 rounded-full hover:bg-indigo-600 disabled:opacity-50"
             onClick={handleNext}
-            disabled={currentPage === totalPages || loading}
+            disabled={currentPage === totalPages || isLoading || totalPages === undefined}
           >
             بعدی
           </button>

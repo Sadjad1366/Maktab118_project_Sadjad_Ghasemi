@@ -7,25 +7,47 @@ import Cookies from 'js-cookie';
 type getAllProductReqType = (
   page?: number,
   limit?: number,
+  sort?: string,
+  name?: string,
+  brand?:string,
 ) => Promise<IGlobalRes<{products: IProduct[]
 }>>;
 
-export const getAllProductsReq: getAllProductReqType = async (page, limit = 6,
+export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,sort, name, brand
   ) => {
   try {
     const response = await client.get(urls.product.getAll, {
       params: {
         page: page,
         limit: limit,
-        // sort: sort, // Pass the sort parameter
+        sort:sort,
+        name:name,
+        brand:brand
       },
     });
+    console.log('products in api: ',response.data);
     return response.data;
   } catch (error:any) {
     throw new Error(error.response?.data?.message || "Failed to get products");
 
   }
 };
+
+// export const getAllProductsReq = async (
+//   page: number,
+//   limit: number,
+//   sort: string | undefined,
+//   name: string,
+//   brand: string
+// ) => {
+//   const url = `http://localhost:8000/api/products?limit=${limit}&page=${page}&sort=${sort || ""}&name=${name}&brand=${brand}`;
+//   const response = await fetch(url);
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch products");
+//   }
+//   return await response.json(); // Ensure correct JSON parsing
+// };
+
 //============================= GET CATEGORIES ============================
 type GetAllCategoriesType = () => Promise<ICategory[]>;
 export const getAllCategories: GetAllCategoriesType = async () => {
