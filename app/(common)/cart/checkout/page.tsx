@@ -23,7 +23,7 @@ export default function Checkout() {
     resolver: zodResolver(paymentSchema),
   });
   const router = useRouter();
-  const id = Cookies.get("_id");
+  const id = Cookies.get("userId");
 
   // // const { data } = useQuery({
   // //   queryKey: ["user", id],

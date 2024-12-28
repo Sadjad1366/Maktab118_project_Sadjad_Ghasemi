@@ -17,6 +17,7 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<IUserSignupReq>({
     resolver: zodResolver(SignupSchema),
+    mode:"all",
   });
   const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
@@ -26,6 +27,7 @@ export default function SignupPage() {
     lastname,
     username,
     password,
+    confirmPassword,
     phoneNumber,
     address,
   }: IUserSignupReq) => {
@@ -36,11 +38,12 @@ export default function SignupPage() {
         lastname,
         username,
         password,
+        confirmPassword,
         phoneNumber,
         address,
       });
       toast.success("ثبت نام با موفقیت انجام شد!");
-      router.push("/");
+      router.push("/auth/login");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "خطا در ثبت نام!");
       console.error("Signup Error:", error);
@@ -156,6 +159,31 @@ export default function SignupPage() {
             <div>
               <label
                 className="block text-gray-700 font-medium px-2"
+                htmlFor="confirmPassword"
+              >
+               تکرار رمز عبور
+              </label>
+              <input
+                type="password"
+                // placeholder="رمز عبور خود را وارد نمایید"
+                {...register("confirmPassword")}
+                className={className(
+                  "w-full px-4 py-2 border rounded-md shadow-lg",
+                  "focus:outline-none focus:ring-2 focus:ring-blue-300"
+                )}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+
+          </div>
+          <div>
+              <label
+                className="block text-gray-700 font-medium px-2"
                 htmlFor="phoneNumber"
               >
                 موبایل
@@ -175,7 +203,6 @@ export default function SignupPage() {
                 </p>
               )}
             </div>
-          </div>
           <div>
             <label
               className="block text-gray-700 font-medium px-2"

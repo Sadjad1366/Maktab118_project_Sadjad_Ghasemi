@@ -19,6 +19,7 @@ const AdminLoginPage: React.FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<IUserLoginReq>({
     resolver: zodResolver(AuthSchema),
+    mode:"all",
   });
 
   const [showPassword, setShowPassword] = useState(false);
