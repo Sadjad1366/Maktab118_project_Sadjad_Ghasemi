@@ -1,15 +1,14 @@
 export interface IUser {
-  "_id": string,
-  "firstname": string,
-  "lastname": string,
-  "username": string,
-  "phoneNumber":string,
-  "address": string,
-  "role": string,
-  "createdAt": string,
-  "updatedAt": string
+  _id: string;
+  firstname: string;
+  lastname: string;
+  username: string;
+  phoneNumber: string;
+  address: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
 }
-
 
 export interface IUserLoginReq {
   username: string;
@@ -45,6 +44,7 @@ export interface IUserSignupReq {
   lastname: string;
   username: string;
   password: string;
+  confirmPassword?: string;
   phoneNumber: string;
   address: string;
 }
@@ -60,6 +60,7 @@ export interface IUserSignupRes {
       lastname: string;
       username: string;
       password: string;
+      confirmPassword?: string;
       phoneNumber: string;
       address: string;
       role: string;
@@ -91,9 +92,9 @@ export interface IUserByIdRes {
 }
 
 export interface IUserPayment {
-  firstname:string;
-  lastname:string;
-  phoneNumber:string;
+  firstname: string;
+  lastname: string;
+  phoneNumber: string;
   address: string;
-  deliveryDate:string;
+  deliveryDate: string;
 }

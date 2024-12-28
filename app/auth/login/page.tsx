@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IUserLoginReq } from "@/types/user.type";
-import { adminLoginReq } from "@/apis/auth.service";
+import { userloginReq } from "@/apis/auth.service";
 import { className } from "@/utils/classNames";
 import { useRouter } from "next/navigation";
 import { AuthSchema } from "@/utils/validations/zodAuthValidation";
@@ -19,6 +19,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<IUserLoginReq>({
     resolver: zodResolver(AuthSchema),
+    mode:"all",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +29,7 @@ export default function LoginPage() {
 
   const submitHandler = async ({ username, password }: IUserLoginReq) => {
     try {
-      await adminLoginReq({ username, password });
+      await userloginReq({ username, password });
 
       toast.success("ورود موفقیت‌آمیز بود! 🎉");
 

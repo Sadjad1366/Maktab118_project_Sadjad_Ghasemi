@@ -18,8 +18,10 @@ const Basket: React.FC = () => {
   const router = useRouter();
 
   const role = Cookies.get("role");
+  const token = Cookies.get("accessToken");
+
   const onClickHandler = () => {
-    if (role === "ADMIN" || role === "USER") {
+    if (role && token) {
       router.push("/cart/checkout");
     } else {
       toast.error("برای ادامه فرآیند وارد حساب کاربری شوید");

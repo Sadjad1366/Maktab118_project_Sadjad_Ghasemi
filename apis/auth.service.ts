@@ -42,7 +42,7 @@ export const adminLoginReq = async ({
       // expires: 1 / 24, // Expires in 1 hour
     });
         // Set _id in cookies
-        Cookies.set("_id", _id, {
+        Cookies.set("userId", _id, {
           secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
           sameSite: "Strict",
         });
@@ -64,6 +64,7 @@ type userSignupReqType = ({
   lastname,
   username,
   password,
+  confirmPassword,
   phoneNumber,
   address,
 }: IUserSignupReq) => Promise<IUserSignupRes>;
@@ -72,6 +73,7 @@ export const userSignupReq: userSignupReqType = async ({
   lastname,
   username,
   password,
+  confirmPassword,
   phoneNumber,
   address,
 }: IUserSignupReq) => {
@@ -81,35 +83,10 @@ export const userSignupReq: userSignupReqType = async ({
       lastname,
       username,
       password,
+      confirmPassword,
       phoneNumber,
       address,
     });
-    const { accessToken, refreshToken } = response.data.token;
-    const { role,_id } = response.data.data.user;
-
-    // Set access and refresh tokens in cookies
-    Cookies.set("accessToken", accessToken, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-      sameSite: "Strict",
-      expires: 1 / 24, // Expires in 1 hour
-    });
-
-    Cookies.set("refreshToken", refreshToken, {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-      expires: 1 / 12, // Expires in 2 hour
-    });
-    // Set role in cookies
-    Cookies.set("role", role, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-      sameSite: "Strict",
-      // expires: 1 / 24, // Expires in 1 hour
-    });
-        // Set _id in cookies
-        Cookies.set("_id", _id, {
-          secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-          sameSite: "Strict",
-        });
 
     return response.data;
   } catch (error) {
@@ -118,7 +95,7 @@ export const userSignupReq: userSignupReqType = async ({
 };
 
 //======================================= userlogin =====================================
-export const userlogin = async ({
+export const userloginReq = async ({
   username,
   password,
 }: IUserLoginReq): Promise<IUserLoginRes> => {
@@ -150,7 +127,7 @@ export const userlogin = async ({
       // expires: 1 / 24, // Expires in 1 hour
     });
         // Set _id in cookies
-        Cookies.set("_id", _id, {
+        Cookies.set("userId", _id, {
           secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
           sameSite: "Strict",
         });

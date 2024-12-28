@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
     Cookies.remove("role");
-    Cookies.remove("_id");
+    Cookies.remove("userId");
     router.push("/");
   };
 
