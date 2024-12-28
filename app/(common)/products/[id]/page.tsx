@@ -11,7 +11,6 @@ export default function ProductDetailsPage() {
   const [product, setProduct] = React.useState<
     IProductById["data"]["product"] | null
   >(null);
-  const [qty, setQty] = React.useState(0); // Track the selected quantity
   const [activeImage, setActiveImage] = React.useState<string | undefined>(undefined); // Active main image
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : "";
@@ -37,14 +36,6 @@ export default function ProductDetailsPage() {
     fetchProductDetails();
   }, [id]);
 
-  // const handleIncrease = () => {
-  //   setQty((prev) => prev + 1);
-  // };
-
-  // const handleDecrease = () => {
-  //   setQty((prev) => (prev > 1 ? prev - 1 : 0));
-  // };
-
   const dispatch = useDispatch();
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -54,7 +45,7 @@ export default function ProductDetailsPage() {
         id: product?._id || "",
         name: product?.name || "",
         price: product?.price || 0,
-        quantity: qty || 1, // Default to adding 1 item
+        quantity: 1, // Default to adding 1 item
         image: product?.images[0] || "",
         stock: product?.quantity || 0
       })
@@ -131,23 +122,6 @@ export default function ProductDetailsPage() {
       </p>)
       }
 
-          {/* Quantity Controls */}
-          {/* <div className="flex items-center mb-6">
-            <button
-              onClick={handleDecrease}
-              className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
-            >
-              -
-            </button>
-            <span className="text-lg font-semibold px-2">{qty}</span>
-            <button
-              onClick={handleIncrease}
-              className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
-            >
-              +
-            </button>
-          </div> */}
-
           {/* Add to Cart Button */}
           {product.quantity === 0 ? (
             <button
@@ -164,8 +138,8 @@ export default function ProductDetailsPage() {
               onClick={handleAddToCart}
               className={className(
                 "w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3",
-                "active:translate-y-1 active:scale-95 rounded-lg",
-                " hover:bg-indigo-700 transition duration-300 shadow",
+                "active:translate-y-2 active:scale-95 rounded-lg",
+                "transition duration-300 shadow",
               )}
             >
               افزودن به سبد خرید

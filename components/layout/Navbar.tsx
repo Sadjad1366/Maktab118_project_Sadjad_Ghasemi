@@ -134,20 +134,29 @@ const Navbar: React.FC = () => {
                 "rounded-lg px-5 py-2 transition duration-300 shadow-md"
               )}
             >
-              <IoMdCart className="text-lg" />
-              <span className="text-md size-7">({items.length})</span>
+              <div className="relative py-1 px-2">
+                <IoMdCart className="text-lg" />
+                <div
+                  className={className(
+                    "absolute flex justify-center items-center",
+                    "left-6 -top-1 bg-red-600 rounded-full w-4 h-4"
+                  )}
+                >
+                  {items.length}
+                </div>
+              </div>
             </Link>
 
             {/* Dropdown Content */}
             {isDropdownOpen && (
-              <div className="absolute -right-36 top-12 w-72 bg-slate-100 shadow-lg rounded-lg z-30 overflow-hidden">
+              <div className="absolute -right-36 top-11 w-72 bg-slate-100 shadow-lg rounded-lg z-30 overflow-hidden">
                 {items.length === 0 ? (
                   <p className="text-center py-4 text-gray-500">
                     سبد خرید شما خالی است
                   </p>
                 ) : (
                   <ul className="divide-y divide-gray-200">
-                    {items.slice(0, 5).map((item) => (
+                    {items.slice(0, 10).map((item) => (
                       <li
                         key={item.id}
                         className="flex items-center justify-between p-2 hover:bg-gray-100"
@@ -225,30 +234,30 @@ const Navbar: React.FC = () => {
           </Link>
 
           <div className="flex flex-col gap-y-3 mt-">
-          {!token ?  (
-            <Link
-              className={className(
-                "flex items-center justify-center gap-x-2",
-                "bg-gray-400 hover:bg-gray-500 text-white",
-                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
-              )}
-              href="/auth/login"
-            >
-              <GrLogin className="text-xl" />
-              <p>ورود</p>
-            </Link>
-            ) :(
-            <button
-            onClick={exitHandler}
-              className={className(
-                "flex items-center justify-center gap-x-2",
-                "bg-gray-400 hover:bg-gray-500 text-white",
-                "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
-              )}
-            >
-              <GrLogin className="text-xl text-red-500" />
-              <p className="text-red-500">خروج</p>
-            </button>
+            {!token ? (
+              <Link
+                className={className(
+                  "flex items-center justify-center gap-x-2",
+                  "bg-gray-400 hover:bg-gray-500 text-white",
+                  "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+                )}
+                href="/auth/login"
+              >
+                <GrLogin className="text-xl" />
+                <p>ورود</p>
+              </Link>
+            ) : (
+              <button
+                onClick={exitHandler}
+                className={className(
+                  "flex items-center justify-center gap-x-2",
+                  "bg-gray-400 hover:bg-gray-500 text-white",
+                  "rounded-lg px-4 py-[6px] transition duration-300 shadow-md"
+                )}
+              >
+                <GrLogin className="text-xl text-red-500" />
+                <p className="text-red-500">خروج</p>
+              </button>
             )}
             <Link
               className={className(
@@ -258,8 +267,17 @@ const Navbar: React.FC = () => {
               )}
               href="/cart"
             >
-              <IoMdCart className="text-lg" />
-              <span>({items.length})</span>
+              <div className="relative flex justify-center items-center">
+                <IoMdCart className="text-xl" />
+                <div
+                  className={className(
+                    "absolute flex justify-center items-center",
+                    "left-5 -top-1 bg-red-600 rounded-full w-4 h-4"
+                  )}
+                >
+                  {items.length}
+                </div>
+              </div>
             </Link>
           </div>
         </div>

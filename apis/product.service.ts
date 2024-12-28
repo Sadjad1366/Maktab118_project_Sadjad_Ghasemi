@@ -33,21 +33,6 @@ export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,
   }
 };
 
-// export const getAllProductsReq = async (
-//   page: number,
-//   limit: number,
-//   sort: string | undefined,
-//   name: string,
-//   brand: string
-// ) => {
-//   const url = `http://localhost:8000/api/products?limit=${limit}&page=${page}&sort=${sort || ""}&name=${name}&brand=${brand}`;
-//   const response = await fetch(url);
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch products");
-//   }
-//   return await response.json(); // Ensure correct JSON parsing
-// };
-
 //============================= GET CATEGORIES ============================
 type GetAllCategoriesType = () => Promise<ICategory[]>;
 export const getAllCategories: GetAllCategoriesType = async () => {
