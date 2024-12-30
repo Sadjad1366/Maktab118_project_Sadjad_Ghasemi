@@ -25,15 +25,6 @@ export default function Checkout() {
   const router = useRouter();
   const id = Cookies.get("userId");
 
-  // // const { data } = useQuery({
-  // //   queryKey: ["user", id],
-  // //   queryFn: () => () => getUserById(id as string),
-  // // });
-  // React.useEffect(() => {
-  //   console.log(getUserById("6769576d18abeb0d4238e217"));
-  //   // console.log(id);
-  // }, []);
-
   const {
     data,
     isLoading: isQueryLoading,
@@ -59,29 +50,6 @@ export default function Checkout() {
   const submitHandler = () => {
     console.log(data);
 
-    // {
-    //   firstname,
-    //   lastname,
-    //   phoneNumber,
-    //   address,
-    //   deliveryDate
-    // }: IUserPayment) => {
-    //   setIsLoading(true);
-    //   try {
-    //    const response = await editUserById(
-    //       firstname,
-    //       lastname,
-    //       phoneNumber,
-    //       address,
-    //       deliveryDate
-    //     );
-    //     toast.success("ثبت نام با موفقیت انجام شد!");
-    //   } catch (error: any) {
-    //     toast.error(error?.response?.data?.message || "خطا در ثبت نام!");
-    //     console.error("Signup Error:", error);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
   };
 
   return (

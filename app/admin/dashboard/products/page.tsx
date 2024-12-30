@@ -39,9 +39,9 @@ const ProductPage: React.FC = () => {
     null
   );
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
-  const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
-    null
-  );
+  // const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
+  //   null
+  // );
 
   // Open and close create modal
   const openCreateModal = () => {
@@ -323,7 +323,7 @@ const ProductPage: React.FC = () => {
       />
       <CreateModal
         isOpen={isCreateModalOpen}
-        product={productToCreate}
+        // product={productToCreate}
         categories={categoriesMap}
         subcategories={subCategoriesMap}
         onClose={closeCreateModal}

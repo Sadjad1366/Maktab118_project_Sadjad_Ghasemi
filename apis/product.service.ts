@@ -25,7 +25,7 @@ export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,
         brand:brand
       },
     });
-    console.log('products in api: ',response.data);
+    // console.log('products in api: ',response.data);
     return response.data;
   } catch (error:any) {
     throw new Error(error.response?.data?.message || "خطا در دریافت محصولات");
@@ -60,7 +60,7 @@ type getProductByIdType = (id:string) => Promise<IProductById>
 export const getProductById:getProductByIdType = async(id) => {
   try {
     const response = await client.get(urls.product.getById(id));
-    console.log(response.data);
+    // console.log(response.data);
 
      return response.data
   } catch (error:any) {
