@@ -16,9 +16,14 @@ import { useEffect } from "react";
 
 const Basket: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { items, loading, error } = useSelector(
-    (state: RootState) => state.basket
-  );
+  // const { items, loading, error } = useSelector(
+  //   (state: RootState) => state.basket
+  // );
+
+  const { items, loading, error } = useSelector((state: RootState) => {
+    console.log("Redux State:", state.basket);
+    return state.basket;
+  });
   const router = useRouter();
   const role = Cookies.get("role");
   const token = Cookies.get("accessToken");
@@ -32,12 +37,20 @@ const Basket: React.FC = () => {
       router.push("/auth/login");
     }
   };
-  // useEffect(() => {
-  //   if (userId) {
-  //     dispatch(fetchCart(userId));
-  //   }
-  // }, [userId]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const userId = Cookies.get("userId");
+      console.log("UserId from Cookies (client-side):", userId);
+      if (userId) {
+        console.log("dispach is running ...");
+
+        dispatch(fetchCart(userId));
+      } else {
+        console.error("No userId found in cookies.");
+      }
+    }
+  }, []);
   const handleIncrement = (itemId: string, quantity: number, stock: number) => {
     if (quantity < stock) {
       dispatch(
@@ -174,7 +187,7 @@ const Basket: React.FC = () => {
               </div>
             </div>
           ))
-        : (console.log("No items to display. Loading or error occurred."),
+        : (console.log("No items to display. Loading or error occurred.",items),
           !loading && <p className="text-gray-500">سبد خرید شما خالی است.</p>)}
     </div>
   );

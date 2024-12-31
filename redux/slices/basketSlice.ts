@@ -39,22 +39,21 @@ const basketSlice = createSlice({
     // دریافت سبد خرید
     builder.addCase(fetchCart.pending, (state) => {
       state.loading = true;
-      state.error = null;
+      state.error = null; // بازنشانی خطا
     });
     builder.addCase(fetchCart.fulfilled, (state, action) => {
       console.log("Redux State Updated with Items:", action.payload);
       state.items = Array.isArray(action.payload) ? action.payload : [];
+      state.loading = false; // به‌روزرسانی وضعیت
     });
-
     builder.addCase(fetchCart.rejected, (state, action) => {
-      state.loading = false;
+      state.loading = false; // به‌روزرسانی وضعیت
       state.error = action.payload as string || "خطا در دریافت سبد خرید";
     });
 
     // افزودن محصول
     builder.addCase(addToCartApi.fulfilled, (state, action) => {
-      const newItem = action.meta.arg.item;
-
+      const newItem = action.meta.arg.item as CartItem; // تایپ دقیق
       const existingItem = state.items.find((item) => item.id === newItem.id);
       if (existingItem) {
         existingItem.quantity += newItem.quantity;
@@ -62,7 +61,6 @@ const basketSlice = createSlice({
         state.items.push(newItem);
       }
     });
-
     builder.addCase(addToCartApi.rejected, (state, action) => {
       state.error = action.payload as string || "خطا در افزودن به سبد خرید";
     });
@@ -75,7 +73,6 @@ const basketSlice = createSlice({
         existingItem.quantity = quantity;
       }
     });
-
     builder.addCase(updateCartApi.rejected, (state, action) => {
       state.error = action.payload as string || "خطا در بروزرسانی محصول";
     });
@@ -85,12 +82,12 @@ const basketSlice = createSlice({
       const { productId } = action.meta.arg;
       state.items = state.items.filter((item) => item.id !== productId);
     });
-
     builder.addCase(removeFromCartApi.rejected, (state, action) => {
       state.error = action.payload as string || "خطا در حذف محصول از سبد خرید";
     });
   },
 });
+
 
 export const { clearCart } = basketSlice.actions;
 export default basketSlice.reducer;

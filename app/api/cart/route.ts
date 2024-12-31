@@ -54,18 +54,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "userId and product are required" }, { status: 400 });
   }
 
-  const data = readCartFile();
-  let userCart = data.carts.find((cart: any) => cart.userId === userId);
+  const data = readCartFile(); // خواندن فایل JSON
+  let userCart = data.carts.find((cart: any) => cart.userId === userId); // پیدا کردن سبد خرید کاربر
 
   if (userCart) {
-    userCart.products.push(product);
+    // بررسی وجود محصول در سبد خرید
+    const existingProduct = userCart.products.find((p: any) => p.id === product.id);
+    if (existingProduct) {
+      // اگر محصول موجود است، تعداد را به‌روزرسانی کن
+      existingProduct.quantity += product.quantity;
+    } else {
+      // اگر محصول موجود نیست، به لیست محصولات اضافه کن
+      userCart.products.push(product);
+    }
   } else {
+    // اگر کاربر سبد خرید ندارد، سبد جدید ایجاد کن
     data.carts.push({ userId, products: [product] });
   }
 
-  writeCartFile(data);
+  writeCartFile(data); // ذخیره تغییرات در فایل
   return NextResponse.json({ message: "Product added successfully" });
 }
+
 
 // بروزرسانی تعداد محصول
 export async function PUT(req: Request) {

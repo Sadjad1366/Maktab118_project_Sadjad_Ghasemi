@@ -128,8 +128,8 @@ export const userloginReq = async ({
     });
         // Set _id in cookies
         Cookies.set("userId", _id, {
-          secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
-          sameSite: "Strict",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "Lax",
         });
 
 

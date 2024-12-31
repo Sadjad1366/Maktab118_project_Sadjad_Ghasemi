@@ -12,8 +12,7 @@ export const fetchCart = createAsyncThunk(
     try {
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
-      console.log("Response from fetchCart API:", response.data);
-      return response.data.products || []; // بررسی محصولات
+      return response.data.products || [];
     } catch (error: any) {
       console.error("fetchCart error:", error.message);
       return rejectWithValue(error.message || "Error fetching cart");

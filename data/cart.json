@@ -4,67 +4,19 @@
       "userId": "user1",
       "products": [
         {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 4,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
           "id": "6758a93a2ff2a0018f46ba93",
           "name": "ایسلندر King SeriesIIII",
           "price": 355000000,
-          "quantity": 1,
+          "quantity": 2,
           "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
           "stock": 10
         },
         {
-          "id": "6758a93a2ff2a0018f46ba93",
-          "name": "ایسلندر King SeriesIIII",
-          "price": 355000000,
-          "quantity": 1,
-          "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
+          "id": "6758a8d22ff2a0018f46ba6d",
+          "name": "ایسلندر ProII",
+          "price": 159,
+          "quantity": 2,
+          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
           "stock": 10
         }
       ]
@@ -72,22 +24,6 @@
     {
       "userId": "6742321931d4b43f86964197",
       "products": [
-        {
-          "id": "new_product_id",
-          "name": "New Product",
-          "price": 200,
-          "quantity": 2,
-          "image": "new_product_image.jpeg",
-          "stock": 5
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 3,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
         {
           "id": "6758a8d22ff2a0018f46ba6d",
           "name": "ایسلندر ProII",
@@ -105,31 +41,7 @@
           "id": "6758a8d22ff2a0018f46ba6d",
           "name": "ایسلندر ProII",
           "price": 159,
-          "quantity": 4,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
+          "quantity": 3,
           "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
           "stock": 10
         },
@@ -137,40 +49,8 @@
           "id": "6758a93a2ff2a0018f46ba93",
           "name": "ایسلندر King SeriesIIII",
           "price": 355000000,
-          "quantity": 4,
+          "quantity": 8,
           "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a93a2ff2a0018f46ba93",
-          "name": "ایسلندر King SeriesIIII",
-          "price": 355000000,
-          "quantity": 1,
-          "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a93a2ff2a0018f46ba93",
-          "name": "ایسلندر King SeriesIIII",
-          "price": 355000000,
-          "quantity": 1,
-          "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
-          "stock": 10
-        },
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
           "stock": 10
         }
       ]

@@ -6,25 +6,48 @@ import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 import { GrLogin } from "react-icons/gr";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { fetchCart } from "@/redux/thunks/basketThunks";
+import { clearCart } from "@/redux/slices/basketSlice";
+import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
+
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const token = Cookies.get("accessToken");
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  // شناسایی تغییر یوزر
+  React.useEffect(() => {
+    const userId = Cookies.get("userId") || null; 
+    if (userId !== currentUserId) {
+      setCurrentUserId(userId);
+      if (userId) {
+        dispatch(fetchCart(userId));
+      } else {
+        dispatch(clearCart());
+      }
+    }
+  }, [currentUserId, dispatch]);
+
 
   const exitHandler = () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
     Cookies.remove("role");
     Cookies.remove("userId");
+    dispatch(clearCart()); // پاک کردن سبد خرید
     router.push("/");
   };
+
 
   const items = useSelector((state: RootState) => state.basket.items) || [];
   React.useEffect(() => {
