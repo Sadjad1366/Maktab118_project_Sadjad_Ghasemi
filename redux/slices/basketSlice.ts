@@ -36,10 +36,10 @@ const basketSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // دریافت سبد خرید
+
     builder.addCase(fetchCart.pending, (state) => {
       state.loading = true;
-      state.error = null; // بازنشانی خطا
+      state.error = null;
     });
     builder.addCase(fetchCart.fulfilled, (state, action) => {
       console.log("Redux State Updated with Items:", action.payload);
@@ -51,9 +51,9 @@ const basketSlice = createSlice({
       state.error = action.payload as string || "خطا در دریافت سبد خرید";
     });
 
-    // افزودن محصول
+
     builder.addCase(addToCartApi.fulfilled, (state, action) => {
-      const newItem = action.meta.arg.item as CartItem; // تایپ دقیق
+      const newItem = action.meta.arg.item as CartItem;
       const existingItem = state.items.find((item) => item.id === newItem.id);
       if (existingItem) {
         existingItem.quantity += newItem.quantity;
@@ -65,7 +65,7 @@ const basketSlice = createSlice({
       state.error = action.payload as string || "خطا در افزودن به سبد خرید";
     });
 
-    // بروزرسانی محصول
+
     builder.addCase(updateCartApi.fulfilled, (state, action) => {
       const { productId, quantity } = action.meta.arg;
       const existingItem = state.items.find((item) => item.id === productId);
@@ -77,7 +77,7 @@ const basketSlice = createSlice({
       state.error = action.payload as string || "خطا در بروزرسانی محصول";
     });
 
-    // حذف محصول
+  
     builder.addCase(removeFromCartApi.fulfilled, (state, action) => {
       const { productId } = action.meta.arg;
       state.items = state.items.filter((item) => item.id !== productId);
