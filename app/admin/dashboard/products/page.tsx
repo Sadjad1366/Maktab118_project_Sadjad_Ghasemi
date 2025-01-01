@@ -11,7 +11,7 @@ import {
   getAllProductsReq,
   updateProductById,
 } from "@/apis/product.service";
-import { getAllCategories, getAllSubCategories } from "@/apis/product.service";
+import { getAllCategories, getAllSubCategories } from "@/apis/category.service";
 import { className } from "@/utils/classNames";
 import CreateModal from "@/components/modals/createModal";
 

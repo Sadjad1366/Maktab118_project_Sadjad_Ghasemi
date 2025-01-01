@@ -44,10 +44,10 @@ const basketSlice = createSlice({
     builder.addCase(fetchCart.fulfilled, (state, action) => {
       console.log("Redux State Updated with Items:", action.payload);
       state.items = Array.isArray(action.payload) ? action.payload : [];
-      state.loading = false; // به‌روزرسانی وضعیت
+      state.loading = false;
     });
     builder.addCase(fetchCart.rejected, (state, action) => {
-      state.loading = false; // به‌روزرسانی وضعیت
+      state.loading = false; 
       state.error = action.payload as string || "خطا در دریافت سبد خرید";
     });
 
@@ -77,7 +77,7 @@ const basketSlice = createSlice({
       state.error = action.payload as string || "خطا در بروزرسانی محصول";
     });
 
-  
+
     builder.addCase(removeFromCartApi.fulfilled, (state, action) => {
       const { productId } = action.meta.arg;
       state.items = state.items.filter((item) => item.id !== productId);

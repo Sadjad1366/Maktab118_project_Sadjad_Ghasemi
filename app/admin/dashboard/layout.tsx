@@ -43,6 +43,7 @@ export default function DashboardLayout({
     Cookies.remove('refreshToken');
     Cookies.remove("role");
     Cookies.remove("_id");
+    Cookies.remove("userId");
     redirect('/admin')
 
   }

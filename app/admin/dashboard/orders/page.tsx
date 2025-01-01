@@ -10,7 +10,7 @@ import { FaSort } from "react-icons/fa";
 import { toJalaali } from "jalaali-js";
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [orders, setOrders] = useState<IOrderGetAllRes[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState<
     "all" | "delivered" | "pending"
