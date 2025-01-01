@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IoMdCart } from "react-icons/io";
 import { GrLogin } from "react-icons/gr";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
 
   // شناسایی تغییر یوزر
   React.useEffect(() => {
-    const userId = Cookies.get("userId") || null; 
+    const userId = Cookies.get("userId") || null;
     if (userId !== currentUserId) {
       setCurrentUserId(userId);
       if (userId) {
@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
     Cookies.remove("refreshToken");
     Cookies.remove("role");
     Cookies.remove("userId");
-    dispatch(clearCart()); // پاک کردن سبد خرید
+    // dispatch(clearCart()); // پاک کردن سبد خرید
     router.push("/");
   };
 

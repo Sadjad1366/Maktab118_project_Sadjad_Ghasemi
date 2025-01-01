@@ -16,9 +16,7 @@ import { useEffect } from "react";
 
 const Basket: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const { items, loading, error } = useSelector(
-  //   (state: RootState) => state.basket
-  // );
+
 
   const { items, loading, error } = useSelector((state: RootState) => {
     console.log("Redux State:", state.basket);
@@ -39,18 +37,13 @@ const Basket: React.FC = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userId = Cookies.get("userId");
-      console.log("UserId from Cookies (client-side):", userId);
-      if (userId) {
-        console.log("dispach is running ...");
-
-        dispatch(fetchCart(userId));
-      } else {
-        console.error("No userId found in cookies.");
-      }
+    if (userId) {
+      dispatch(fetchCart(userId)); // فراخوانی fetchCart با userId
+    } else {
+      console.error("User ID is missing in cookies.");
     }
-  }, []);
+  }, [dispatch, userId]);
+
   const handleIncrement = (itemId: string, quantity: number, stock: number) => {
     if (quantity < stock) {
       dispatch(

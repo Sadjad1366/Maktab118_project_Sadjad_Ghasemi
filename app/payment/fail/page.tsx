@@ -5,7 +5,7 @@ import { VscError } from "react-icons/vsc";
 export default function FailPayment() {
   return (
     <div className="relative w-full bg-fail-pattern h-screen flex justify-center items-center ">
-      <div className="absolute w-full max-w-md mt-7">
+      <div className="absolute w-full max-w-md mt-7 opacity-95">
         <div
           className="bg-white rounded-lg shadow-lg text-center overflow-hidden animate-fade-in-up"
           style={{

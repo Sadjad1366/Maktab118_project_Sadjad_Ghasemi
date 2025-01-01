@@ -23,7 +23,7 @@ type createOrderReqType = ({
 export const createOrderReq: createOrderReqType = async ({
   user,
   products,
-  deliveryStatus,
+  deliveryStatus = false,
 }: IOrderCreateReq) => {
   try {
     const response = await client.post(urls.order, {
@@ -33,6 +33,7 @@ export const createOrderReq: createOrderReqType = async ({
     });
     return response.data;
   } catch (error: any) {
+    console.error("Error from server:", error.response?.data);
     throw new Error(error.response?.data?.message || "ایجاد سفارش ناموفق");
   }
 };

@@ -4,7 +4,7 @@ import { PiCloudCheckLight } from "react-icons/pi";
 export default function SuccessPage() {
   return (
     <div className="relative w-full bg-success-pattern h-screen flex justify-center items-center ">
-      <div className="absolute w-full max-w-md mt-7">
+      <div className="absolute w-full max-w-md mt-7 opacity-95">
         <div
           className="bg-white rounded-lg shadow-lg text-center overflow-hidden animate-fade-in-up"
           style={{

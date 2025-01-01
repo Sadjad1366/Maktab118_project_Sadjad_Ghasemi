@@ -4,6 +4,7 @@ import {
   addToCartApi,
   updateCartApi,
   removeFromCartApi,
+  clearCartApi,
 } from "../thunks/basketThunks";
 
 export interface CartItem {
@@ -47,10 +48,9 @@ const basketSlice = createSlice({
       state.loading = false;
     });
     builder.addCase(fetchCart.rejected, (state, action) => {
-      state.loading = false; 
+      state.loading = false;
       state.error = action.payload as string || "خطا در دریافت سبد خرید";
     });
-
 
     builder.addCase(addToCartApi.fulfilled, (state, action) => {
       const newItem = action.meta.arg.item as CartItem;
@@ -85,6 +85,19 @@ const basketSlice = createSlice({
     builder.addCase(removeFromCartApi.rejected, (state, action) => {
       state.error = action.payload as string || "خطا در حذف محصول از سبد خرید";
     });
+      // حذف کامل سبد خرید
+  builder.addCase(clearCartApi.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+  });
+  builder.addCase(clearCartApi.fulfilled, (state) => {
+    state.items = []; // خالی کردن سبد خرید در Redux
+    state.loading = false;
+  });
+  builder.addCase(clearCartApi.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string || "خطا در پاک کردن سبد خرید";
+  });
   },
 });
 

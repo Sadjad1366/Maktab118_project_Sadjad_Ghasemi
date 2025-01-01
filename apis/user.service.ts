@@ -8,7 +8,6 @@ type GetAllUsersType = () => Promise<IUser[]>;
 export const getAllUsers: GetAllUsersType = async () => {
   try {
     const token = Cookies.get("accessToken");
-    // console.log("Access Token:", token);
 
     if (!token) {
       throw new Error("Authentication token not found");

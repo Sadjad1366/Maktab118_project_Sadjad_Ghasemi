@@ -124,3 +124,5 @@ export async function DELETE(req: Request) {
   writeCartFile(data);
   return NextResponse.json({ message: "Product removed successfully" });
 }
+
+// حذف کامل سبد خرید

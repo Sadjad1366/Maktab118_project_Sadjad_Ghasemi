@@ -16,38 +16,36 @@ interface IOrderGetAllRes {
 }
 
 interface IOrderCreateReq {
-  user: string;
-  products: [
-    {
-      product: string;
-      count: number;
+      user: string;
+      products: {
+        product: string;
+        count: number;
+      }[];
+      deliveryStatus: boolean;
     }
-  ];
-  deliveryStatus: boolean;
-}
 
-interface IOrderCreateRes {
-      "status": string,
-      "data": {
-          "order": {
-              "user": string,
-              "products": [
-                  {
-                      "product": {
-                          "_id": string,
-                          "price": number
-                      },
-                      "count": number,
-                      "_id": string
-                  }
-              ],
-              "totalPrice": number,
-              "deliveryDate": string,
-              "deliveryStatus": boolean,
-              "_id": string,
-              "createdAt": string,
-              "updatedAt": string,
-              "__v": number
-          }
-      }
-  }
+
+    interface IOrderCreateRes {
+      status: string;
+      data: {
+        order: {
+          user: string;
+          products: {
+            product: {
+              _id: string;
+              price: number;
+            };
+            count: number;
+            _id: string;
+          }[];
+          totalPrice: number;
+          deliveryDate: string;
+          deliveryStatus: boolean;
+          _id: string;
+          createdAt: string;
+          updatedAt: string;
+          __v: number;
+        };
+      };
+    }
+
