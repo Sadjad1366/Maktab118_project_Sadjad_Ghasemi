@@ -8,6 +8,7 @@ export interface IUser {
   role: string;
   createdAt: string;
   updatedAt: string;
+  __v?:number
 }
 
 export interface IUserLoginReq {
@@ -86,6 +87,7 @@ export interface IUserByIdRes {
       role: string;
       createdAt: string;
       updatedAt: string;
+      deliveryDate?:string;
       __v: number;
     };
   };

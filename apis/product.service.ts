@@ -25,48 +25,11 @@ export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,
         brand:brand
       },
     });
-    console.log('products in api: ',response.data);
+    // console.log('products in api: ',response.data);
     return response.data;
   } catch (error:any) {
     throw new Error(error.response?.data?.message || "خطا در دریافت محصولات");
 
-  }
-};
-
-// export const getAllProductsReq = async (
-//   page: number,
-//   limit: number,
-//   sort: string | undefined,
-//   name: string,
-//   brand: string
-// ) => {
-//   const url = `http://localhost:8000/api/products?limit=${limit}&page=${page}&sort=${sort || ""}&name=${name}&brand=${brand}`;
-//   const response = await fetch(url);
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch products");
-//   }
-//   return await response.json(); // Ensure correct JSON parsing
-// };
-
-//============================= GET CATEGORIES ============================
-type GetAllCategoriesType = () => Promise<ICategory[]>;
-export const getAllCategories: GetAllCategoriesType = async () => {
-  try {
-    const response = await client.get(urls.category.getCategories);
-    return response.data.data.categories; // Adjust based on your API response structure
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "خطا در دریافت دسته بندی ها");
-  }
-};
-
-//============================= GET SUBCATEGORIES ============================
-type GetAllSubCategoriesType = () => Promise<ISubCategory[]>;
-export const getAllSubCategories: GetAllSubCategoriesType = async () => {
-  try {
-    const response = await client.get(urls.subcategory.getSubCategories);
-    return response.data.data.subcategories; // Adjust based on your API response structure
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "خطا در دریافت زیر دسته بندی ها");
   }
 };
 
@@ -75,7 +38,7 @@ type getProductByIdType = (id:string) => Promise<IProductById>
 export const getProductById:getProductByIdType = async(id) => {
   try {
     const response = await client.get(urls.product.getById(id));
-    console.log(response.data);
+    // console.log(response.data);
 
      return response.data
   } catch (error:any) {

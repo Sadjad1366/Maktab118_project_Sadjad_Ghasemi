@@ -1,65 +1,90 @@
 "use client";
+
 import { getProductById } from "@/apis/product.service";
-import { addToCart } from "@/redux/slices/basketSlice";
+import { addToCartApi } from "@/redux/thunks/basketThunks"; // Import addToCartApi
 import { className } from "@/utils/classNames";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/utils/hooks/useAppDispatch"; // Use typed dispatch
+import Cookies from "js-cookie";
 
-export default function ProductDetailsPage() {
-  const [product, setProduct] = React.useState<
-    IProductById["data"]["product"] | null
-  >(null);
-  const [qty, setQty] = React.useState(0); // Track the selected quantity
-  const [activeImage, setActiveImage] = React.useState<string | undefined>(undefined); // Active main image
+interface IProduct {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number; // Stock quantity
+  images: string[];
+  rating: {
+    count: number; // Number of reviews
+  };
+}
+
+const ProductDetailsPage: React.FC = () => {
+  const [product, setProduct] = useState<IProduct | null>(null);
+  const [activeImage, setActiveImage] = useState<string | undefined>(undefined);
   const params = useParams();
+  const dispatch = useAppDispatch(); // Use custom hook for typed dispatch
+
   const id = typeof params?.id === "string" ? params.id : "";
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!id) return;
 
     const fetchProductDetails = async () => {
       try {
         const response = await getProductById(id);
-        if (response?.data?.product) {
-          setProduct(response.data.product);
+        const productData = response?.data?.product;
+
+        if (productData) {
+          setProduct(productData);
           setActiveImage(
-            `http://localhost:8000/images/products/images/${response.data.product.images[0]}`
-          ); // Set the first image as the default active image
+            `http://localhost:8000/images/products/images/${productData.images[0]}`
+          );
         } else {
           console.error("Product data is missing in response:", response);
         }
       } catch (error: any) {
         console.error("Error fetching product details:", error.message);
+        toast.error("مشکلی در بارگذاری محصول رخ داد.");
       }
     };
+
     fetchProductDetails();
   }, [id]);
 
-  // const handleIncrease = () => {
-  //   setQty((prev) => prev + 1);
-  // };
-
-  // const handleDecrease = () => {
-  //   setQty((prev) => (prev > 1 ? prev - 1 : 0));
-  // };
-
-  const dispatch = useDispatch();
-
   const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent the Link navigation
+    e.preventDefault();
+
+    if (!product) {
+      toast.error("محصول موجود نیست.");
+      return;
+    }
+
+    const userId = Cookies.get("userId"); // Replace with the actual user ID
+
     dispatch(
-      addToCart({
-        id: product?._id || "",
-        name: product?.name || "",
-        price: product?.price || 0,
-        quantity: qty || 1, // Default to adding 1 item
-        image: product?.images[0] || "",
-        stock: product?.quantity || 0
+      addToCartApi({
+        userId: userId || "user1",
+        item: {
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          image: product.images[0] || "",
+          stock: product.quantity,
+        },
       })
-    );
-    toast.success("برای نهایی کردن تعداد به سبد خرید رجوع کنید")
+    )
+      .unwrap()
+      .then(() => {
+        toast.success("محصول به سبد خرید اضافه شد.");
+      })
+      .catch((error) => {
+        console.error("Error adding to cart:", error);
+        toast.error("مشکلی در افزودن به سبد خرید رخ داد.");
+      });
   };
 
   const handleThumbnailClick = (imageUrl: string) => {
@@ -69,7 +94,7 @@ export default function ProductDetailsPage() {
   if (!product) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        Loading product details...
+        <p>در حال بارگذاری اطلاعات محصول...</p>
       </div>
     );
   }
@@ -81,11 +106,11 @@ export default function ProductDetailsPage() {
         <div className="relative">
           {/* Main Product Image */}
           <img
-          width={48}
-          height={48}
             className="w-full rounded-lg shadow-md"
-            src={activeImage ?? ""}
+            src={activeImage || ""}
             alt={product.name}
+            width={48}
+            height={48}
           />
 
           {/* Thumbnail Carousel */}
@@ -112,67 +137,42 @@ export default function ProductDetailsPage() {
 
         {/* Product Information */}
         <div className="flex flex-col justify-center pb-24">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {product.name}
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h1>
           <p className="text-gray-600 text-lg mb-4">{product.description}</p>
 
           {/* Ratings */}
           <div className="flex items-center mb-4">
             <span className="ml-2 text-gray-600">
-              ({product.rating.count} reviews)
+              ({product.rating.count} نظر)
             </span>
           </div>
 
           {/* Price */}
-        {product.quantity === 0? (<></>)
-       : (<p className="text-2xl font-bold text-indigo-600 mb-6">
-        {product.price} تومان
-      </p>)
-      }
-
-          {/* Quantity Controls */}
-          {/* <div className="flex items-center mb-6">
-            <button
-              onClick={handleDecrease}
-              className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
-            >
-              -
-            </button>
-            <span className="text-lg font-semibold px-2">{qty}</span>
-            <button
-              onClick={handleIncrease}
-              className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
-            >
-              +
-            </button>
-          </div> */}
+          {product.quantity > 0 ? (
+            <p className="text-2xl font-bold text-indigo-600 mb-6">
+              {product.price.toLocaleString()} تومان
+            </p>
+          ) : (
+            <p className="text-red-500 text-xl mb-6">ناموجود</p>
+          )}
 
           {/* Add to Cart Button */}
-          {product.quantity === 0 ? (
-            <button
-              disabled
-              onClick={handleAddToCart}
-              className={className(
-                "w-full bg-indigo-300 cursor-not-allowed text-white px-6 py-3 rounded-lg",
-              )}
-            >
-              افزودن به سبد خرید
-            </button>
-          ) : (
-            <button
-              onClick={handleAddToCart}
-              className={className(
-                "w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3",
-                "active:translate-y-1 active:scale-95 rounded-lg",
-                " hover:bg-indigo-700 transition duration-300 shadow",
-              )}
-            >
-              افزودن به سبد خرید
-            </button>
-          )}
+          <button
+            onClick={handleAddToCart}
+            disabled={product.quantity === 0}
+            className={className(
+              "w-full px-6 py-3 rounded-lg",
+              product.quantity > 0
+                ? "bg-indigo-600 hover:bg-indigo-700 text-white transition duration-300 shadow active:translate-y-2 active:scale-95"
+                : "bg-indigo-300 cursor-not-allowed text-white"
+            )}
+          >
+            افزودن به سبد خرید
+          </button>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default ProductDetailsPage;

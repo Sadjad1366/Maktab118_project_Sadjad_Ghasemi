@@ -19,7 +19,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <div
       className={className(
         "bg-white rounded-lg shadow-md overflow-hidden",
-        "hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+        "hover:shadow-lg transition-shadow duration-300 cursor-pointer",
+        "hover:scale-105 hover:transition duration-700"
       )}
     >
       {isLike ? (

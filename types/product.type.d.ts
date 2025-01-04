@@ -35,22 +35,7 @@ interface ISubCategory {
   updatedAt: string;
   slugname: string;
 }
-interface IOrder {
-  _id: string;
-  user: string;
-  products: [
-    {
-      product: string;
-      count: number;
-      _id: string;
-    }
-  ];
-  totalPrice: number;
-  deliveryDate: string;
-  deliveryStatus: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+
 interface IProductById {
   status: string;
   data: {

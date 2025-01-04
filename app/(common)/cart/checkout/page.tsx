@@ -1,87 +1,68 @@
 "use client";
-import { IUserPayment } from "@/types/user.type";
-import { className } from "@/utils/classNames";
-import { paymentSchema } from "@/utils/validations/zodAuthValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+
 import React from "react";
-import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import Cookies from "js-cookie";
-import {
-  //  editUserById,
-  getUserById,
-} from "@/apis/user.service";
 import { useQuery } from "@tanstack/react-query";
+import Cookies from "js-cookie";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IUserPayment } from "@/types/user.type";
+import { paymentSchema } from "@/utils/validations/zodAuthValidation";
+import { getUserById } from "@/apis/user.service";
+import { useRouter } from "next/navigation";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+
 
 export default function Checkout() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IUserPayment>({
-    resolver: zodResolver(paymentSchema),
-  });
-  const router = useRouter();
   const id = Cookies.get("userId");
+  const router = useRouter();
 
-  // // const { data } = useQuery({
-  // //   queryKey: ["user", id],
-  // //   queryFn: () => () => getUserById(id as string),
-  // // });
-  // React.useEffect(() => {
-  //   console.log(getUserById("6769576d18abeb0d4238e217"));
-  //   // console.log(id);
-  // }, []);
-
-  const {
-    data,
-    isLoading: isQueryLoading,
-    error,
-  } = useQuery({
+  const { data } = useQuery({
     queryKey: ["user", id],
     queryFn: async () => {
       if (!id) throw new Error("User ID not found in cookies");
       return getUserById(id);
     },
-    enabled: !!id, // Prevent query execution if id is undefined or null
-    retry: false, // Optional: Disable retries for demonstration purposes
+    enabled: !!id,
   });
 
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IUserPayment>({
+    resolver: zodResolver(paymentSchema),
+    mode: "all",
+    defaultValues: {
+      firstname: "",
+      lastname: "",
+      phoneNumber: "",
+      address: "",
+      deliveryDate: "",
+    },
+  });
+
+  // Update form values when data is fetched
   React.useEffect(() => {
-    if (data) {
-      console.log(data.data.user); // Log user data when available
-    } else {
-      console.log("Data is undefined"); // Log undefined if data is not fetched
+    if (data?.data?.user) {
+      const user = data.data.user;
+      reset({
+        firstname: user.firstname || "",
+        lastname: user.lastname || "",
+        phoneNumber: user.phoneNumber || "",
+        address: user.address || "",
+        deliveryDate: "",
+      });
     }
-  }, [data]);
+  }, [data, reset]);
 
-  const submitHandler = () => {
-    console.log(data);
-
-    // {
-    //   firstname,
-    //   lastname,
-    //   phoneNumber,
-    //   address,
-    //   deliveryDate
-    // }: IUserPayment) => {
-    //   setIsLoading(true);
-    //   try {
-    //    const response = await editUserById(
-    //       firstname,
-    //       lastname,
-    //       phoneNumber,
-    //       address,
-    //       deliveryDate
-    //     );
-    //     toast.success("ثبت نام با موفقیت انجام شد!");
-    //   } catch (error: any) {
-    //     toast.error(error?.response?.data?.message || "خطا در ثبت نام!");
-    //     console.error("Signup Error:", error);
-    //   } finally {
-    //     setIsLoading(false);
-    //   }
+  const submitHandler = (formData: IUserPayment) => {
+    console.log("Form Submitted:", formData);
+    Cookies.set("deliveryDate",formData.deliveryDate)
+    router.push("/payment");
   };
 
   return (
@@ -90,137 +71,88 @@ export default function Checkout() {
         onSubmit={handleSubmit(submitHandler)}
         className="bg-slate-200 px-8 py-2 rounded-xl shadow-md w-full max-w-md"
       >
-        <div className="flex justify-center">
-          <img src="/images/logo/ninja.png" alt="Ninja Logo" className="h-16" />
-        </div>
-
         <div className="space-y-3">
-          <div className="flex justify-between">
-            <div>
-              <label
-                className="block text-gray-700 font-medium px-2"
-                htmlFor="firstname"
-              >
-                نام
-              </label>
-              <input
-                type="text"
-                value={data?.data.user.firstname}
-                // placeholder="نام خود را وارد نمایید"
-                {...register("firstname")}
-                className={className(
-                  "w-full px-4 py-2 border rounded-md shadow-lg",
-                  "focus:outline-none focus:ring-2 focus:ring-blue-300"
-                )}
-              />
-              {errors.firstname && (
-                <p className="text-red-500 text-sm px-2">
-                  {errors.firstname.message}
-                </p>
-              )}
-            </div>
-            <div>
-              <label
-                className="block text-gray-700 font-medium px-2"
-                htmlFor="lastname"
-              >
-                نام خانوادگی
-              </label>
-              <input
-                type="text"
-                value={data?.data.user.lastname}
-                // placeholder="نام خانوادگی خود را وارد نمایید"
-                {...register("lastname")}
-                className={className(
-                  "w-full px-4 py-2 border rounded-md shadow-lg",
-                  "focus:outline-none focus:ring-2 focus:ring-blue-300"
-                )}
-              />
-              {errors.lastname && (
-                <p className="text-red-500 text-sm px-2">
-                  {errors.lastname.message}
-                </p>
-              )}
-            </div>
-          </div>
-
           <div>
-            <label
-              className="block text-gray-700 font-medium px-2"
-              htmlFor="phoneNumber"
-            >
+            <label htmlFor="firstname" className="block text-gray-700 font-medium px-2">
+              نام
+            </label>
+            <input
+              id="firstname"
+              {...register("firstname")}
+              className="w-full px-4 py-2 border rounded-md shadow-lg"
+            />
+            {errors.firstname && (
+              <p className="text-red-500 text-sm px-2">{errors.firstname.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="lastname" className="block text-gray-700 font-medium px-2">
+              نام خانوادگی
+            </label>
+            <input
+              id="lastname"
+              {...register("lastname")}
+              className="w-full px-4 py-2 border rounded-md shadow-lg"
+            />
+            {errors.lastname && (
+              <p className="text-red-500 text-sm px-2">{errors.lastname.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="phoneNumber" className="block text-gray-700 font-medium px-2">
               موبایل
             </label>
             <input
-              value={data?.data.user.phoneNumber}
-              type="text"
-              // placeholder="شماره تماس خود را وارد نمایید"
+              id="phoneNumber"
               {...register("phoneNumber")}
-              className={className(
-                "w-full px-4 py-2 border rounded-md shadow-lg",
-                "focus:outline-none focus:ring-2 focus:ring-blue-300"
-              )}
+              className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.phoneNumber && (
-              <p className="max-w-[180px] text-red-500 text-sm px-2">
-                {errors.phoneNumber.message}
-              </p>
+              <p className="text-red-500 text-sm px-2">{errors.phoneNumber.message}</p>
             )}
           </div>
           <div>
-            <label
-              className="block text-gray-700 font-medium px-2"
-              htmlFor="address"
-            >
+            <label htmlFor="address" className="block text-gray-700 font-medium px-2">
               آدرس
             </label>
             <textarea
-              value={data?.data.user.address}
-              rows={3}
+              id="address"
               {...register("address")}
-              className={className(
-                "w-full px-4 py-2 border rounded-md shadow-lg",
-                "focus:outline-none focus:ring-2 focus:ring-blue-300"
-              )}
+              rows={3}
+              className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.address && (
-              <p className="text-red-500 text-sm px-2">
-                {errors.address.message}
-              </p>
+              <p className="text-red-500 text-sm px-2">{errors.address.message}</p>
             )}
           </div>
           <div>
-            <label
-              className="block text-gray-700 font-medium px-2"
-              htmlFor="phoneNumber"
-            >
+            <label htmlFor="deliveryDate" className="block text-gray-700 font-medium px-2">
               تاریخ تحویل
             </label>
-            <input
-              type="date"
-              // placeholder="شماره تماس خود را وارد نمایید"
-              {...register("deliveryDate")}
-              className={className(
-                "w-full px-4 py-2 border rounded-md shadow-lg",
-                "focus:outline-none focus:ring-2 focus:ring-blue-300"
+            <Controller
+              control={control}
+              name="deliveryDate"
+              render={({ field: { onChange, value } }) => (
+                <DatePicker
+                  value={value ? new DateObject(value) : ""}
+                  onChange={(date) => {
+                    const isoDate = date ? date.toDate().toISOString() : "";
+                    onChange(isoDate);
+                  }}
+                  calendar={persian}
+                  locale={persian_fa}
+                  format="YYYY/MM/DD"
+                  calendarPosition="bottom-right"
+                />
               )}
             />
             {errors.deliveryDate && (
-              <p className="max-w-[180px] text-red-500 text-sm px-2">
-                {errors.deliveryDate.message}
-              </p>
+              <p className="text-red-500 text-sm px-2">{errors.deliveryDate.message}</p>
             )}
           </div>
-          <div>
-            <button
-              type="submit"
-              className={className(
-                "w-full m-2 bg-blue-500 hover:bg-blue-700",
-                "text-white font-bold py-2 rounded focus:outline-none",
-                "focus:shadow-outline active:translate-y-1 active:scale-95 "
-              )}
-            >
-              پرداخت
+          <div className="py-4">
+            <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
+              ادامه
             </button>
           </div>
         </div>

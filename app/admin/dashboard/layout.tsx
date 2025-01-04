@@ -15,6 +15,7 @@ import {
   FaChevronUp,
   FaBars,
 } from "react-icons/fa";
+import { IoHome } from "react-icons/io5";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 
@@ -43,6 +44,7 @@ export default function DashboardLayout({
     Cookies.remove('refreshToken');
     Cookies.remove("role");
     Cookies.remove("_id");
+    Cookies.remove("userId");
     redirect('/admin')
 
   }
@@ -69,6 +71,14 @@ export default function DashboardLayout({
           <ul className="px-2">
             {/* Dashboard Link */}
             <li className="my-2 py-2 hover:bg-gray-200 hover:text-gray-800 transition-colors focus:outline-none">
+              <Link href="/">
+                <div className="flex items-center px-2">
+                  <IoHome className="text-lg" />
+                  {isSidebarOpen && <span className="mr-3">صفحه اصلی</span>}
+                </div>
+              </Link>
+            </li>
+            <li className="my-2 py-2 hover:bg-gray-200 hover:text-gray-800 transition-colors focus:outline-none">
               <Link href="/admin/dashboard">
                 <div className="flex items-center px-2">
                   <FaTachometerAlt className="text-lg" />
@@ -76,7 +86,7 @@ export default function DashboardLayout({
                 </div>
               </Link>
             </li>
-
+          
             {/* Products Link */}
             <li className="my-2 py-2 hover:bg-gray-200 hover:text-gray-800 transition-colors focus:outline-none">
               <Link href="/admin/dashboard/products">

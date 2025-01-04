@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllProductsByCategory } from "@/apis/category.services";
+import { getAllProductsByCategory } from "@/apis/category.service";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ProductCard } from "@/components/products/ProductCard";

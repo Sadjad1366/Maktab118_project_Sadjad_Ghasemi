@@ -1,87 +1,106 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  fetchCart,
+  addToCartApi,
+  updateCartApi,
+  removeFromCartApi,
+  clearCartApi,
+} from "../thunks/basketThunks";
 
-interface CartItem {
+export interface CartItem {
   id: string;
   name: string;
-  price: number;
   quantity: number;
+  price: number;
   image: string;
-  stock: number; // Add a 'stock' property to track product availability
+  stock: number;
 }
 
-interface BasketState {
+export interface BasketState {
   items: CartItem[];
+  loading: boolean;
+  error: string | null;
 }
 
-const loadState = (): BasketState => {
-  if (typeof window !== "undefined") {
-    const savedState = localStorage.getItem("basket");
-    return savedState ? JSON.parse(savedState) : { items: [] };
-  }
-  return { items: [] };
+const initialState: BasketState = {
+  items: [], // آرایه خالی به عنوان مقدار پیش‌فرض
+  loading: false,
+  error: null,
 };
-
-const saveState = (state: BasketState) => {
-  localStorage.setItem("basket", JSON.stringify(state));
-};
-
-const initialState: BasketState = loadState();
 
 const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
-    addToCart: (state, action: PayloadAction<CartItem>) => {
-      const { id, quantity, stock } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        // Check stock limit
-        if (existingItem.quantity <= stock) {
-          existingItem.quantity += quantity;
-        } else {
-          existingItem.quantity = stock; // Set to max stock if exceeded
-        }
-      } else {
-        // Ensure the quantity doesn't exceed stock for new items
-        state.items.push({ ...action.payload, quantity: Math.min(quantity, stock) });
-      }
-      saveState(state);
-    },
-    incrementQuantity: (state, action: PayloadAction<string>) => {
-      const item = state.items.find((item) => item.id === action.payload);
-      if (item && item.quantity < item.stock) {
-        item.quantity += 1;
-        saveState(state);
-      }
-    },
-    decrementQuantity: (state, action: PayloadAction<string>) => {
-      const item = state.items.find((item) => item.id === action.payload);
-      if (item) {
-        if (item.quantity > 1) {
-          item.quantity -= 1;
-        } else {
-          state.items = state.items.filter((item) => item.id !== action.payload);
-        }
-        saveState(state);
-      }
-    },
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
-      saveState(state);
-    },
     clearCart: (state) => {
       state.items = [];
-      saveState(state);
     },
+  },
+  extraReducers: (builder) => {
+
+    builder.addCase(fetchCart.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchCart.fulfilled, (state, action) => {
+      console.log("Redux State Updated with Items:", action.payload);
+      state.items = Array.isArray(action.payload) ? action.payload : [];
+      state.loading = false;
+    });
+    builder.addCase(fetchCart.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string || "خطا در دریافت سبد خرید";
+    });
+
+    builder.addCase(addToCartApi.fulfilled, (state, action) => {
+      const newItem = action.meta.arg.item as CartItem;
+      const existingItem = state.items.find((item) => item.id === newItem.id);
+      if (existingItem) {
+        existingItem.quantity += newItem.quantity;
+      } else {
+        state.items.push(newItem);
+      }
+    });
+    builder.addCase(addToCartApi.rejected, (state, action) => {
+      state.error = action.payload as string || "خطا در افزودن به سبد خرید";
+    });
+
+
+    builder.addCase(updateCartApi.fulfilled, (state, action) => {
+      const { productId, quantity } = action.meta.arg;
+      const existingItem = state.items.find((item) => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity = quantity;
+      }
+    });
+    builder.addCase(updateCartApi.rejected, (state, action) => {
+      state.error = action.payload as string || "خطا در بروزرسانی محصول";
+    });
+
+
+    builder.addCase(removeFromCartApi.fulfilled, (state, action) => {
+      const { productId } = action.meta.arg;
+      state.items = state.items.filter((item) => item.id !== productId);
+    });
+    builder.addCase(removeFromCartApi.rejected, (state, action) => {
+      state.error = action.payload as string || "خطا در حذف محصول از سبد خرید";
+    });
+      // حذف کامل سبد خرید
+  builder.addCase(clearCartApi.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+  });
+  builder.addCase(clearCartApi.fulfilled, (state) => {
+    state.items = []; // خالی کردن سبد خرید در Redux
+    state.loading = false;
+  });
+  builder.addCase(clearCartApi.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload as string || "خطا در پاک کردن سبد خرید";
+  });
   },
 });
 
-export const {
-  addToCart,
-  removeFromCart,
-  clearCart,
-  incrementQuantity,
-  decrementQuantity,
-} = basketSlice.actions;
+
+export const { clearCart } = basketSlice.actions;
 export default basketSlice.reducer;
