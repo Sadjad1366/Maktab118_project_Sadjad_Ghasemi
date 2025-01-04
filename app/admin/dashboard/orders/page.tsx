@@ -8,6 +8,8 @@ import Link from "next/link";
 import React from "react";
 import { FaSort } from "react-icons/fa";
 import { toJalaali } from "jalaali-js";
+import OrderModal from "@/components/modals/orderModal";
+import { IOrderGetAllRes } from "@/types/order.type";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<IOrderGetAllRes[]>([]);
@@ -17,7 +19,9 @@ export default function OrderPage() {
   >("all");
   const [loading, setLoading] = useState(true);
   const ordersPerPage = 6;
-  const [usersMap, setUsersMap] = useState<Record<string, string>>({}); // Map for userId to username
+  const [usersMap, setUsersMap] = useState<Record<string, string>>({});
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [orderToShow, setOrderToShow] = React.useState<string>("");
 
   React.useEffect(() => {
     const fetchUsers = async () => {
@@ -36,7 +40,7 @@ export default function OrderPage() {
     const fetchOrders = async () => {
       try {
         const response = await getAllOrdersReq();
-        console.log("orders",response.data.orders);
+        console.log("orders", response.data.orders);
         setOrders(response.data.orders);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -57,6 +61,15 @@ export default function OrderPage() {
       gregorianDate.getDate()
     );
     return `${jalaaliDate.jy}/${jalaaliDate.jm}/${jalaaliDate.jd}`;
+  };
+
+  const openOrderModal = (orderId: string) => {
+    setIsModalOpen(true);
+    setOrderToShow(orderId);
+  };
+
+  const closeOrderModal = () => {
+    setIsModalOpen(false);
   };
 
   // Filter orders based on deliveryStatus
@@ -173,9 +186,14 @@ export default function OrderPage() {
               </td>
               <td className="px-2 py-4">{formattedDate(order.createdAt)}</td>
               <td className="px-1 py-4 text-right">
-                <Link href="#" className="font-medium text-blue-600 underline">
+                <button
+                  onClick={() => {
+                    openOrderModal(order._id);
+                  }}
+                  className="font-medium text-blue-600 underline"
+                >
                   بررسی سفارش
-                </Link>
+                </button>
               </td>
             </tr>
           ))}
@@ -219,6 +237,13 @@ export default function OrderPage() {
           بعدی
         </button>
       </div>
+      <OrderModal
+        isOpen={isModalOpen}
+        onClose={closeOrderModal}
+        title="بررسی سفارش"
+        // onConfirm = {}
+        orderId={orderToShow}
+      />
     </div>
   );
 }

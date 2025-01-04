@@ -3,13 +3,16 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IUserPayment } from "@/types/user.type";
 import { paymentSchema } from "@/utils/validations/zodAuthValidation";
 import { getUserById } from "@/apis/user.service";
-import jalaali from "jalaali-js";
 import { useRouter } from "next/navigation";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+
 
 export default function Checkout() {
   const id = Cookies.get("userId");
@@ -26,9 +29,9 @@ export default function Checkout() {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<IUserPayment>({
     resolver: zodResolver(paymentSchema),
@@ -41,8 +44,6 @@ export default function Checkout() {
       deliveryDate: "",
     },
   });
-
-  const [jalaliDate, setJalaliDate] = React.useState<string>("");
 
   // Update form values when data is fetched
   React.useEffect(() => {
@@ -58,17 +59,10 @@ export default function Checkout() {
     }
   }, [data, reset]);
 
-  const convertJalaliToGregorian = (jalaliDate: string) => {
-    const [jy, jm, jd] = jalaliDate.split("/").map(Number);
-    const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
-    return new Date(gy, gm - 1, gd);
-  };
-
   const submitHandler = (formData: IUserPayment) => {
-    const gregorianDate = convertJalaliToGregorian(jalaliDate);
-    console.log("Form Submitted:", { ...formData, deliveryDate: gregorianDate });
-    router.push("/payment")
-
+    console.log("Form Submitted:", formData);
+    Cookies.set("deliveryDate",formData.deliveryDate)
+    router.push("/payment");
   };
 
   return (
@@ -135,27 +129,29 @@ export default function Checkout() {
             <label htmlFor="deliveryDate" className="block text-gray-700 font-medium px-2">
               تاریخ تحویل
             </label>
-            <input
-              id="deliveryDate"
-              type="text"
-              placeholder="YYYY/MM/DD"
-              value={jalaliDate}
-              onChange={(e) => {
-                const value = e.target.value;
-                setJalaliDate(value);
-                setValue("deliveryDate", value); // Update form field
-              }}
-              className="w-full px-4 py-2 border rounded-md shadow-lg"
+            <Controller
+              control={control}
+              name="deliveryDate"
+              render={({ field: { onChange, value } }) => (
+                <DatePicker
+                  value={value ? new DateObject(value) : ""}
+                  onChange={(date) => {
+                    const isoDate = date ? date.toDate().toISOString() : "";
+                    onChange(isoDate);
+                  }}
+                  calendar={persian}
+                  locale={persian_fa}
+                  format="YYYY/MM/DD"
+                  calendarPosition="bottom-right"
+                />
+              )}
             />
             {errors.deliveryDate && (
               <p className="text-red-500 text-sm px-2">{errors.deliveryDate.message}</p>
             )}
           </div>
           <div className="py-4">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded"
-            >
+            <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
               ادامه
             </button>
           </div>

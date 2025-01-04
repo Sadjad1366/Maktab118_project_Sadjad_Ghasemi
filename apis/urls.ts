@@ -12,6 +12,7 @@ export const urls = {
     updateById: (id: string) => `/products/${id}`,
   },
   order: "/orders",
+  orderById: (id: string) => `/orders/${id}`,
   user: "/users",
   editUser: (id: string) => `/users/${id}`,
   category: {

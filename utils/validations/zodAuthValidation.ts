@@ -49,15 +49,16 @@ export const SignupSchema = z
     address: z.string().trim().min(8, "آدرس باید حداقل 8 کاراکتر باشد"),
     deliveryDate: z
       .string()
-      .regex(
-        /^\d{4}\/\d{2}\/\d{2}$/,
-        "تاریخ باید در قالب صحیح شمسی (YYYY/MM/DD) باشد"
-      )
-      .refine((date) => {
-        const [year, month, day] = date.split("/").map(Number);
-        const isValidJalali = jalaali.isValidJalaaliDate(year, month, day);
-        return isValidJalali;
-      }, "تاریخ تحویل باید یک تاریخ معتبر شمسی باشد"),
-  });
+      // .regex(
+      //   /^\d{4}\/\d{2}\/\d{2}$/,
+      //   "تاریخ باید در قالب صحیح شمسی (YYYY/MM/DD) باشد"
+      // )
+      // .refine((date) => {
+      //   const [year, month, day] = date.split("/").map(Number);
+      //   const isValidJalali = jalaali.isValidJalaaliDate(year, month, day);
+      //   return isValidJalali;
+      // }, "تاریخ تحویل باید یک تاریخ معتبر شمسی باشد"),
+  }
+);
 
 export type IUserLoginReq = z.infer<typeof AuthSchema>;
