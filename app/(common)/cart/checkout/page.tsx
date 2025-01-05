@@ -134,6 +134,7 @@ export default function Checkout() {
               name="deliveryDate"
               render={({ field: { onChange, value } }) => (
                 <DatePicker
+                inputClass="p-2 rounded-lg shadow-lg"
                   value={value ? new DateObject(value) : ""}
                   onChange={(date) => {
                     const isoDate = date ? date.toDate().toISOString() : "";
