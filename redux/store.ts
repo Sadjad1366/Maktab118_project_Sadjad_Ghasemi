@@ -7,8 +7,8 @@ export const store = configureStore({
   reducer: {
     basket: basketReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(logger),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(logger),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

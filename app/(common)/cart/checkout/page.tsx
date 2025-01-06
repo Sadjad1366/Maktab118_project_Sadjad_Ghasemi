@@ -66,10 +66,10 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-checkout-pattern flex justify-center py-6 w-full h-screen rounded-lg">
+    <div className="bg-checkout-pattern flex justify-center py-6 w-full rounded-lg">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="bg-slate-200 px-8 py-2 rounded-xl shadow-md w-full max-w-md"
+        className="bg-slate-300 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-95"
       >
         <div className="space-y-3">
           <div>
