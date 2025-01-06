@@ -46,7 +46,8 @@ const OrderModal: React.FC<IOrderModal> = ({
       editOrderById(orderId, deliveryStatus),
     onSuccess: () => {
       toast.success("سفارش با موفقیت ارسال شد✨");
-      redirect("/admin/dashboard/orders");
+      onClose()
+      // redirect("/admin/dashboard/orders");
     },
   });
 
