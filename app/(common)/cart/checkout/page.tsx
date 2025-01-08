@@ -66,10 +66,10 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-checkout-pattern flex justify-center py-6 w-full h-screen rounded-lg">
+    <div className="bg-checkout-pattern flex justify-center py-6 w-full rounded-lg">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="bg-slate-200 px-8 py-2 rounded-xl shadow-md w-full max-w-md"
+        className="bg-zinc-300 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-90"
       >
         <div className="space-y-3">
           <div>
@@ -134,6 +134,7 @@ export default function Checkout() {
               name="deliveryDate"
               render={({ field: { onChange, value } }) => (
                 <DatePicker
+                inputClass="p-2 rounded-lg shadow-lg"
                   value={value ? new DateObject(value) : ""}
                   onChange={(date) => {
                     const isoDate = date ? date.toDate().toISOString() : "";
