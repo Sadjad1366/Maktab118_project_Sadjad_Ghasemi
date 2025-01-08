@@ -8,6 +8,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch"; // Use typed dispatch
 import Cookies from "js-cookie";
+import { getGuestCart, saveGuestCart } from "@/redux/guestBasket";
+import { CartItem } from "@/redux/slices/basketSlice";
 
 interface IProduct {
   _id: string;
@@ -62,29 +64,57 @@ const ProductDetailsPage: React.FC = () => {
       return;
     }
 
-    const userId = Cookies.get("userId"); // Replace with the actual user ID
+    const userId = Cookies.get("userId");
 
-    dispatch(
-      addToCartApi({
-        userId: userId || "user1",
-        item: {
+    if (userId) {
+      // کاربر وارد شده: ارسال به سرور
+      dispatch(
+        addToCartApi({
+          userId,
+          item: {
+            id: product._id,
+            name: product.name,
+            price: product.price,
+            quantity: 1,
+            image: product.images[0] || "",
+            stock: product.quantity,
+          },
+        })
+      )
+        .unwrap()
+        .then(() => {
+          toast.success("محصول به سبد خرید اضافه شد.");
+        })
+        .catch((error) => {
+          console.error("Error adding to cart:", error);
+          toast.error("مشکلی در افزودن به سبد خرید رخ داد.");
+        });
+    } else {
+      // کاربر وارد نشده: ذخیره در Local Storage
+      const guestCart = getGuestCart();
+      const existingProductIndex = guestCart.findIndex(
+        (item: any) => item.id === product._id
+      );
+
+      if (existingProductIndex !== -1) {
+        // افزایش تعداد محصول
+        guestCart[existingProductIndex].quantity += 1;
+      } else {
+        // اضافه کردن محصول جدید
+        guestCart.push({
           id: product._id,
           name: product.name,
           price: product.price,
           quantity: 1,
           image: product.images[0] || "",
           stock: product.quantity,
-        },
-      })
-    )
-      .unwrap()
-      .then(() => {
-        toast.success("محصول به سبد خرید اضافه شد.");
-      })
-      .catch((error) => {
-        console.error("Error adding to cart:", error);
-        toast.error("مشکلی در افزودن به سبد خرید رخ داد.");
-      });
+        });
+      }
+
+      console.log("Saving to Local Storage:", guestCart);
+      saveGuestCart(guestCart);
+      toast.success("محصول به سبد خرید اضافه شد.");
+    }
   };
 
   const handleThumbnailClick = (imageUrl: string) => {
@@ -137,7 +167,9 @@ const ProductDetailsPage: React.FC = () => {
 
         {/* Product Information */}
         <div className="flex flex-col justify-center pb-24">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            {product.name}
+          </h1>
           <p className="text-gray-600 text-lg mb-4">{product.description}</p>
 
           {/* Ratings */}

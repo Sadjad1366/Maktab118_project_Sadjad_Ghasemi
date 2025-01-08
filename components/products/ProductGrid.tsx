@@ -8,6 +8,7 @@ import { ProductCard } from "./ProductCard";
 import { GrSort } from "react-icons/gr";
 import { className } from "@/utils/classNames";
 import { useDebounce } from "@/utils/hooks/useDebounce";
+import { getGuestCart } from "@/redux/guestBasket";
 
 interface IFilter {
   name: string | undefined;
@@ -75,6 +76,9 @@ const ProductGrid: React.FC = () => {
     const selectedSort = event.target.value;
     setFilters((prev) => ({ ...prev, sort: selectedSort }));
   };
+  React.useEffect(()=>{
+    console.log("guestcart",getGuestCart()); // آیا آیتم‌ها را به درستی بازمی‌گرداند؟
+  },[])
 
   return (
     <div className="container mx-auto py-4 px-2 grid grid-cols-12 gap-4">

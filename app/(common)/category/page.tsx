@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllCategories } from "@/apis/product.service";
+import { getAllCategories } from "@/apis/category.service";
 import { redirect, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

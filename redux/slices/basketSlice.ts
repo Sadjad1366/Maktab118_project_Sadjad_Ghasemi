@@ -32,24 +32,26 @@ const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
+    setGuestCart: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload;
+    },
     clearCart: (state) => {
       state.items = [];
     },
   },
   extraReducers: (builder) => {
-
     builder.addCase(fetchCart.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
     builder.addCase(fetchCart.fulfilled, (state, action) => {
-      console.log("Redux State Updated with Items:", action.payload);
-      state.items = Array.isArray(action.payload) ? action.payload : [];
+      state.items = Array.isArray(action.payload) ? [...action.payload] : [];
       state.loading = false;
     });
+
     builder.addCase(fetchCart.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload as string || "خطا در دریافت سبد خرید";
+      state.error = (action.payload as string) || "خطا در دریافت سبد خرید";
     });
 
     builder.addCase(addToCartApi.fulfilled, (state, action) => {
@@ -62,9 +64,8 @@ const basketSlice = createSlice({
       }
     });
     builder.addCase(addToCartApi.rejected, (state, action) => {
-      state.error = action.payload as string || "خطا در افزودن به سبد خرید";
+      state.error = (action.payload as string) || "خطا در افزودن به سبد خرید";
     });
-
 
     builder.addCase(updateCartApi.fulfilled, (state, action) => {
       const { productId, quantity } = action.meta.arg;
@@ -74,33 +75,32 @@ const basketSlice = createSlice({
       }
     });
     builder.addCase(updateCartApi.rejected, (state, action) => {
-      state.error = action.payload as string || "خطا در بروزرسانی محصول";
+      state.error = (action.payload as string) || "خطا در بروزرسانی محصول";
     });
-
 
     builder.addCase(removeFromCartApi.fulfilled, (state, action) => {
       const { productId } = action.meta.arg;
       state.items = state.items.filter((item) => item.id !== productId);
     });
     builder.addCase(removeFromCartApi.rejected, (state, action) => {
-      state.error = action.payload as string || "خطا در حذف محصول از سبد خرید";
+      state.error =
+        (action.payload as string) || "خطا در حذف محصول از سبد خرید";
     });
-      // حذف کامل سبد خرید
-  builder.addCase(clearCartApi.pending, (state) => {
-    state.loading = true;
-    state.error = null;
-  });
-  builder.addCase(clearCartApi.fulfilled, (state) => {
-    state.items = []; // خالی کردن سبد خرید در Redux
-    state.loading = false;
-  });
-  builder.addCase(clearCartApi.rejected, (state, action) => {
-    state.loading = false;
-    state.error = action.payload as string || "خطا در پاک کردن سبد خرید";
-  });
+    // حذف کامل سبد خرید
+    builder.addCase(clearCartApi.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(clearCartApi.fulfilled, (state) => {
+      state.items = []; // خالی کردن سبد خرید در Redux
+      state.loading = false;
+    });
+    builder.addCase(clearCartApi.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as string) || "خطا در پاک کردن سبد خرید";
+    });
   },
 });
 
-
-export const { clearCart } = basketSlice.actions;
+export const { clearCart, setGuestCart } = basketSlice.actions;
 export default basketSlice.reducer;

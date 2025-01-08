@@ -4,12 +4,14 @@
 import { useState } from "react";
 import { getAllOrdersReq } from "@/apis/order.service";
 import { getAllUsers } from "@/apis/user.service"; // Import the user service
-import Link from "next/link";
 import React from "react";
 import { FaSort } from "react-icons/fa";
 import { toJalaali } from "jalaali-js";
 import OrderModal from "@/components/modals/orderModal";
 import { IOrderGetAllRes } from "@/types/order.type";
+import { FaCheck } from "react-icons/fa";
+import { PiSpinner } from "react-icons/pi";
+
 
 export default function OrderPage() {
   const [orders, setOrders] = useState<IOrderGetAllRes[]>([]);
@@ -51,7 +53,7 @@ export default function OrderPage() {
 
     fetchUsers();
     fetchOrders();
-  }, []);
+  }, [orders]);
 
   const formattedDate = (date: string): string => {
     const gregorianDate: any = new Date(date);
@@ -185,15 +187,33 @@ export default function OrderPage() {
                 {order.totalPrice.toLocaleString()} تومان
               </td>
               <td className="px-2 py-4">{formattedDate(order.createdAt)}</td>
-              <td className="px-1 py-4 text-right">
-                <button
-                  onClick={() => {
-                    openOrderModal(order._id);
-                  }}
-                  className="font-medium text-blue-600 underline"
-                >
-                  بررسی سفارش
-                </button>
+              <td className="px-1 py-4 text-right flex items-center gap-x-2">
+                {order.deliveryStatus ? (
+                  <>
+                    <FaCheck className="text-green-500" />
+                    <button
+                      onClick={() => {
+                        openOrderModal(order._id);
+                      }}
+                      className="font-medium text-lg text-green-600 "
+                    >
+                      جزئیات سفارش
+                    </button>
+                  </>
+                ) : (
+                  <>
+
+                    <PiSpinner className="text-red-500" />
+                    <button
+                      onClick={() => {
+                        openOrderModal(order._id);
+                      }}
+                      className="font-medium text-lg text-red-600 "
+                    >
+                      بررسی سفارش
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           ))}
