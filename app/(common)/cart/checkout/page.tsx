@@ -69,7 +69,7 @@ export default function Checkout() {
     <div className="bg-checkout-pattern flex justify-center py-6 w-full rounded-lg">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="bg-slate-300 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-95"
+        className="bg-zinc-300 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-90"
       >
         <div className="space-y-3">
           <div>

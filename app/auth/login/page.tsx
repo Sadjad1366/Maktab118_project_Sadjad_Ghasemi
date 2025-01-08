@@ -26,7 +26,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
-  
+
 
   const submitHandler = async ({ username, password }: IUserLoginReq) => {
     try {
@@ -46,7 +46,7 @@ export default function LoginPage() {
       {/* <div className="relative max-w-md w-full bg-slate-300 rounded-lg shadow-lg py-4 px-6"> */}
 
       <form
-        className="bg-slate-200 px-8 py-6 rounded-xl shadow-md w-full max-w-md"
+        className="bg-slate-200 px-8 py-6 rounded-xl shadow-md w-full max-w-md opacity-95"
         onSubmit={handleSubmit(submitHandler)}
       >
         <div className="flex justify-center">
