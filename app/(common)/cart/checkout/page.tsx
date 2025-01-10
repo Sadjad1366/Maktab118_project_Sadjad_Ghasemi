@@ -13,7 +13,6 @@ import DatePicker, { DateObject } from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 
-
 export default function Checkout() {
   const id = Cookies.get("userId");
   const router = useRouter();
@@ -61,7 +60,7 @@ export default function Checkout() {
 
   const submitHandler = (formData: IUserPayment) => {
     console.log("Form Submitted:", formData);
-    Cookies.set("deliveryDate",formData.deliveryDate)
+    Cookies.set("deliveryDate", formData.deliveryDate);
     router.push("/payment");
   };
 
@@ -73,7 +72,10 @@ export default function Checkout() {
       >
         <div className="space-y-3">
           <div>
-            <label htmlFor="firstname" className="block text-gray-700 font-medium px-2">
+            <label
+              htmlFor="firstname"
+              className="block text-gray-700 font-medium px-2"
+            >
               نام
             </label>
             <input
@@ -82,11 +84,16 @@ export default function Checkout() {
               className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.firstname && (
-              <p className="text-red-500 text-sm px-2">{errors.firstname.message}</p>
+              <p className="text-red-500 text-sm px-2">
+                {errors.firstname.message}
+              </p>
             )}
           </div>
           <div>
-            <label htmlFor="lastname" className="block text-gray-700 font-medium px-2">
+            <label
+              htmlFor="lastname"
+              className="block text-gray-700 font-medium px-2"
+            >
               نام خانوادگی
             </label>
             <input
@@ -95,11 +102,16 @@ export default function Checkout() {
               className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.lastname && (
-              <p className="text-red-500 text-sm px-2">{errors.lastname.message}</p>
+              <p className="text-red-500 text-sm px-2">
+                {errors.lastname.message}
+              </p>
             )}
           </div>
           <div>
-            <label htmlFor="phoneNumber" className="block text-gray-700 font-medium px-2">
+            <label
+              htmlFor="phoneNumber"
+              className="block text-gray-700 font-medium px-2"
+            >
               موبایل
             </label>
             <input
@@ -108,11 +120,16 @@ export default function Checkout() {
               className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.phoneNumber && (
-              <p className="text-red-500 text-sm px-2">{errors.phoneNumber.message}</p>
+              <p className="text-red-500 text-sm px-2">
+                {errors.phoneNumber.message}
+              </p>
             )}
           </div>
           <div>
-            <label htmlFor="address" className="block text-gray-700 font-medium px-2">
+            <label
+              htmlFor="address"
+              className="block text-gray-700 font-medium px-2"
+            >
               آدرس
             </label>
             <textarea
@@ -122,11 +139,16 @@ export default function Checkout() {
               className="w-full px-4 py-2 border rounded-md shadow-lg"
             />
             {errors.address && (
-              <p className="text-red-500 text-sm px-2">{errors.address.message}</p>
+              <p className="text-red-500 text-sm px-2">
+                {errors.address.message}
+              </p>
             )}
           </div>
           <div>
-            <label htmlFor="deliveryDate" className="block text-gray-700 font-medium px-2">
+            <label
+              htmlFor="deliveryDate"
+              className="block text-gray-700 font-medium px-2"
+            >
               تاریخ تحویل
             </label>
             <Controller
@@ -134,7 +156,7 @@ export default function Checkout() {
               name="deliveryDate"
               render={({ field: { onChange, value } }) => (
                 <DatePicker
-                inputClass="p-2 rounded-lg shadow-lg"
+                  inputClass="p-2 rounded-lg shadow-lg"
                   value={value ? new DateObject(value) : ""}
                   onChange={(date) => {
                     const isoDate = date ? date.toDate().toISOString() : "";
@@ -148,11 +170,16 @@ export default function Checkout() {
               )}
             />
             {errors.deliveryDate && (
-              <p className="text-red-500 text-sm px-2">{errors.deliveryDate.message}</p>
+              <p className="text-red-500 text-sm px-2">
+                {errors.deliveryDate.message}
+              </p>
             )}
           </div>
           <div className="py-4">
-            <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded"
+            >
               ادامه
             </button>
           </div>

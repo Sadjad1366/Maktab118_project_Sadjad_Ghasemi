@@ -26,7 +26,7 @@ export default function FailPayment() {
           </div>
 
           {/* Body */}
-          <div className="p-6 text-gray-700 text-lg">دفعه دیگه بیشتر تلاش کن پسرجان</div>
+          <div className="p-6 text-gray-700 text-lg">شما از پرداخت انصراف دادید.</div>
 
           {/* Footer */}
           <div className="bg-gray-100 p-4">

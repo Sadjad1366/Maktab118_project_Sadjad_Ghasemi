@@ -20,6 +20,7 @@ const writeCartFile = (data: any) => {
     console.error("Error writing to the cart file:", error);
   }
 };
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -40,30 +41,35 @@ export async function POST(req: Request) {
 
     const productMap = new Map<string, any>();
 
+    // افزودن محصولات فعلی کاربر
     userCart.products.forEach((product: any) => {
-      if (!productMap.has(product.id)) {
-        productMap.set(product.id, { ...product });
-      }
+      productMap.set(product.id, { ...product });
     });
+
+    // ادغام محصولات جدید
     products.forEach((product: any) => {
       if (productMap.has(product.id)) {
         const existingProduct = productMap.get(product.id);
-        existingProduct.quantity = Math.max(existingProduct.quantity, product.quantity); // جلوگیری از افزایش اشتباه
+        // جمع کردن تعداد محصولات
+        existingProduct.quantity += product.quantity;
       } else {
         productMap.set(product.id, { ...product });
       }
     });
-    console.log("Final product map after merge:", Array.from(productMap.values()));
 
-
-    // تبدیل نقشه به آرایه
+    // به‌روزرسانی سبد خرید کاربر
     userCart.products = Array.from(productMap.values());
-    console.log("User Cart after merging:", userCart.products);
 
-    writeCartFile(data); // ذخیره تغییرات
+    // ذخیره تغییرات در فایل
+    writeCartFile(data);
+
+    console.log("Merged cart for user:", userCart.products);
     return NextResponse.json({ message: "Cart merged successfully" });
   } catch (error: any) {
     console.error("Error handling POST /api/cart/merge:", error.message);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

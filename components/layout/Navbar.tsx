@@ -13,18 +13,32 @@ import { useRouter } from "next/navigation";
 import { fetchCart } from "@/redux/thunks/basketThunks";
 import { clearCart, setGuestCart } from "@/redux/slices/basketSlice";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
+import { FcManager } from "react-icons/fc";
+
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const token = Cookies.get("accessToken");
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const role = Cookies.get("role");
+  const token = Cookies.get("accessToken");
 
   const toggleMenu = () => setIsOpen(!isOpen);
+  const checkRole = () => {
+    if (role === "ADMIN") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  };
+
+
 
   React.useEffect(() => {
+    checkRole();
     const userId = Cookies.get("userId") || null;
     if (userId !== currentUserId) {
       setCurrentUserId(userId);
@@ -35,7 +49,7 @@ const Navbar: React.FC = () => {
         dispatch(setGuestCart(guestCart));
       }
     }
-  }, [currentUserId, dispatch]);
+  }, [currentUserId, dispatch, role]);
 
   const exitHandler = () => {
     Cookies.remove("accessToken");
@@ -109,6 +123,17 @@ const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-x-4 relative">
+        {isAdmin && <Link
+              href="/admin/dashboard"
+              className={className(
+                "hidden md:flex items-center gap-x-2 px-9",
+                "bg-blue-400 hover:bg-blue-500 text-white",
+                "rounded-lg px-4 py-[8px]",
+
+              )}
+            >
+              <p>مدیریت</p><FcManager />
+            </Link>}
           {!token ? (
             <Link
               href="/auth/login"

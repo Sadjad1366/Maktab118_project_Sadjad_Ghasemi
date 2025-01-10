@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IUserLoginReq } from "@/types/user.type";
 import { userloginReq } from "@/apis/auth.service";
 import { className } from "@/utils/classNames";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthSchema } from "@/utils/validations/zodAuthValidation";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -24,6 +24,8 @@ export default function LoginPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  // const searchParams = useSearchParams();
+
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
@@ -33,8 +35,9 @@ export default function LoginPage() {
       await userloginReq({ username, password });
 
       toast.success("ورود موفقیت‌آمیز بود! 🎉");
-
       router.push("/");
+      // const redirect = searchParams.get("redirect") || "/";
+      // router.push(redirect)
     } catch (error: any) {
       toast.error(error.message);
     }

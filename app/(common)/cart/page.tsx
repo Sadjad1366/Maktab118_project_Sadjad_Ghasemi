@@ -14,7 +14,7 @@ import {
   mergeGuestCartWithUserCart, // اضافه کردن اکشن
 } from "@/redux/thunks/basketThunks";
 import { useEffect } from "react";
-import { getGuestCart, saveGuestCart } from "@/redux/guestBasket";
+import { clearGuestCart, getGuestCart, saveGuestCart } from "@/redux/guestBasket";
 import { CartItem, setGuestCart } from "@/redux/slices/basketSlice";
 import { useRef } from "react";
 const Basket: React.FC = () => {
@@ -32,27 +32,10 @@ const Basket: React.FC = () => {
     } else {
       toast.error("برای ادامه فرآیند وارد حساب کاربری شوید");
       router.push("/auth/login");
+      // router.push(`/auth/login?redirect=/cart`);
+
     }
   };
-
-  // useEffect(() => {
-  //   const guestCart = getGuestCart();
-  //   if (userId) {
-  //     // کاربر وارد شده است
-  //     if (guestCart.length > 0) {
-  //       // اگر سبد مهمان وجود دارد، آن را ادغام کن
-  //       dispatch(mergeGuestCartWithUserCart({ userId })).then(() => {
-  //         console.log("Guest cart merged with user cart.");
-  //       });
-  //     } else {
-  //       // اگر سبد مهمان وجود ندارد، فقط سبد کاربر را از سرور دریافت کن
-  //       dispatch(fetchCart(userId));
-  //     }
-  //   } else {
-  //     // کاربر وارد نشده است، سبد مهمان را به Redux انتقال بده
-  //     dispatch(setGuestCart(guestCart));
-  //   }
-  // }, [dispatch, userId]);
 
   useEffect(() => {
     const guestCart = getGuestCart();
@@ -61,9 +44,11 @@ const Basket: React.FC = () => {
       dispatch(mergeGuestCartWithUserCart({ userId }))
         .unwrap()
         .then(() => console.log("Merge completed."))
-        .catch((err) => console.error("Error merging carts:", err));
+        .catch((error) => console.error("Error merging carts:", error));
     }
-  }, [userId]); // آرایه وابستگی فقط شامل userId
+  }, []);
+
+
 
   useEffect(() => {
     if (!userId) {
@@ -71,9 +56,7 @@ const Basket: React.FC = () => {
       const guestCart = getGuestCart(); // دریافت سبد مهمان
       dispatch(setGuestCart(guestCart)); // انتقال به Redux
     }
-  }, [dispatch, userId]);
-
-
+  }, []);
 
   const handleIncrement = (itemId: string, quantity: number, stock: number) => {
     if (quantity < stock) {

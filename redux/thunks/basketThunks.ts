@@ -1,7 +1,9 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "../store";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CartItem } from "@/redux/slices/basketSlice";
 import { clearGuestCart, getGuestCart } from "../guestBasket";
+
 
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 export const fetchCart = createAsyncThunk(
@@ -102,7 +104,6 @@ export const clearCartApi = createAsyncThunk(
   }
 );
 
-import { RootState } from "../store"; // فرض کنید RootState در فایل store تعریف شده است
 
 export const mergeGuestCartWithUserCart = createAsyncThunk(
   "basket/mergeGuestCartWithUserCart",

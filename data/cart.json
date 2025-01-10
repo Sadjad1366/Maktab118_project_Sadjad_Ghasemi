@@ -2,19 +2,6 @@
   "carts": [
     {
       "userId": "6742321931d4b43f86964197",
-      "products": [
-        {
-          "id": "6758a93a2ff2a0018f46ba93",
-          "name": "ایسلندر King SeriesIIII",
-          "price": 355000000,
-          "quantity": 4,
-          "image": "products-6758a93a2ff2a0018f46ba93-1733863750863-1.jpeg",
-          "stock": 10
-        }
-      ]
-    },
-    {
-      "userId": "6769576d18abeb0d4238e217",
       "products": []
     }
   ]
