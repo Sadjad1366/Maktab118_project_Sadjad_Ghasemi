@@ -26,63 +26,41 @@ const writeCartFile = (data: any) => {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { userId, guestProducts, userProducts } = body;
+    const { userId, guestProducts, userProducts } = await req.json();
 
-    // بررسی صحت ورودی‌ها
-    if (!userId || !Array.isArray(guestProducts) || !Array.isArray(userProducts)) {
-      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
-    }
-
-    const data = readCartFile();
-
-    // پیدا کردن سبد خرید کاربر
-    let userCart = data.carts.find((cart: any) => cart.userId === userId);
-
-    if (!userCart) {
-      // اگر کاربر سبد خرید ندارد، یک سبد جدید ایجاد شود
-      userCart = { userId, products: [] };
-      data.carts.push(userCart);
-    }
-
-    // ساخت نقشه‌ای از محصولات سبد خرید کاربر
+    // ترکیب محصولات مهمان و کاربر
     const productMap = new Map<string, any>();
 
-    // افزودن محصولات موجود در سبد کاربر به نقشه
-    userProducts.forEach((product: any) => {
-      productMap.set(product.id, { ...product });
-    });
+    [...userProducts, ...guestProducts].forEach((product: any) => {
+      if (productMap.has(product.id)) {
+        const existingProduct = productMap.get(product.id);
+        const totalQuantity = existingProduct.quantity + product.quantity;
 
-    // ادغام محصولات مهمان با محصولات کاربر
-    guestProducts.forEach((guestProduct: any) => {
-      if (productMap.has(guestProduct.id)) {
-        // اگر محصول موجود باشد، تعداد (quantity) آن را جمع کنیم
-        const existingProduct = productMap.get(guestProduct.id);
-        productMap.set(guestProduct.id, {
+        // محدود کردن تعداد به موجودی انبار
+        productMap.set(product.id, {
           ...existingProduct,
-          quantity: existingProduct.quantity + guestProduct.quantity,
+          quantity: Math.min(totalQuantity, product.stock),
         });
       } else {
-        // اگر محصول وجود نداشته باشد، آن را اضافه کنیم
-        productMap.set(guestProduct.id, { ...guestProduct });
+        productMap.set(product.id, { ...product });
       }
     });
 
-    // بروزرسانی محصولات نهایی در سبد خرید کاربر
-    userCart.products = Array.from(productMap.values());
+    const mergedCart = Array.from(productMap.values());
 
-    // ذخیره تغییرات در فایل
+    // ذخیره سبد خرید جدید در فایل یا دیتابیس
+    const data = readCartFile();
+    const userCart = data.carts.find((cart: any) => cart.userId === userId);
+    if (userCart) {
+      userCart.products = mergedCart;
+    } else {
+      data.carts.push({ userId, products: mergedCart });
+    }
     writeCartFile(data);
 
-    return NextResponse.json({
-      message: "Cart merged successfully",
-      cart: userCart.products,
-    });
+    return NextResponse.json({ message: "Cart merged successfully", cart: mergedCart });
   } catch (error: any) {
-    console.error("Error handling POST /api/cart/merge:", error.message);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    console.error("Error merging carts:", error.message);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

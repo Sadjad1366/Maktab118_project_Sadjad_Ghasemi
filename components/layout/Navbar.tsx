@@ -13,7 +13,7 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { className } from "@/utils/classNames";
 import { fetchCart } from "@/redux/thunks/basketThunks";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
-import { clearCart, setGuestCart } from "@/redux/slices/basketSlice";
+import { clearCart, setGuestCart, clearDisabledButtons } from "@/redux/slices/basketSlice";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,12 +49,13 @@ const Navbar: React.FC = () => {
   }, [currentUserId, dispatch, role]);
 
   const exitHandler = () => {
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
     Cookies.remove("role");
     Cookies.remove("userId");
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     localStorage.removeItem("guestCart");
     dispatch(clearCart());
+    dispatch(clearDisabledButtons());
     router.push("/");
   };
 

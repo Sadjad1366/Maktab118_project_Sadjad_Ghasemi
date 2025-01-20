@@ -19,12 +19,15 @@ export interface CartItem {
 
 export interface BasketState {
   items: CartItem[];
+  disabledButtons: { [productId: string]: boolean }; // اضافه کردن این خط
   loading: boolean;
   error: string | null;
 }
 
+
 const initialState: BasketState = {
   items: [], // مقدار پیش‌فرض
+  disabledButtons: {}, // وضعیت دکمه‌ها برای محصولات
   loading: false,
   error: null,
 };
@@ -38,6 +41,12 @@ const basketSlice = createSlice({
     },
     clearCart: (state) => {
       state.items = [];
+    },
+    setButtonDisabled: (state, action: PayloadAction<string>) => {
+      state.disabledButtons[action.payload] = true; // علامت زدن دکمه به عنوان غیرفعال
+    },
+    clearDisabledButtons: (state) => {
+      state.disabledButtons = {}; // پاک کردن تمام دکمه‌های غیرفعال
     },
   },
   extraReducers: (builder) => {
@@ -58,7 +67,7 @@ const basketSlice = createSlice({
     });
 
     builder.addCase(mergeGuestCartWithUserCart.fulfilled, (state, action) => {
-      state.items = Array.isArray(action.payload) ? action.payload : []; 
+      state.items = Array.isArray(action.payload) ? action.payload : [];
     });
 
 
@@ -115,5 +124,5 @@ const basketSlice = createSlice({
   },
 });
 
-export const { clearCart, setGuestCart } = basketSlice.actions;
+export const { clearCart, setGuestCart, clearDisabledButtons, setButtonDisabled  } = basketSlice.actions;
 export default basketSlice.reducer;

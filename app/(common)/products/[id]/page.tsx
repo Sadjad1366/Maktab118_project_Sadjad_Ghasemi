@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { className } from "@/utils/classNames";
 import React, { useEffect, useState } from "react";
 import { getProductById } from "@/apis/product.service";
-import { setGuestCart } from "@/redux/slices/basketSlice";
+import { CartItem, setButtonDisabled, setGuestCart } from "@/redux/slices/basketSlice";
 import { addToCartApi } from "@/redux/thunks/basketThunks";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
 import { getGuestCart, saveGuestCart } from "@/redux/guestBasket";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface IProduct {
   _id: string;
@@ -28,6 +30,13 @@ const ProductDetailsPage: React.FC = () => {
   const [activeImage, setActiveImage] = useState<string | undefined>(undefined);
   const params = useParams();
   const dispatch = useAppDispatch();
+  const disabledButtons = useSelector(
+    (state: RootState) => state.basket.disabledButtons
+  );
+  const userCart = useSelector((state: RootState) => state.basket.items);
+
+  // بررسی وضعیت دکمه فقط در صورتی که product مقدار داشته باشد
+  const isAddedToCart = product ? disabledButtons[product._id] || false : false;
 
   const id = typeof params?.id === "string" ? params.id : "";
 
@@ -63,9 +72,38 @@ const ProductDetailsPage: React.FC = () => {
       return;
     }
 
+    // بررسی تعداد فعلی محصول در سبد
     const userId = Cookies.get("userId");
+    let currentQuantityInCart = 0; // تعداد فعلی محصول در سبد
 
     if (userId) {
+      // برای کاربر لاگین شده: تعداد محصول از Redux State خوانده می‌شود
+      const existingItem = userCart.find((item) => item.id === product._id);
+      currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+    } else {
+      // برای کاربر مهمان: تعداد محصول از localStorage خوانده می‌شود
+      const guestCart = getGuestCart();
+      const existingItem = guestCart.find((item:CartItem) => item.id === product._id);
+      currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+    }
+
+    // چک کردن محدودیت موجودی انبار
+    if (currentQuantityInCart >= product.quantity) {
+      toast.error("تعداد انتخاب‌شده از موجودی انبار بیشتر است.");
+      return;
+    }
+
+    // جلوگیری از کلیک دوباره (در صورت نیاز)
+    if (isAddedToCart) {
+      toast.error("این محصول قبلاً به سبد خرید اضافه شده است.");
+      return;
+    }
+
+    // علامت زدن دکمه به عنوان غیرفعال
+    dispatch(setButtonDisabled(product._id));
+
+    if (userId) {
+      // برای کاربر لاگین شده: ارسال به سرور
       dispatch(
         addToCartApi({
           userId,
@@ -88,14 +126,22 @@ const ProductDetailsPage: React.FC = () => {
           toast.error("مشکلی در افزودن به سبد خرید رخ داد.");
         });
     } else {
+      // برای کاربر مهمان: ذخیره در localStorage
       const guestCart = getGuestCart();
       const existingProductIndex = guestCart.findIndex(
         (item: any) => item.id === product._id
       );
 
       if (existingProductIndex !== -1) {
-        guestCart[existingProductIndex].quantity += 1;
+        // افزایش تعداد محصول
+        const newQuantity = guestCart[existingProductIndex].quantity + 1;
+        if (newQuantity > product.quantity) {
+          toast.error("تعداد انتخاب‌شده از موجودی انبار بیشتر است.");
+          return;
+        }
+        guestCart[existingProductIndex].quantity = newQuantity;
       } else {
+        // اضافه کردن محصول جدید
         guestCart.push({
           id: product._id,
           name: product.name,
@@ -106,13 +152,11 @@ const ProductDetailsPage: React.FC = () => {
         });
       }
 
-      console.log("Saving to Local Storage:", guestCart);
       saveGuestCart(guestCart);
       dispatch(setGuestCart(guestCart));
       toast.success("محصول به سبد خرید اضافه شد.");
     }
   };
-
 
   const handleThumbnailClick = (imageUrl: string) => {
     setActiveImage(imageUrl);
@@ -188,15 +232,17 @@ const ProductDetailsPage: React.FC = () => {
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            disabled={product.quantity === 0}
+            disabled={product.quantity === 0 || isAddedToCart} // دکمه غیرفعال شود
             className={className(
               "w-full px-6 py-3 rounded-lg",
-              product.quantity > 0
+              product.quantity > 0 && !isAddedToCart
                 ? "bg-indigo-600 hover:bg-indigo-700 text-white transition duration-300 shadow active:translate-y-2 active:scale-95"
                 : "bg-indigo-300 cursor-not-allowed text-white"
             )}
           >
-            افزودن به سبد خرید
+            {isAddedToCart
+              ? "محصول به سبد خرید اضافه شده"
+              : "افزودن به سبد خرید"}
           </button>
         </div>
       </div>

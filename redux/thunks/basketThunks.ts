@@ -4,18 +4,19 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CartItem } from "@/redux/slices/basketSlice";
 import { clearGuestCart, getGuestCart } from "../guestBasket";
 
-export const fetchCart = createAsyncThunk<CartItem[], string, { rejectValue: string }>(
-  "basket/fetchCart",
-  async (userId, { rejectWithValue }) => {
-    try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
-      return response.data.products || []; 
-    } catch (error: any) {
-      return rejectWithValue(error.message || "Error fetching cart");
-    }
+export const fetchCart = createAsyncThunk<
+  CartItem[],
+  string,
+  { rejectValue: string }
+>("basket/fetchCart", async (userId, { rejectWithValue }) => {
+  try {
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
+    return response.data.products || [];
+  } catch (error: any) {
+    return rejectWithValue(error.message || "Error fetching cart");
   }
-);
+});
 
 export const addToCartApi = createAsyncThunk(
   "basket/addToCartApi",
@@ -97,7 +98,6 @@ export const clearCartApi = createAsyncThunk(
   }
 );
 
-
 export const mergeGuestCartWithUserCart = createAsyncThunk<
   CartItem[],
   { userId: string },
@@ -109,7 +109,8 @@ export const mergeGuestCartWithUserCart = createAsyncThunk<
     { getState, dispatch, rejectWithValue }
   ) => {
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const guestCart = getGuestCart();
       const state = getState() as RootState;
       const userCart = state.basket.items;
