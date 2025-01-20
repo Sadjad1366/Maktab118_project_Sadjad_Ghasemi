@@ -4,26 +4,19 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CartItem } from "@/redux/slices/basketSlice";
 import { clearGuestCart, getGuestCart } from "../guestBasket";
 
-// const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 export const fetchCart = createAsyncThunk<CartItem[], string, { rejectValue: string }>(
   "basket/fetchCart",
   async (userId, { rejectWithValue }) => {
     try {
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
-      console.log("FetchCart Response:", response.data.products);
-      return response.data.products || []; // مقدار پیش‌فرض آرایه خالی
+      return response.data.products || []; 
     } catch (error: any) {
       return rejectWithValue(error.message || "Error fetching cart");
     }
   }
 );
 
-
-
-
-
-// افزودن محصول به سبد خرید
 export const addToCartApi = createAsyncThunk(
   "basket/addToCartApi",
   async (payload: { userId: string; item: CartItem }, { rejectWithValue }) => {
@@ -43,7 +36,6 @@ export const addToCartApi = createAsyncThunk(
   }
 );
 
-// بروزرسانی تعداد محصول
 export const updateCartApi = createAsyncThunk(
   "basket/updateCartApi",
   async (
@@ -67,7 +59,6 @@ export const updateCartApi = createAsyncThunk(
   }
 );
 
-// حذف محصول از سبد خرید
 export const removeFromCartApi = createAsyncThunk(
   "basket/removeFromCartApi",
   async (
@@ -96,7 +87,7 @@ export const clearCartApi = createAsyncThunk(
       const BASE_URL =
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const response = await axios.delete(`${BASE_URL}/api/cart/clear`, {
-        data: { userId }, // ارسال userId به سرور
+        data: { userId },
       });
       return response.data;
     } catch (error: any) {
@@ -108,9 +99,9 @@ export const clearCartApi = createAsyncThunk(
 
 
 export const mergeGuestCartWithUserCart = createAsyncThunk<
-  CartItem[], // مقدار بازگشتی
-  { userId: string }, // آرگومان ورودی
-  { rejectValue: string } // مقدار reject شده
+  CartItem[],
+  { userId: string },
+  { rejectValue: string }
 >(
   "basket/mergeGuestCartWithUserCart",
   async (
@@ -119,25 +110,15 @@ export const mergeGuestCartWithUserCart = createAsyncThunk<
   ) => {
     try {
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-
-      // دریافت سبد خرید مهمان
       const guestCart = getGuestCart();
-
-      // دسترسی به سبد خرید کاربر از Redux State
       const state = getState() as RootState;
       const userCart = state.basket.items;
-
-      // ارسال محصولات کاربر و مهمان به API
       const response = await axios.post(`${BASE_URL}/api/cart/merge`, {
         userId: payload.userId,
         guestProducts: guestCart,
         userProducts: userCart,
       });
-
-      // پاک کردن سبد خرید مهمان پس از ادغام موفق
       clearGuestCart();
-
-      // بازخوانی سبد خرید جدید از سرور
       dispatch(fetchCart(payload.userId));
 
       return response.data.cart;

@@ -1,25 +1,25 @@
 "use client";
 
-import { getProductById } from "@/apis/product.service";
-import { addToCartApi } from "@/redux/thunks/basketThunks"; // Import addToCartApi
-import { className } from "@/utils/classNames";
-import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useAppDispatch } from "@/utils/hooks/useAppDispatch"; // Use typed dispatch
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+import { useParams } from "next/navigation";
+import { className } from "@/utils/classNames";
+import React, { useEffect, useState } from "react";
+import { getProductById } from "@/apis/product.service";
+import { setGuestCart } from "@/redux/slices/basketSlice";
+import { addToCartApi } from "@/redux/thunks/basketThunks";
+import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
 import { getGuestCart, saveGuestCart } from "@/redux/guestBasket";
-import { CartItem } from "@/redux/slices/basketSlice";
 
 interface IProduct {
   _id: string;
   name: string;
   description: string;
   price: number;
-  quantity: number; // Stock quantity
+  quantity: number;
   images: string[];
   rating: {
-    count: number; // Number of reviews
+    count: number;
   };
 }
 
@@ -27,7 +27,7 @@ const ProductDetailsPage: React.FC = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
   const [activeImage, setActiveImage] = useState<string | undefined>(undefined);
   const params = useParams();
-  const dispatch = useAppDispatch(); // Use custom hook for typed dispatch
+  const dispatch = useAppDispatch();
 
   const id = typeof params?.id === "string" ? params.id : "";
 
@@ -52,7 +52,6 @@ const ProductDetailsPage: React.FC = () => {
         toast.error("مشکلی در بارگذاری محصول رخ داد.");
       }
     };
-
     fetchProductDetails();
   }, [id]);
 
@@ -67,7 +66,6 @@ const ProductDetailsPage: React.FC = () => {
     const userId = Cookies.get("userId");
 
     if (userId) {
-      // کاربر وارد شده: ارسال به سرور
       dispatch(
         addToCartApi({
           userId,
@@ -90,17 +88,14 @@ const ProductDetailsPage: React.FC = () => {
           toast.error("مشکلی در افزودن به سبد خرید رخ داد.");
         });
     } else {
-      // کاربر وارد نشده: ذخیره در Local Storage
       const guestCart = getGuestCart();
       const existingProductIndex = guestCart.findIndex(
         (item: any) => item.id === product._id
       );
 
       if (existingProductIndex !== -1) {
-        // افزایش تعداد محصول
         guestCart[existingProductIndex].quantity += 1;
       } else {
-        // اضافه کردن محصول جدید
         guestCart.push({
           id: product._id,
           name: product.name,
@@ -113,9 +108,11 @@ const ProductDetailsPage: React.FC = () => {
 
       console.log("Saving to Local Storage:", guestCart);
       saveGuestCart(guestCart);
+      dispatch(setGuestCart(guestCart));
       toast.success("محصول به سبد خرید اضافه شد.");
     }
   };
+
 
   const handleThumbnailClick = (imageUrl: string) => {
     setActiveImage(imageUrl);

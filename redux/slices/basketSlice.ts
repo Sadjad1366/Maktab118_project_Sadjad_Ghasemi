@@ -34,10 +34,10 @@ const basketSlice = createSlice({
   initialState,
   reducers: {
     setGuestCart: (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload; // ذخیره سبد مهمان در state
+      state.items = action.payload;
     },
     clearCart: (state) => {
-      state.items = []; // پاک‌سازی سبد خرید
+      state.items = [];
     },
   },
   extraReducers: (builder) => {
@@ -47,7 +47,6 @@ const basketSlice = createSlice({
     });
 
     builder.addCase(fetchCart.fulfilled, (state, action) => {
-      // اطمینان از اینکه فقط آرایه‌های معتبر در Redux State ذخیره شوند
       state.items = Array.isArray(action.payload) ? action.payload : [];
       state.loading = false;
     });
@@ -59,7 +58,7 @@ const basketSlice = createSlice({
     });
 
     builder.addCase(mergeGuestCartWithUserCart.fulfilled, (state, action) => {
-      state.items = Array.isArray(action.payload) ? action.payload : []; // مطمئن شوید که مقدار بازگشتی درست است
+      state.items = Array.isArray(action.payload) ? action.payload : []; 
     });
 
 

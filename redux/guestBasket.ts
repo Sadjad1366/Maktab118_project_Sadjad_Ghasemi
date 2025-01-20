@@ -1,6 +1,5 @@
 import { CartItem, setGuestCart } from "./slices/basketSlice";
 
-// helpers/localStorage.js
 export const getGuestCart = () => {
   const guestCart = localStorage.getItem("guestCart");
   return guestCart ? JSON.parse(guestCart) : [];

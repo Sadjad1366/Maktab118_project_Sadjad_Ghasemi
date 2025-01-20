@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { className } from "@/utils/classNames";
 import Link from "next/link";
-import { IoMdCart } from "react-icons/io";
+import Cookies from "js-cookie";
+import React, { useState } from "react";
 import { GrLogin } from "react-icons/gr";
-import { FiMenu, FiX } from "react-icons/fi";
+import { IoMdCart } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { fetchCart } from "@/redux/thunks/basketThunks";
-import { clearCart, setGuestCart } from "@/redux/slices/basketSlice";
-import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
 import { FcManager } from "react-icons/fc";
-
+import { useRouter } from "next/navigation";
+import { FiMenu, FiX } from "react-icons/fi";
+import { className } from "@/utils/classNames";
+import { fetchCart } from "@/redux/thunks/basketThunks";
+import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
+import { clearCart, setGuestCart } from "@/redux/slices/basketSlice";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +33,6 @@ const Navbar: React.FC = () => {
       setIsAdmin(false);
     }
   };
-
-
 
   React.useEffect(() => {
     checkRole();
@@ -57,12 +54,11 @@ const Navbar: React.FC = () => {
     Cookies.remove("role");
     Cookies.remove("userId");
     localStorage.removeItem("guestCart");
-    // dispatch(clearCart()); // پاک کردن سبد خرید
+    dispatch(clearCart());
     router.push("/");
   };
 
   const items = useSelector((state: RootState) => state.basket.items) || [];
-
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative mb-5">
       <nav className="flex justify-between items-center container px-6">
@@ -123,17 +119,19 @@ const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-x-4 relative">
-        {isAdmin && <Link
+          {isAdmin && (
+            <Link
               href="/admin/dashboard"
               className={className(
                 "hidden md:flex items-center gap-x-2 px-9",
                 "bg-blue-400 hover:bg-blue-500 text-white",
-                "rounded-lg px-4 py-[8px]",
-
+                "rounded-lg px-4 py-[8px]"
               )}
             >
-              <p>مدیریت</p><FcManager />
-            </Link>}
+              <p>مدیریت</p>
+              <FcManager />
+            </Link>
+          )}
           {!token ? (
             <Link
               href="/auth/login"
