@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { getGuestCart, saveGuestCart } from "@/redux/guestBasket";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
 import { IoIosAdd, IoIosRemove, IoIosTrash } from "react-icons/io";
-import { CartItem, setGuestCart } from "@/redux/slices/basketSlice";
+import { CartItem, clearDisabledButtons, setGuestCart } from "@/redux/slices/basketSlice";
 import {
   updateCartApi,
   removeFromCartApi,
@@ -124,6 +124,8 @@ const Basket: React.FC = () => {
       saveGuestCart(updatedCart);
       dispatch(setGuestCart(updatedCart));
     }
+        dispatch(clearDisabledButtons());
+    
   };
   const totalPrice = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
