@@ -5,6 +5,7 @@ import {
   updateCartApi,
   removeFromCartApi,
   clearCartApi,
+  mergeGuestCartWithUserCart,
 } from "../thunks/basketThunks";
 
 export interface CartItem {
@@ -23,7 +24,7 @@ export interface BasketState {
 }
 
 const initialState: BasketState = {
-  items: [], // آرایه خالی به عنوان مقدار پیش‌فرض
+  items: [], // مقدار پیش‌فرض
   loading: false,
   error: null,
 };
@@ -33,10 +34,10 @@ const basketSlice = createSlice({
   initialState,
   reducers: {
     setGuestCart: (state, action: PayloadAction<CartItem[]>) => {
-      state.items = action.payload;
+      state.items = action.payload; // ذخیره سبد مهمان در state
     },
     clearCart: (state) => {
-      state.items = [];
+      state.items = []; // پاک‌سازی سبد خرید
     },
   },
   extraReducers: (builder) => {
@@ -44,15 +45,23 @@ const basketSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
+
     builder.addCase(fetchCart.fulfilled, (state, action) => {
-      state.items = Array.isArray(action.payload) ? [...action.payload] : [];
+      // اطمینان از اینکه فقط آرایه‌های معتبر در Redux State ذخیره شوند
+      state.items = Array.isArray(action.payload) ? action.payload : [];
       state.loading = false;
     });
+
 
     builder.addCase(fetchCart.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as string) || "خطا در دریافت سبد خرید";
     });
+
+    builder.addCase(mergeGuestCartWithUserCart.fulfilled, (state, action) => {
+      state.items = Array.isArray(action.payload) ? action.payload : []; // مطمئن شوید که مقدار بازگشتی درست است
+    });
+
 
     builder.addCase(addToCartApi.fulfilled, (state, action) => {
       const newItem = action.meta.arg.item as CartItem;
@@ -63,6 +72,7 @@ const basketSlice = createSlice({
         state.items.push(newItem);
       }
     });
+
     builder.addCase(addToCartApi.rejected, (state, action) => {
       state.error = (action.payload as string) || "خطا در افزودن به سبد خرید";
     });
@@ -74,6 +84,7 @@ const basketSlice = createSlice({
         existingItem.quantity = quantity;
       }
     });
+
     builder.addCase(updateCartApi.rejected, (state, action) => {
       state.error = (action.payload as string) || "خطا در بروزرسانی محصول";
     });
@@ -82,19 +93,22 @@ const basketSlice = createSlice({
       const { productId } = action.meta.arg;
       state.items = state.items.filter((item) => item.id !== productId);
     });
+
     builder.addCase(removeFromCartApi.rejected, (state, action) => {
       state.error =
         (action.payload as string) || "خطا در حذف محصول از سبد خرید";
     });
-    // حذف کامل سبد خرید
+
     builder.addCase(clearCartApi.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
+
     builder.addCase(clearCartApi.fulfilled, (state) => {
-      state.items = []; // خالی کردن سبد خرید در Redux
+      state.items = []; // پاک‌سازی سبد خرید
       state.loading = false;
     });
+
     builder.addCase(clearCartApi.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as string) || "خطا در پاک کردن سبد خرید";

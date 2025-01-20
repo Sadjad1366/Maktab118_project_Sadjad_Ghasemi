@@ -4,22 +4,24 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CartItem } from "@/redux/slices/basketSlice";
 import { clearGuestCart, getGuestCart } from "../guestBasket";
 
-
 // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-export const fetchCart = createAsyncThunk(
+export const fetchCart = createAsyncThunk<CartItem[], string, { rejectValue: string }>(
   "basket/fetchCart",
-  async (userId: string, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
-      return response.data.products || [];
+      console.log("FetchCart Response:", response.data.products);
+      return response.data.products || []; // مقدار پیش‌فرض آرایه خالی
     } catch (error: any) {
-      console.error("fetchCart error:", error.message);
       return rejectWithValue(error.message || "Error fetching cart");
     }
   }
 );
+
+
+
+
 
 // افزودن محصول به سبد خرید
 export const addToCartApi = createAsyncThunk(
@@ -105,43 +107,40 @@ export const clearCartApi = createAsyncThunk(
 );
 
 
-export const mergeGuestCartWithUserCart = createAsyncThunk(
+export const mergeGuestCartWithUserCart = createAsyncThunk<
+  CartItem[], // مقدار بازگشتی
+  { userId: string }, // آرگومان ورودی
+  { rejectValue: string } // مقدار reject شده
+>(
   "basket/mergeGuestCartWithUserCart",
   async (
     payload: { userId: string },
     { getState, dispatch, rejectWithValue }
   ) => {
     try {
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-      const guestCart = getGuestCart(); // دریافت سبد مهمان از localStorage
-      const state = getState() as RootState; // دسترسی به Redux State
-      const userCart = state.basket.items; // دریافت سبد کاربر
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-      const mergedCart: CartItem[] = [];
+      // دریافت سبد خرید مهمان
+      const guestCart = getGuestCart();
 
-      const cartMap = new Map<string, CartItem>();
+      // دسترسی به سبد خرید کاربر از Redux State
+      const state = getState() as RootState;
+      const userCart = state.basket.items;
 
-      userCart.forEach((item) => {
-        cartMap.set(item.id, { ...item });
-      });
-
-      guestCart.forEach((guestItem: CartItem) => {
-        if (cartMap.has(guestItem.id)) {
-          const existingItem = cartMap.get(guestItem.id)!;
-          existingItem.quantity += guestItem.quantity;
-        } else {
-          cartMap.set(guestItem.id, { ...guestItem });
-        }
-      });
-      console.log("Cart Map after merging:", Array.from(cartMap.values()));
-      mergedCart.push(...cartMap.values());
-      await axios.post(`${BASE_URL}/api/cart/merge`, {
+      // ارسال محصولات کاربر و مهمان به API
+      const response = await axios.post(`${BASE_URL}/api/cart/merge`, {
         userId: payload.userId,
-        products: mergedCart,
+        guestProducts: guestCart,
+        userProducts: userCart,
       });
+
+      // پاک کردن سبد خرید مهمان پس از ادغام موفق
+      clearGuestCart();
+
+      // بازخوانی سبد خرید جدید از سرور
       dispatch(fetchCart(payload.userId));
-      clearGuestCart(); // پاکسازی سبد مهمان
+
+      return response.data.cart;
     } catch (error: any) {
       console.error("Error merging guest cart with user cart:", error.message);
       return rejectWithValue(error.message || "Error merging carts");

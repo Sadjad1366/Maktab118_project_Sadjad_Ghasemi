@@ -21,7 +21,8 @@ const Basket: React.FC = () => {
   const dispatch = useAppDispatch();
   const mergeTriggered = useRef(false); // برای جلوگیری از فراخوانی چندباره
   const { items, loading, error } = useSelector((state: RootState) => state.basket);
-  const router = useRouter();
+  console.log("Redux items:", items); // بررسی مقدار Redux State
+    const router = useRouter();
   const role = Cookies.get("role");
   const token = Cookies.get("accessToken");
   const userId = Cookies.get("userId");
@@ -39,24 +40,34 @@ const Basket: React.FC = () => {
 
   useEffect(() => {
     const guestCart = getGuestCart();
+    console.log("Guest Cart:", guestCart);
+
     if (userId && guestCart.length > 0 && !mergeTriggered.current) {
-      mergeTriggered.current = true; // جلوگیری از اجرای چندباره
+      mergeTriggered.current = true;
       dispatch(mergeGuestCartWithUserCart({ userId }))
         .unwrap()
-        .then(() => console.log("Merge completed."))
+        .then((result) => {
+          console.log("Merge completed. Updated Cart:", result);
+        })
         .catch((error) => console.error("Error merging carts:", error));
     }
-  }, []);
+  }, [userId, dispatch]);
 
 
 
   useEffect(() => {
     if (!userId) {
-      // اگر کاربر وارد نشده باشد
-      const guestCart = getGuestCart(); // دریافت سبد مهمان
-      dispatch(setGuestCart(guestCart)); // انتقال به Redux
+      const guestCart = getGuestCart();
+      dispatch(setGuestCart(guestCart)); // ذخیره در Redux
+    } else {
+      dispatch(fetchCart(userId)); // دریافت سبد خرید از سرور
     }
-  }, []);
+  }, [userId, dispatch]);
+
+  useEffect(() => {
+    console.log("Redux items updated in Basket:", items);
+  }, [items]);
+
 
   const handleIncrement = (itemId: string, quantity: number, stock: number) => {
     if (quantity < stock) {
@@ -147,7 +158,9 @@ const Basket: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item) => (
+                  {items.map((item) =>  {
+    console.log("Rendering item:", item); // بررسی مقادیر داخل حلقه
+    return (
                     <tr key={item.id} className="hover:bg-gray-50">
                       <td className="p-3 border border-gray-200 text-center">
                         <img
@@ -200,7 +213,8 @@ const Basket: React.FC = () => {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                   );
+               })}
                 </tbody>
               </table>
             </div>
