@@ -68,13 +68,13 @@ export default function Checkout() {
     <div className="bg-checkout-pattern flex justify-center py-6 w-full rounded-lg">
       <form
         onSubmit={handleSubmit(submitHandler)}
-        className="bg-zinc-300 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-90"
+        className="bg-gray-800 px-8 py-2 rounded-xl shadow-md w-full max-w-md opacity-90"
       >
         <div className="space-y-3">
           <div>
             <label
               htmlFor="firstname"
-              className="block text-gray-700 font-medium px-2"
+              className="block text-slate-100 font-medium px-2"
             >
               نام
             </label>
@@ -92,7 +92,7 @@ export default function Checkout() {
           <div>
             <label
               htmlFor="lastname"
-              className="block text-gray-700 font-medium px-2"
+              className="block text-slate-100 font-medium px-2"
             >
               نام خانوادگی
             </label>
@@ -110,7 +110,7 @@ export default function Checkout() {
           <div>
             <label
               htmlFor="phoneNumber"
-              className="block text-gray-700 font-medium px-2"
+              className="block text-slate-100 font-medium px-2"
             >
               موبایل
             </label>
@@ -128,7 +128,7 @@ export default function Checkout() {
           <div>
             <label
               htmlFor="address"
-              className="block text-gray-700 font-medium px-2"
+              className="block text-slate-100 font-medium px-2"
             >
               آدرس
             </label>
@@ -147,7 +147,7 @@ export default function Checkout() {
           <div>
             <label
               htmlFor="deliveryDate"
-              className="block text-gray-700 font-medium px-2"
+              className="block text-slate-100 font-medium px-2"
             >
               تاریخ تحویل
             </label>
@@ -178,7 +178,7 @@ export default function Checkout() {
           <div className="py-4">
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded"
+              className="w-full bg-blue-500 text-white py-2 rounded active:translate-y-2 transition duration-300"
             >
               ادامه
             </button>

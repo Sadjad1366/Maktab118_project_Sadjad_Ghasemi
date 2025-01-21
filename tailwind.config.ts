@@ -103,7 +103,7 @@ export default {
         "luminox-pattern": "url('/images/brandstory/luminox1440.png')",
         "ingersoll-pattern": "url('/images/brandstory/ingersoll.jpg')",
         "signup-pattern": "url('/images/brandstory/signup.webp')",
-        "checkout-pattern": "url('/images/brandstory/brandstroy.jpg')",
+        "checkout-pattern": "url('/images/brandstory/checkout.webp')",
         "paymnet-pattern": "url('/images/brandstory/payment3.webp')",
         "fail-pattern": "url('/images/brandstory/fail4.webp')",
         "success-pattern": "url('/images/brandstory/success.webp')",

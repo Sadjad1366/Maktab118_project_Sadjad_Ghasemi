@@ -17,6 +17,7 @@ import {
   fetchCart,
   mergeGuestCartWithUserCart,
 } from "@/redux/thunks/basketThunks";
+import { className } from "@/utils/classNames";
 
 const Basket: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -125,7 +126,7 @@ const Basket: React.FC = () => {
       dispatch(setGuestCart(updatedCart));
     }
         dispatch(clearDisabledButtons());
-    
+
   };
   const totalPrice = items.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -217,7 +218,8 @@ const Basket: React.FC = () => {
             </div>
             <button
               onClick={onClickHandler}
-              className="bg-green-500 px-4 py-2 text-white font-bold rounded-lg shadow-lg"
+              className={className("bg-green-500 px-4 py-2 text-white font-bold",
+                "rounded-lg shadow-lg active:translate-y-2 transition duration-300")}
             >
               نهایی کردن خرید
             </button>

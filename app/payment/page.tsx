@@ -65,7 +65,7 @@ console.log("user:",userId)
   };
 
   return (
-    <div className="relative min-h-screen bg-paymnet-pattern flex items-center justify-center">
+    <div className="relative w-full min-h-screen bg-paymnet-pattern flex items-center justify-center">
       <div className="absolute bg-slate-900 opacity-80 shadow-md rounded-lg p-8 max-w-md w-full">
         <h2 className="text-2xl font-bold text-gray-100 text-center mb-6">
           پرداخت آنلاین
@@ -136,7 +136,8 @@ console.log("user:",userId)
               type="text"
               placeholder="XXX"
               maxLength={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={className("w-full px-4 py-2 border border-gray-300 rounded-md",
+                "shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500")}
             />
           </div>
 
@@ -144,12 +145,14 @@ console.log("user:",userId)
           <div className="flex justify-between gap-x-4">
             <button
               onClick={paymentHandler}
-              className="w-[60%] text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
+              className={className("w-[60%] text-center bg-blue-500 hover:bg-blue-600",
+                "text-white font-semibold py-2 px-4 rounded-md","active:translate-y-2 transition duration-300")}
             >
               پرداخت
             </button>
             <button
-              className="w-[40%] text-center bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md"
+              className={className("w-[40%] text-center bg-red-500 hover:bg-red-600",
+                "text-white font-semibold py-2 px-4 rounded-md","active:translate-y-2 transition duration-300")}
               onClick={rejectHandler}
             >
               انصراف

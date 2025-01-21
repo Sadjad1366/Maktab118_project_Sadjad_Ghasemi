@@ -1,6 +1,8 @@
 const ExtraInfoComp: React.FC = () => {
   return (
-      <div className="w-full bg-slate-200 grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-3 py-3 my-6 p-4 rounded-lg">
+    <div>
+      <h2 className="text-2xl font-bold mt-6">دانستنیها</h2>
+      <div className="w-full bg-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8 my-6 p-8 rounded-lg">
         <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
           <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
           <p className="p-2 text-justify">
@@ -15,7 +17,7 @@ const ExtraInfoComp: React.FC = () => {
           </p>
         </div>
         <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-        <h2 className="font-semibold text-lg p-2">ساعت های اسکلتون</h2>
+          <h2 className="font-semibold text-lg p-2">ساعت های اسکلتون</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -28,7 +30,7 @@ const ExtraInfoComp: React.FC = () => {
           </p>
         </div>
         <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-        <h2 className="font-semibold text-lg p-2">ساعت های هوشمند</h2>
+          <h2 className="font-semibold text-lg p-2">ساعت های هوشمند</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -41,7 +43,7 @@ const ExtraInfoComp: React.FC = () => {
           </p>
         </div>
         <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-        <h2 className="font-semibold text-lg p-2">ساعت های کورنوگراف</h2>
+          <h2 className="font-semibold text-lg p-2">ساعت های کورنوگراف</h2>
           <p className="p-2 text-justify">
             ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
             شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
@@ -54,6 +56,7 @@ const ExtraInfoComp: React.FC = () => {
           </p>
         </div>
       </div>
+    </div>
   );
 };
 

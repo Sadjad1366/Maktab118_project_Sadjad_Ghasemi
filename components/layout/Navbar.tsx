@@ -62,9 +62,9 @@ const Navbar: React.FC = () => {
   const items = useSelector((state: RootState) => state.basket.items) || [];
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative mb-5">
-      <nav className="flex justify-between items-center container px-6">
+      <nav className="flex justify-between items-center px-6">
         {/* Logo and Menu */}
-        <div className="w-full flex justify-between md:justify-normal items-center gap-x-20">
+        <div className="w-full flex justify-between md:justify-normal items-center px-10">
           <button
             className="lg:hidden text-gray-800 focus:outline-none"
             onClick={toggleMenu}
@@ -75,19 +75,19 @@ const Navbar: React.FC = () => {
               <FiMenu className="text-gray-300" size={36} />
             )}
           </button>
-          <div className="flex items-center gap-x-3">
+          <div className="flex items-center gap-x-10">
             <img
               className="w-24 h-[100px] sm:w-36 sm:h-[120px]"
               src="/images/logo/ninja.svg"
               alt="Logo"
             />
-            <p className="hidden xl:block text-slate-100 text-2xl font-semibold">
+            <p className="hidden xl:block text-slate-100 text-2xl font-semibold ">
               گالری ساعت نینجا
             </p>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex gap-x-6">
+          <div className="hidden lg:flex gap-x-10 px-36">
             <Link href="/" className="text-slate-100 hover:underline text-lg">
               صفحه اصلی
             </Link>
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-x-4 relative">
+        <div className="flex gap-x-8 relative">
           {isAdmin && (
             <Link
               href="/admin/dashboard"
