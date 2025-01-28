@@ -13,6 +13,7 @@ interface IOrderModal {
   onClose: () => void;
   title: string;
   orderId: string;
+  onOrderUpdate: () => void;
 }
 
 const OrderModal: React.FC<IOrderModal> = ({
@@ -20,6 +21,7 @@ const OrderModal: React.FC<IOrderModal> = ({
   onClose,
   title,
   orderId,
+  onOrderUpdate,
 }) => {
   if (!isOpen) return null;
 
@@ -46,7 +48,8 @@ const OrderModal: React.FC<IOrderModal> = ({
       editOrderById(orderId, deliveryStatus),
     onSuccess: () => {
       toast.success("سفارش با موفقیت ارسال شد✨");
-      onClose()
+      onOrderUpdate();
+      onClose();
       // redirect("/admin/dashboard/orders");
     },
   });
