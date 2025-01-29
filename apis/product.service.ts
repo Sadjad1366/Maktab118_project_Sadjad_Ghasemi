@@ -25,7 +25,6 @@ export const getAllProductsReq: getAllProductReqType = async (page=1, limit = 6,
         brand:brand
       },
     });
-    // console.log('products in api: ',response.data);
     return response.data;
   } catch (error:any) {
     throw new Error(error.response?.data?.message || "خطا در دریافت محصولات");
@@ -77,7 +76,7 @@ export const createNewProduct = async (formData: FormData): Promise<IProduct> =>
     const response = await client.post(urls.product.create, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${Cookies.get('accessToken')}`, // Include token
+        Authorization: `Bearer ${Cookies.get('accessToken')}`,
       },
     });
 

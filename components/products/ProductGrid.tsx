@@ -9,6 +9,7 @@ import { GrSort } from "react-icons/gr";
 import { className } from "@/utils/classNames";
 import { useDebounce } from "@/utils/hooks/useDebounce";
 import { getGuestCart } from "@/redux/guestBasket";
+import { useTranslations } from "next-intl";
 
 interface IFilter {
   name: string | undefined;
@@ -25,6 +26,7 @@ const ProductGrid: React.FC = () => {
   });
 
   const perPageItems = 8;
+  const t = useTranslations("Products");
 
   // Debounce the name and brand filters
   const debouncedName = useDebounce(filters.name, 500);
@@ -76,37 +78,37 @@ const ProductGrid: React.FC = () => {
     const selectedSort = event.target.value;
     setFilters((prev) => ({ ...prev, sort: selectedSort }));
   };
-  React.useEffect(()=>{
-    console.log("guestcart",getGuestCart()); // آیا آیتم‌ها را به درستی بازمی‌گرداند؟
-  },[])
+  React.useEffect(() => {
+    console.log("guestcart", getGuestCart()); // آیا آیتم‌ها را به درستی بازمی‌گرداند؟
+  }, []);
 
   return (
     <div className="container mx-auto py-4 px-2 grid grid-cols-12 gap-4">
       <aside className="col-span-3 bg-white p-4 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-4">فیلتر محصولات</h3>
+        <h3 className="text-lg font-semibold mb-4">{t("filters")}</h3>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            برند
+            {t("brand")}
           </label>
           <input
             type="text"
             name="brand"
             value={filters.brand}
             onChange={handleFilterChange}
-            placeholder="جستجوی برند"
+            placeholder={t("search_brand")}
             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">
-            نام محصول
+            {t("product_name")}
           </label>
           <input
             type="text"
             name="name"
             value={filters.name}
             onChange={handleFilterChange}
-            placeholder="جستجوی نام"
+            placeholder={t('search_name')}
             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -116,20 +118,18 @@ const ProductGrid: React.FC = () => {
             setFilters({ brand: undefined, name: undefined, sort: undefined })
           }
         >
-          ریست فیلترها
+          {t("reset_filters")}
         </button>
       </aside>
 
       <main className="col-span-9">
         <h2 className="text-3xl bg-slate-200 text-slate-600 font-bold mb-4 py-4 text-center rounded-md">
-          محصولات
-        </h2>
+        {t('products')}        </h2>
 
         {/* Sorting Controls */}
         <div className="flex justify-start items-center mb-6 gap-4">
           <label htmlFor="sort" className="text-sm font-medium text-gray-700">
-            مرتب‌سازی:
-          </label>
+          {t('sort')}          </label>
           <div className="relative">
             <select
               name="sort"
@@ -141,9 +141,9 @@ const ProductGrid: React.FC = () => {
                 "focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               )}
             >
-              <option value="">انتخاب کنید</option>
-              <option value="price">ارزان ترین</option>
-              <option value="-price">گران ترین</option>
+              <option value="">{t('choose')}</option>
+              <option value="price">{t('price_asc')}</option>
+              <option value="-price">{t('price_desc')}</option>
             </select>
             <div className="absolute inset-y-0 left-0 flex items-center px-2 pointer-events-none">
               <GrSort />
@@ -167,10 +167,10 @@ const ProductGrid: React.FC = () => {
               currentPage === 1 || isLoading || totalPages === undefined
             }
           >
-            قبلی
+            {t('previous')}
           </button>
           <span className="pr-3 font-semibold text-gray-700">
-            صفحه {currentPage} از {totalPages ?? "-"}
+          {t('page')} {currentPage} {t('of')} {totalPages ?? "-"}
           </span>
           <button
             className="text-white px-4 py-2 bg-indigo-500 rounded-full hover:bg-indigo-600 disabled:opacity-50"
@@ -181,7 +181,7 @@ const ProductGrid: React.FC = () => {
               totalPages === undefined
             }
           >
-            بعدی
+            {t('next')}
           </button>
         </div>
       </main>

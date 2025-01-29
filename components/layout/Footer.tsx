@@ -1,45 +1,47 @@
 import { className } from "@/utils/classNames";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import React from "react";
 import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
+import { useTranslations } from "next-intl";
 
 const Footer: React.FC = () => {
+  const t = useTranslations("Footer");
   return (
     <div className="rounded-lg mt-6 mx-0">
       <footer className="bg-gray-400 rounded-lg">
         <div className="w-full grid grid-cols-1 gap-8 px-8 py-6 lg:py-8 md:grid-cols-2">
           <div>
             <h2 className="border-b-2 py-2 max-w-90 mb-6 text-3xl font-semibold text-gray-900 uppercase dark:text-white">
-              گالری ساعت نینجا
+              {t("gallery_name")}
             </h2>
-            <div className="text-justify max-w-90 px-2">
-              نماینده رسمی فروش و خدمات پس از فروش ساعتهای بوم‌مرسیه، رادو،
-              گوچی، بالمن، تیسوت، سرتینا، هامیلتون، میدو، کلوین‌کلاین،
-              ویکتورینوکس، سواروسکی، ونگر، سواچ و فلیک‌فلاک زیورآلات و
-              کریستال‌های سواروسکی ابزارهای چندکاره، چاقوها و لوازم آشپزخانه و
-              ادوات سفر ویکتورینوکس با بیش از ربع قرن تجربه
-            </div>
+            <div className="text-justify max-w-90 px-2">{t("description")}</div>
           </div>
           <div className="flex flex-col gap-y-2 rounded-b-lg">
-            <h2 className={className("border-b-2 py-2 max-w-90 mb-6 text-3xl",
-              "font-semibold text-gray-900 uppercase dark:text-white")}>
-              درباره ما
+            <h2
+              className={className(
+                "border-b-2 py-2 max-w-90 mb-6 text-3xl",
+                "font-semibold text-gray-900 uppercase dark:text-white"
+              )}
+            >
+              {t("about_us")}
             </h2>
 
-            <p className="hover:underline">تلفن: 77400524-021</p>
+            <p className="hover:underline">{t("phone")}</p>
 
             <div className="hover:underline flex flex-wrap">
-              <span>ایمیل:</span> <span>sadjad.ghasemi@gmail.com</span>
+              <span>{t("email")}</span> <span>sadjad.ghasemi@gmail.com</span>
             </div>
 
-            <p className="hover:underline">
-              آدرس : خ پیروزی -خ ششم نیرو هوایی- فرعی 6/35 پلاک 28 واحد 3
-            </p>
+            <p className="hover:underline">{t("address")} </p>
           </div>
           <div className="flex flex-col gap-y-2">
-          <h2 className={className("border-b-2 py-2 max-w-90 mb-6 text-3xl",
-              "font-semibold text-gray-900 uppercase dark:text-white")}>
-              شبکه های اجتماعی
+            <h2
+              className={className(
+                "border-b-2 py-2 max-w-90 mb-6 text-3xl",
+                "font-semibold text-gray-900 uppercase dark:text-white"
+              )}
+            >
+              {t("social_media")}
             </h2>
 
             <div className="flex gap-3">
@@ -69,7 +71,7 @@ const Footer: React.FC = () => {
         </div>
         <div className="px-4 py-6 bg-gray-800 text-center rounded-b-lg">
           <span className="text-center text-gray-200 dark:text-gray-300 sm:text-center">
-            تمام حق و حقوق استفاده از این سایت متعلق به گالری ساعت نینجا می باشد
+            {t("footer_rights")}
           </span>
         </div>
       </footer>

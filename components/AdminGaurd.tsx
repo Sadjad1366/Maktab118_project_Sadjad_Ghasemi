@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 

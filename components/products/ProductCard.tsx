@@ -1,7 +1,8 @@
 "use client";
 
 import { className } from "@/utils/classNames";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import {Link} from '@/i18n/routing';
 import React from "react";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
@@ -14,6 +15,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isLike, setIsLike] = React.useState(false);
   const toggleLike = ()=> {setIsLike((prev)=> !prev)};
   const isOutOfStock = product.quantity === 0;
+  const t = useTranslations("Products");
 
   return (
     <div
@@ -50,18 +52,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.name}
         </h3>
         <p className="text-sm text-gray-600 truncate mb-2">
-          {product.description || "No description available"}
+          {product.description || `${t('no_description')}`}
         </p>
         {isOutOfStock ? (
           <div className="flex justify-center items-center mt-2">
-            <span className="text-red-500 text-xl font-semibold">ناموجود</span>
+            <span className="text-red-500 text-xl font-semibold">{t('out_of_stock')}</span>
           </div>
         ) : (
           <div className="flex justify-between items-center mt-2">
             <span className="text-lg font-bold text-indigo-600">
-              {Number(product.price).toLocaleString()} تومان
+              {Number(product.price).toLocaleString()} {t('currency')}
             </span>
-            <span className="text-green-500 text-sm font-semibold">موجود</span>
+            <span className="text-green-500 text-sm font-semibold">{t('in_stock')}</span>
           </div>
         )}
       </div>

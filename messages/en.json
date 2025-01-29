@@ -1,0 +1,531 @@
+{
+  "Navbar": {
+    "home": "Home",
+    "products": "Shop",
+    "category": "Categories",
+    "aboutUs": "About Us",
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "logout": "Logout",
+    "cart": "Cart",
+    "emptyCart": "Your cart is empty",
+    "management": "Management",
+    "viewCart": "View Cart",
+    "ninjaGallery": "Ninja Watch Gallery",
+    "pcs": "pcs",
+    "currency": "Toman"
+  },
+  "Products": {
+    "filters": "Filter Products",
+    "brand": "Brand",
+    "search_brand": "Search Brand",
+    "product_name": "Product Name",
+    "search_name": "Search Name",
+    "reset_filters": "Reset Filters",
+    "products": "Products",
+    "sort": "Sort by:",
+    "choose": "Choose",
+    "price_asc": "Cheapest",
+    "price_desc": "Most Expensive",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of",
+    "out_of_stock": "Out of Stock",
+    "in_stock": "In Stock",
+    "no_description": "No description available",
+    "currency": "Toman"
+  },
+  "ProductDetail": {
+    "loading_product": "Loading product information...",
+    "loading_error": "Loading problem",
+    "reviews": "reviews",
+    "out_of_stock": "Out of Stock",
+    "add_to_cart": "Add to Cart",
+    "added_to_cart": "Product added to the cart",
+    "exceeds_stock": "The selected quantity exceeds stock availability.",
+    "product_unavailable": "The product is unavailable.",
+    "success_add_cart": "Product added to the cart successfully.",
+    "error_add_cart": "An error occurred while adding the product to the cart.",
+    "guest_error_stock": "The selected quantity exceeds stock availability.",
+    "product_name_placeholder": "No product name available",
+    "product_description_placeholder": "No description available",
+    "currency": "Toman",
+    "repeat": "It's Already in the Cart"
+  },
+  "Cart": {
+    "basket_title": "Shopping Cart",
+    "loading": "Loading...",
+    "error": "Error",
+    "image": "Image",
+    "product_name": "Product Name",
+    "quantity": "Quantity",
+    "unit_price": "Unit Price",
+    "total_price": "Total Price",
+    "actions": "Actions",
+    "max_purchase_limit": "Maximum purchase limit reached",
+    "checkout": "Proceed to Checkout",
+    "cart_empty": "Your cart is empty.",
+    "guest_login_required": "Please log in to continue the process",
+    "merge_cart_success": "Cart merge completed successfully",
+    "remove_item": "Remove Item",
+    "final_price": "Total Price",
+    "currency": "Toman",
+    "max_stock_error": "Not allowed to add More"
+  },
+  "Login": {
+    "username": "Username",
+    "welcome": "Welcome to Management Panel",
+    "username_placeholder": "Enter your username",
+    "password": "Password",
+    "password_placeholder": "Enter your password",
+    "login": "Login",
+    "logging_in": "Logging in...",
+    "signup": "Sign Up",
+    "back_to_home": "Back to homePage",
+    "login_success": "Login successful! 🎉",
+    "login_error": "An error occurred during login"
+  },
+  "Signup": {
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "username": "Username",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "phone_number": "Phone Number",
+    "address": "Address",
+    "login_link": "Login",
+    "signup": "Sign Up",
+    "signing_up": "Signing up...",
+    "signup_success": "Sign up was successful!",
+    "signup_error": "Error occurred during sign up!",
+    "back_to_home": "Back to homePage"
+  },
+  "Checkout": {
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "phone_number": "Phone Number",
+    "address": "Address",
+    "delivery_date": "Delivery Date",
+    "continue": "Continue",
+    "form_error_first_name": "First name is required.",
+    "form_error_last_name": "Last name is required.",
+    "form_error_phone_number": "Phone number is required.",
+    "form_error_address": "Address is required.",
+    "form_error_delivery_date": "Delivery date is required."
+  },
+  "Payment": {
+    "page_title": "Online Payment",
+    "card_number": "Card Number",
+    "card_number_placeholder": "XXXX-XXXX-XXXX-XXXX",
+    "card_holder_name": "Card Holder Name",
+    "card_holder_name_placeholder": "First and Last Name",
+    "expiration_month": "Expiration Month",
+    "expiration_year": "Expiration Year",
+    "cvv": "CVV2",
+    "cvv_placeholder": "XXX",
+    "pay": "Pay",
+    "cancel": "Cancel",
+    "empty_cart_error": "Your cart is empty.",
+    "order_success": "Order placed successfully.",
+    "order_failure": "Error occurred while placing the order."
+  },
+  "SuccessPayment": {
+    "payment_result": "Payment Result",
+    "order_registered": "Dear customer, your order has been registered. We will contact you to coordinate the delivery time.",
+    "home_page": "Home Page"
+  },
+  "FailPayment": {
+    "payment_result": "Payment Result",
+    "payment_cancelled": "You have canceled the payment.",
+    "home_page": "Home Page"
+  },
+  "DashboardLayout": {
+    "title": "Admin Panel",
+    "manager": "Manager",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "orders": "Orders",
+    "entity": "Stock & Price",
+    "reports": {
+      "title": "Reports",
+      "sales": "Sales",
+      "users": "Users"
+    },
+    "setting": {
+      "title": "Setting",
+      "profile": "Profile",
+      "security": "Security"
+    },
+    "logout": "Logout"
+  },
+  "NotFound": {
+    "message": "Sorry. The Page is not founded!!!",
+    "home": "HomePage"
+  },
+  "Footer": {
+    "gallery_name": "Ninja Watch Gallery",
+    "description": "Official representative for sales and after-sales services of Baume & Mercier, Rado, Gucci, Balmain, Tissot, Certina, Hamilton, Mido, Calvin Klein, Victorinox, Swarovski, Wenger, Swatch, and Flik Flak watches, as well as Swarovski jewelry and crystals, Victorinox multi-tools, knives, kitchenware, and travel equipment with over a quarter-century of experience.",
+    "about_us": "About Us",
+    "phone": "Phone: 021-77400524",
+    "email": "Email: sadjad.ghasemi@gmail.com",
+    "address": "Address: Piroozi St. - 6th Niroo Havaei St. - Alley 6/35, No. 28, Unit 3",
+    "social_media": "Social Media",
+    "footer_rights": "All rights to use this site belong to Ninja Watch Gallery."
+  },
+  "Video": {
+    "video_title": "Store Introduction Video",
+    "video_fallback": "Your browser does not support playing this video."
+  },
+  "CategoryList": {
+    "brand": "Brands",
+    "category": "Categories",
+    "automatic": "Automatic Watches",
+    "skeleton": "Skeleton Watches",
+    "chornograph": "Chornograph Watches",
+    "smart": "Smart Watches"
+  },
+  "ExtraInfo": {
+    "extra_info": "Knowledge Base",
+    "automatic_watches": {
+      "title": "Automatic Watches",
+      "description": "Automatic watches, also known as self-winding watches, are mechanical timepieces that use the motion of the wearer's wrist to wind the mainspring, eliminating the need for manual winding. They are popular among watch enthusiasts for their craftsmanship, precision, and traditional watchmaking heritage."
+    },
+    "smart_watches": {
+      "title": "Smart Watches",
+      "description": "Smartwatches are advanced wearable devices that offer more than just timekeeping. They feature fitness tracking, notifications, GPS, and app integration. Many models support calling and messaging, making them a convenient companion for everyday life."
+    },
+    "skeleton_watches": {
+      "title": "Skeleton Watches",
+      "description": "Skeleton watches showcase the intricate mechanical movement by removing unnecessary parts of the dial. The transparent design allows enthusiasts to admire the craftsmanship and inner workings of the timepiece."
+    },
+    "chronograph_watches": {
+      "title": "Chronograph Watches",
+      "description": "Chronograph watches function as a stopwatch combined with a display watch. They are popular among sports enthusiasts and professionals who require precise time measurement. Many models come with tachymeters for speed calculations."
+    }
+  },
+  "Why": {
+    "why_choose_us": "Why Choose Us",
+    "reasons": {
+      "fast_shipping": {
+        "title": "Fast Shipping",
+        "description": "Quick delivery to all parts of the country."
+      },
+      "authenticity_guarantee": {
+        "title": "Authenticity Guarantee",
+        "description": "All products are sold with a guarantee of authenticity."
+      },
+      "support_24_7": {
+        "title": "24/7 Support",
+        "description": "Online support to help with your questions and issues."
+      },
+      "amazing_discounts": {
+        "title": "Amazing Discounts",
+        "description": "New discounted products every week."
+      }
+    }
+  },
+  "Reviews": {
+    "customer_reviews": "Customer Reviews",
+    "reviews": {
+      "review_1": {
+        "name": "Ali Rezaei",
+        "review": "The product quality was excellent. Thank you for your great store!",
+        "rating": 5
+      },
+      "review_2": {
+        "name": "Mahsa Ahmadi",
+        "review": "Fast shipping and good packaging. I will definitely buy again.",
+        "rating": 4
+      },
+      "review_3": {
+        "name": "Mohammad Javadi",
+        "review": "Authentic and high-quality products. Had a great shopping experience.",
+        "rating": 5
+      }
+    }
+  },
+  "Feature": {
+    "featured_products": "Featured Products",
+    "currency": "Toman",
+    "products": {
+      "product_1": {
+        "name": "Rolex Watch",
+        "price": 25000000,
+        "image": "/images/brandstory/rolex.webp"
+      },
+      "product_2": {
+        "name": "Omega Watch",
+        "price": 15000000,
+        "image": "/images/brandstory/omega.webp"
+      },
+      "product_3": {
+        "name": "Seiko Watch",
+        "price": 5000000,
+        "image": "/images/brandstory/seiko.webp"
+      },
+      "product_4": {
+        "name": "Orient Watch",
+        "price": 15000000,
+        "image": "/images/brandstory/omega.webp"
+      },
+      "product_5": {
+        "name": "Ingersoll Watch",
+        "price": 5000000,
+        "image": "/images/brandstory/seiko.webp"
+      }
+    },
+    "view_product": "View Product"
+  },
+  "About": {
+    "about_us": {
+      "mission": {
+        "title": "Our Mission",
+        "description": "At Ninja Watch Gallery, we believe a watch is more than just a tool to tell time. It is a symbol of style, personality, and even heritage. Our goal is to offer a collection that suits all tastes and provides a delightful online shopping experience for you."
+      },
+      "features": {
+        "quality": {
+          "title": "Unmatched Quality",
+          "description": "All watches are original and from reputable global brands."
+        },
+        "variety": {
+          "title": "Wide Variety",
+          "description": "From formal and sporty to digital, everything is available for you."
+        },
+        "support": {
+          "title": "24/7 Support",
+          "description": "Our team is always here to ensure you have a great shopping experience."
+        }
+      },
+      "brand_story": {
+        "title": "Our Story",
+        "description": "Ninja Watch Gallery started its journey in 1999 with the aim of bridging fashion, technology, and innovation. Over time, we have earned the trust of thousands of customers and today, we are proud to be one of the leading online watch retailers.",
+        "additional_info": "By focusing on customer needs, our team continuously updates products and services to provide an experience beyond expectations."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "description": "If you have any questions or need assistance, we are always here for you.",
+        "button": "Get in Touch"
+      }
+    }
+  },
+  "ContactUs": {
+    "contact_us": {
+      "title": "Contact Us",
+      "contact_info": {
+        "title": "Contact Information",
+        "phone": "Phone",
+        "mobile": "Mobile",
+        "email": "Email",
+        "address": "Address",
+        "email_value": "sadjad.ghasemi@gmail.com",
+        "address_value": "Piroozi St - Niroo Havaei 6th St - Alley 6/35, No. 28, Unit 3"
+      },
+      "social_media": {
+        "title": "Social Media",
+        "facebook": "Facebook",
+        "facebook_link": "sadjad.ghasemi",
+        "github": "GitHub",
+        "github_link": "github account",
+        "telegram": "Telegram",
+        "telegram_link": "SadjadQasemi66"
+      },
+      "contact_form": {
+        "title": "Contact Form",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "submit": "Send Message"
+      }
+    }
+  },
+  "CategoryId": {
+    "category_products": {
+      "error": "Error loading products. Please try again.",
+      "no_products": "No products found for this category.",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page_info": "Page {page} of {totalPages}"
+      }
+    }
+  },
+  "ProductManagement": {
+    "title": "Product Management",
+    "add_product": "Add Product",
+    "currency": "Toman",
+    "table": {
+      "image": "Image",
+      "name": "Product Name",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "price": "Price",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "no_products": "No products available."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page_info": "Page {currentPage} of {totalPages}"
+    },
+    "delete_modal": {
+      "title": "Delete Product",
+      "message": "Are you sure you want to delete \"{productName}\"?"
+    },
+    "notifications": {
+      "fetch_error": "Error fetching products.",
+      "fetch_categories_error": "Error fetching categories.",
+      "fetch_subcategories_error": "Error fetching subcategories.",
+      "create_success": "Product created successfully.",
+      "create_error": "Error creating product.",
+      "update_success": "Product updated successfully.",
+      "update_error": "Error updating product.",
+      "delete_success": "Product deleted successfully.",
+      "delete_error": "Error deleting product."
+    }
+  },
+  "OrdersManagement": {
+    "title": "Order Management",
+    "filters": {
+      "all": "All Orders",
+      "delivered": "Delivered Orders",
+      "pending": "Pending Orders"
+    },
+    "table": {
+      "user": "User Name",
+      "total_price": "Total Price",
+      "order_date": "Order Date",
+      "status": "Status",
+      "no_orders": "No orders available."
+    },
+    "status": {
+      "delivered": "Delivered",
+      "pending": "Pending"
+    },
+    "buttons": {
+      "order_details": "Order Details",
+      "review_order": "Review Order",
+      "previous": "Previous",
+      "next": "Next",
+      "page_info": "Page {currentPage} of {totalPages}"
+    },
+    "errors": {
+      "fetch_orders": "Error fetching orders.",
+      "fetch_users": "Error fetching users."
+    },
+    "loading": "Loading...",
+    "currency": "Toman"
+  },
+  "Inventory": {
+    "title": "Inventory & Pricing Management",
+    "save_button": "Save",
+    "table": {
+      "image": "Product Image",
+      "name": "Product Name",
+      "price": "Price (Toman)",
+      "quantity": "Stock"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page_info": "Page {currentPage} of {totalPages}"
+    },
+    "messages": {
+      "save_success": "Update successful",
+      "save_error": "An error occurred. Please try again.",
+      "fetch_error": "Error fetching products.",
+      "unsaved_changes": "Please save changes before switching pages."
+    }
+  },
+  "CreateModal": {
+    "title": "Create Product",
+    "choose": "Choose",
+    "fields": {
+      "name": "Product Name",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "price": "Price",
+      "quantity": "Quantity",
+      "brand": "Brand",
+      "description": "Description",
+      "images": "Select Images"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": "Create Product"
+    },
+    "errors": {
+      "category": "Please select a category",
+      "subcategory": "Please select a subcategory",
+      "name": "Enter at least three characters",
+      "price": "Price must be greater than zero",
+      "quantity": "Quantity must be greater than zero",
+      "brand": "Enter at least three characters",
+      "description": "Enter at least three characters",
+      "images": "At least one image is required"
+    }
+  },
+  "DeleteModal": {
+    "title": "Delete Confirmation",
+    "confirm_text": "Yes",
+    "cancel_text": "No"
+  },
+  "UpdateModal": {
+    "title": "Edit Product",
+    "choose": "Choose",
+    "fields": {
+      "name": "Product Name",
+      "category": "Category",
+      "subcategory": "Subcategory",
+      "price": "Price",
+      "quantity": "Quantity",
+      "brand": "Brand",
+      "description": "Description",
+      "images": "Select Images"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": ",Edit Product"
+    },
+    "errors": {
+      "category": "Please select a category",
+      "subcategory": "Please select a subcategory",
+      "name": "Enter at least three characters",
+      "price": "Price must be greater than zero",
+      "quantity": "Quantity must be greater than zero",
+      "brand": "Enter at least three characters",
+      "description": "Enter at least three characters",
+      "images": "At least one image is required"
+    }
+  },
+  "OrderModal": {
+    "title": "Order Details",
+    "customer_name": "Customer Name",
+    "address": "Address",
+    "phone": "Phone",
+    "order_time": "Order Time",
+    "delivery_time": "Delivery Time",
+    "order_details": "Order Details",
+    "currency":"Toman",
+
+    "table": {
+      "product": "Product",
+      "price": "Price",
+      "quantity": "Quantity"
+    },
+    "buttons": {
+      "close": "Close",
+      "pending": "Pending Delivery"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "error": "Error fetching order details.",
+      "no_data": "No data available for this order.",
+      "order_sent": "Order has been successfully shipped.",
+      "sent_successfully": "Order has been sent successfully."
+    }
+  }
+}

@@ -1,62 +1,43 @@
+import { useTranslations } from "next-intl";
+
 const ExtraInfoComp: React.FC = () => {
+  const t = useTranslations("ExtraInfo");
   return (
-    <div>
-      <h2 className="text-2xl font-bold mt-6">دانستنیها</h2>
+    <>
+      <h2 className="text-2xl font-bold mt-6">{t("extra_info")}</h2>
       <div className="w-full bg-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8 my-6 p-8 rounded-lg">
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-          <h2 className="font-semibold text-lg p-2">ساعت های اتوماتیک</h2>
+        <div className="w-full flex flex-col bg-slate-100 rounded-lg p-4">
+          <h2 className="font-semibold text-lg p-2">
+            {t("automatic_watches.title")}
+          </h2>
           <p className="p-2 text-justify">
-            ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
-            شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
-            می‌شود. برای یک ساعت مکانیکی، کوک شدن دستی تاج باعث ایجاد تنش در شاه
-            فنر می‌شود. برای یک ساعت اتوماتیک، انرژی جنبشی تولید شده توسط حرکت
-            عقربه‌ها باعث ایجاد تنش برای تأمین انرژی ساعت می‌شود. بیایید این
-            مکانیسم را جزئی‌تر بررسی کنیم. هر ساعت اتوماتیک مجهز به روتوری است
-            که به «قلب» ساعت متصل می‌شود. این روتور از فلزات قوی مانند طلا یا
-            پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
+            {t("automatic_watches.description")}
           </p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-          <h2 className="font-semibold text-lg p-2">ساعت های اسکلتون</h2>
+        <div className="w-full flex flex-col bg-slate-100 rounded-lg p-4">
+          <h2 className="font-semibold text-lg py-2">
+            {t("skeleton_watches.title")}
+          </h2>
           <p className="p-2 text-justify">
-            ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
-            شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
-            می‌شود. برای یک ساعت مکانیکی، کوک شدن دستی تاج باعث ایجاد تنش در شاه
-            فنر می‌شود. برای یک ساعت اتوماتیک، انرژی جنبشی تولید شده توسط حرکت
-            عقربه‌ها باعث ایجاد تنش برای تأمین انرژی ساعت می‌شود. بیایید این
-            مکانیسم را جزئی‌تر بررسی کنیم. هر ساعت اتوماتیک مجهز به روتوری است
-            که به «قلب» ساعت متصل می‌شود. این روتور از فلزات قوی مانند طلا یا
-            پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
+            {t("skeleton_watches.description")}
           </p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-          <h2 className="font-semibold text-lg p-2">ساعت های هوشمند</h2>
-          <p className="p-2 text-justify">
-            ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
-            شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
-            می‌شود. برای یک ساعت مکانیکی، کوک شدن دستی تاج باعث ایجاد تنش در شاه
-            فنر می‌شود. برای یک ساعت اتوماتیک، انرژی جنبشی تولید شده توسط حرکت
-            عقربه‌ها باعث ایجاد تنش برای تأمین انرژی ساعت می‌شود. بیایید این
-            مکانیسم را جزئی‌تر بررسی کنیم. هر ساعت اتوماتیک مجهز به روتوری است
-            که به «قلب» ساعت متصل می‌شود. این روتور از فلزات قوی مانند طلا یا
-            پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
-          </p>
+        <div className="w-full flex flex-col bg-slate-100 rounded-lg p-4">
+          <h2 className="font-semibold text-lg p-2">
+            {t("smart_watches.title")}
+          </h2>
+          <p className="p-2 text-justify">{t("smart_watches.description")}</p>
         </div>
-        <div className="w-full flex flex-col justify-end bg-slate-100 rounded-lg p-4">
-          <h2 className="font-semibold text-lg p-2">ساعت های کورنوگراف</h2>
+        <div className="w-full flex flex-col bg-slate-100 rounded-lg p-4">
+          <h2 className="font-semibold text-lg p-2">
+            {t("chronograph_watches.title")}
+          </h2>
           <p className="p-2 text-justify">
-            ساعت‌های اتوماتیک و مکانیکی از مکانیسم‌های مشابهی برای ایجاد تنش در
-            شاه فنر استفاده می‌کنند. این تنش در هنگام ر‌ها شدن فنر ساعت ایجاد
-            می‌شود. برای یک ساعت مکانیکی، کوک شدن دستی تاج باعث ایجاد تنش در شاه
-            فنر می‌شود. برای یک ساعت اتوماتیک، انرژی جنبشی تولید شده توسط حرکت
-            عقربه‌ها باعث ایجاد تنش برای تأمین انرژی ساعت می‌شود. بیایید این
-            مکانیسم را جزئی‌تر بررسی کنیم. هر ساعت اتوماتیک مجهز به روتوری است
-            که به «قلب» ساعت متصل می‌شود. این روتور از فلزات قوی مانند طلا یا
-            پلاتین به عنوان بلبرینگ یا وزنه استفاده می‌کند.
+            {t("chronograph_watches.description")}
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

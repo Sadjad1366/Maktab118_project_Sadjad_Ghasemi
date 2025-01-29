@@ -20,7 +20,6 @@ const DeleteModal: React.FC<IDeleteModal> = ({
   onConfirm,
 }) => {
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-md">

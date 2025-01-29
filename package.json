@@ -21,6 +21,7 @@
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.461.0",
     "next": "15.0.3",
+    "next-intl": "^3.26.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-chartjs-2": "^5.2.0",
     "react-date-object": "^2.1.9",

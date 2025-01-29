@@ -1,30 +1,34 @@
+import { useTranslations } from "next-intl";
+
 const WhyChooseUs: React.FC = () => {
+
+  const t = useTranslations("Why");
   const reasons = [
     {
       id: 1,
-      title: "ارسال سریع",
-      description: "ارسال فوری به تمام نقاط کشور.",
+      title: t("reasons.fast_shipping.title"),
+      description: t("reasons.fast_shipping.description"),
     },
     {
       id: 2,
-      title: "ضمانت اصل بودن",
-      description: "تمام محصولات با ضمانت اصل بودن عرضه می‌شوند.",
+      title: t("reasons.authenticity_guarantee.title"),
+      description: t("reasons.authenticity_guarantee.description"),
     },
     {
       id: 3,
-      title: "پشتیبانی 24/7",
-      description: "پشتیبانی آنلاین برای حل مشکلات و سوالات شما.",
+      title: t("reasons.support_24_7.title"),
+      description: t("reasons.support_24_7.description"),
     },
     {
       id: 4,
-      title: "تخفیف‌های شگفت‌انگیز",
-      description: "هر هفته محصولات تخفیفی جدید.",
+      title: t("reasons.amazing_discounts.title"),
+      description: t("reasons.amazing_discounts.description"),
     },
   ];
 
   return (
     <div>
-      <h2 className="text-2xl font-bold my-6">چرا ما </h2>
+      <h2 className="text-2xl font-bold my-6">{t("why_choose_us")}</h2>
       <div className="bg-slate-200 p-10 my-8 rounded-lg">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

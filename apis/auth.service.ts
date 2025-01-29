@@ -23,27 +23,23 @@ export const adminLoginReq = async ({
     const { accessToken, refreshToken } = response.data.token;
     const { role, _id } = response.data.data.user;
 
-    // Set access and refresh tokens in cookies
     Cookies.set("accessToken", accessToken, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 24, // Expires in 1 hour
+      expires: 1 / 24,
     });
 
     Cookies.set("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 12, // Expires in 2 hour
+      expires: 1 / 12,
     });
-    // Set role in cookies
     Cookies.set("role", role, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      // expires: 1 / 24, // Expires in 1 hour
     });
-        // Set _id in cookies
         Cookies.set("userId", _id, {
-          secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+          secure: process.env.NODE_ENV === "production",
           sameSite: "Strict",
         });
 
@@ -64,7 +60,7 @@ type userSignupReqType = ({
   lastname,
   username,
   password,
-  confirmPassword,
+  // confirmPassword,
   phoneNumber,
   address,
 }: IUserSignupReq) => Promise<IUserSignupRes>;
@@ -73,7 +69,7 @@ export const userSignupReq: userSignupReqType = async ({
   lastname,
   username,
   password,
-  confirmPassword,
+  // confirmPassword,
   phoneNumber,
   address,
 }: IUserSignupReq) => {
@@ -83,7 +79,7 @@ export const userSignupReq: userSignupReqType = async ({
       lastname,
       username,
       password,
-      confirmPassword,
+      // confirmPassword,
       phoneNumber,
       address,
     });
@@ -108,25 +104,22 @@ export const userloginReq = async ({
     const { accessToken, refreshToken } = response.data.token;
     const { role, _id } = response.data.data.user;
 
-    // Set access and refresh tokens in cookies
     Cookies.set("accessToken", accessToken, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 24, // Expires in 1 hour
+      expires: 1 / 24,
     });
 
     Cookies.set("refreshToken", refreshToken, {
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      expires: 1 / 12, // Expires in 2 hour
+      expires: 1 / 12,
     });
-    // Set role in cookies
     Cookies.set("role", role, {
-      secure: process.env.NODE_ENV === "production", // Only send over HTTPS in production
+      secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      // expires: 1 / 24, // Expires in 1 hour
+
     });
-        // Set _id in cookies
         Cookies.set("userId", _id, {
           secure: process.env.NODE_ENV === "production",
           sameSite: "Lax",

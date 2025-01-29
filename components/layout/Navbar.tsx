@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import {Link} from '@/i18n/routing';
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { GrLogin } from "react-icons/gr";
@@ -8,12 +8,17 @@ import { IoMdCart } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { FcManager } from "react-icons/fc";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { FiMenu, FiX } from "react-icons/fi";
 import { className } from "@/utils/classNames";
 import { fetchCart } from "@/redux/thunks/basketThunks";
 import { useAppDispatch } from "@/utils/hooks/useAppDispatch";
-import { clearCart, setGuestCart, clearDisabledButtons } from "@/redux/slices/basketSlice";
+import {
+  clearCart,
+  setGuestCart,
+  clearDisabledButtons,
+} from "@/redux/slices/basketSlice";
+import { useTranslations } from "next-intl";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +29,7 @@ const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const role = Cookies.get("role");
   const token = Cookies.get("accessToken");
+  const t = useTranslations("Navbar");
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const checkRole = () => {
@@ -82,38 +88,38 @@ const Navbar: React.FC = () => {
               alt="Logo"
             />
             <p className="hidden xl:block text-slate-100 text-2xl font-semibold ">
-              گالری ساعت نینجا
+              {t("ninjaGallery")}
             </p>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex gap-x-10 px-36">
             <Link href="/" className="text-slate-100 hover:underline text-lg">
-              صفحه اصلی
+              {t("home")}
             </Link>
             <Link
               href="/products"
               className="text-slate-100 hover:underline text-lg"
             >
-              فروشگاه
+              {t("products")}
             </Link>
             <Link
               href="/category"
               className="text-slate-100 hover:underline text-lg"
             >
-              دسته بندی
+              {t("category")}
             </Link>
             <Link
               href="/aboutus"
               className="text-slate-100 hover:underline text-lg"
             >
-              درباره ما
+              {t("aboutUs")}
             </Link>
             <Link
               href="/contactus"
               className="text-slate-100 hover:underline text-lg"
             >
-              تماس با ما
+              {t("contactUs")}
             </Link>
           </div>
         </div>
@@ -129,7 +135,7 @@ const Navbar: React.FC = () => {
                 "rounded-lg px-4 py-[8px]"
               )}
             >
-              <p>مدیریت</p>
+              <p>{t("management")}</p>
               <FcManager />
             </Link>
           )}
@@ -143,7 +149,7 @@ const Navbar: React.FC = () => {
               )}
             >
               <GrLogin className="text-xl" />
-              <p>ورود</p>
+              <p>{t("login")}</p>
             </Link>
           ) : (
             <button
@@ -155,7 +161,7 @@ const Navbar: React.FC = () => {
               )}
             >
               <GrLogin className="text-xl" />
-              <p>خروج</p>
+              <p>{t("logout")}</p>
             </button>
           )}
 
@@ -201,9 +207,9 @@ const Navbar: React.FC = () => {
                               {item.name}
                             </p>
                             <p className="text-xs text-gray-500">
-                              {item.quantity} عدد -{" "}
-                              {(item.quantity * item.price).toLocaleString()}{" "}
-                              تومان
+                              {item.quantity} {t("pcs")}
+                              {(item.quantity * item.price).toLocaleString()}
+                              {t("currency")}
                             </p>
                           </div>
                         </div>
@@ -214,13 +220,13 @@ const Navbar: React.FC = () => {
                         href="/cart"
                         className="text-indigo-600 hover:underline text-sm"
                       >
-                        مشاهده سبد خرید
+                        {t("viewCart")}
                       </Link>
                     </li>
                   </ul>
                 ) : (
                   <p className="text-center py-4 text-gray-500">
-                    سبد خرید شما خالی است
+                    {t('emptyCart')}
                   </p>
                 )}
               </div>
@@ -240,32 +246,32 @@ const Navbar: React.FC = () => {
             href="/"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-            صفحه اصلی
-          </Link>
+              {t("home")}
+              </Link>
           <Link
             href="/products"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-            فروشگاه
-          </Link>
+              {t("products")}
+              </Link>
           <Link
             href="/category"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-            دسته بندی
-          </Link>
+              {t("category")}
+              </Link>
           <Link
             href="/aboutus"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-            درباره ما
-          </Link>
+              {t("aboutUs")}
+              </Link>
           <Link
             href="/contactus"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-            تماس با ما
-          </Link>
+              {t("contactUs")}
+              </Link>
 
           <div className="flex flex-col gap-y-3 mt-">
             {!token ? (
@@ -278,7 +284,8 @@ const Navbar: React.FC = () => {
                 href="/auth/login"
               >
                 <GrLogin className="text-xl" />
-                <p>ورود</p>
+                <p>              {t("login")}
+                </p>
               </Link>
             ) : (
               <button
@@ -290,7 +297,8 @@ const Navbar: React.FC = () => {
                 )}
               >
                 <GrLogin className="text-xl text-red-500" />
-                <p className="text-red-500">خروج</p>
+                <p className="text-red-500">              {t("logout")}
+                </p>
               </button>
             )}
             <Link

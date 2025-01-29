@@ -1,33 +1,35 @@
 // src/pages/admin/OrderPage.tsx
 "use client";
 
-import { useState } from "react";
-import { getAllOrdersReq } from "@/apis/order.service";
-import { getAllUsers } from "@/apis/user.service"; // Import the user service
 import React from "react";
-import { FaSort } from "react-icons/fa";
+import { useState } from "react";
 import { toJalaali } from "jalaali-js";
-import OrderModal from "@/components/modals/orderModal";
-import { IOrderGetAllRes } from "@/types/order.type";
+import { FaSort } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 import { PiSpinner } from "react-icons/pi";
+import { useTranslations } from "next-intl";
+import { getAllUsers } from "@/apis/user.service"; // Import the user service
+import { IOrderGetAllRes } from "@/types/order.type";
+import { getAllOrdersReq } from "@/apis/order.service";
+import OrderModal from "@/components/modals/orderModal";
 
 export default function OrderPage() {
-  const [orders, setOrders] = useState<IOrderGetAllRes[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const ordersPerPage = 6;
+  const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [orders, setOrders] = useState<IOrderGetAllRes[]>([]);
+  const [orderToShow, setOrderToShow] = React.useState<string>("");
+  const [usersMap, setUsersMap] = useState<Record<string, string>>({});
   const [deliveryStatus, setDeliveryStatus] = useState<null | true | false>(
     null
   );
   const [filterStatus, setFilterStatus] = useState<
     "all" | "delivered" | "pending"
   >("all");
-  const [loading, setLoading] = useState(true);
-  const ordersPerPage = 6;
-  const [usersMap, setUsersMap] = useState<Record<string, string>>({});
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [orderToShow, setOrderToShow] = React.useState<string>("");
-  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const t = useTranslations("OrdersManagement");
 
   React.useEffect(() => {
     const fetchUsers = async () => {
@@ -40,7 +42,7 @@ export default function OrderPage() {
         });
         setUsersMap(map);
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error(`${t("errors.fetch_users")}`, error);
       }
     };
 
@@ -52,11 +54,10 @@ export default function OrderPage() {
           ordersPerPage,
           deliveryStatus === null ? undefined : deliveryStatus
         );
-        console.log("orders", response.data.orders);
         setOrders(response.data.orders);
         setTotalPages(response.total_pages || 1);
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        console.error(`${t("errors.fetch_users")}`, error);
       } finally {
         setLoading(false);
       }
@@ -95,13 +96,6 @@ export default function OrderPage() {
     setRefreshTrigger((prev) => !prev);
   };
 
-  // Get current page orders
-  // const indexOfLastOrder = currentPage * ordersPerPage;
-  // const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  // const currentOrders = filteredOrders.slice(
-  //   indexOfFirstOrder,
-  //   indexOfLastOrder
-  // );
   const currentOrders = [...filteredOrders];
 
   // Handle page change
@@ -123,23 +117,20 @@ export default function OrderPage() {
       setDeliveryStatus(false);
       setFilterStatus("pending");
     }
-    setCurrentPage(1); // بازگشت به صفحه اول بعد از تغییر فیلتر
+    setCurrentPage(1);
   };
 
-
   if (loading) {
-    return <div className="text-center">در حال بارگذاری...</div>;
+    return <div className="text-center">{t("loading")}</div>;
   }
 
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
       <div className="flex justify-between items-center py-3 px-2">
-        <h2 className="text-slate-600 font-semibold text-xl">
-          مدیریت سفارش ها
-        </h2>
+        <h2 className="text-slate-600 font-semibold text-xl">{t("title")} </h2>
         <div className="flex justify-center items-center gap-x-2">
           <label className="text-sm font-semibold text-slate-600" htmlFor="1">
-            همه سفارش ها
+            {t("filters.all")}
           </label>
           <input
             id="1"
@@ -151,7 +142,7 @@ export default function OrderPage() {
           />
 
           <label className="text-sm font-semibold text-slate-600" htmlFor="2">
-            سفارش های تحویل شده
+            {t("filters.delivered")}
           </label>
           <input
             id="2"
@@ -163,7 +154,7 @@ export default function OrderPage() {
           />
 
           <label className="text-sm font-semibold text-slate-600" htmlFor="3">
-            سفارش های در انتظار ارسال
+            {t("filters.pending")}
           </label>
           <input
             id="3"
@@ -178,17 +169,19 @@ export default function OrderPage() {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-200 border-b-2 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th className="px-2 py-3">نام کاربر</th>
+            <th className="px-2 py-3">{t("table.user")}</th>
             <th scope="col" className="px-2 py-3">
-              <div className="flex items-center">مجموع مبلغ</div>
+              <div className="flex items-center">{t("table.total_price")}</div>
             </th>
             <th scope="col" className="px-2 py-3">
               <div className="flex items-center">
                 <FaSort />
-                زمان ثبت سفارش
+                {t("table.order_date")}
               </div>
             </th>
-            <th scope="col" className="px-6 py-3"></th>
+            <th scope="col" className="px-6 py-3">
+              {t("table.status")}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -204,7 +197,7 @@ export default function OrderPage() {
                 {usersMap[order.user] || "Unknown User"}
               </td>
               <td className="px-2 py-4">
-                {order.totalPrice.toLocaleString()} تومان
+                {order.totalPrice.toLocaleString()} {t("currency")}
               </td>
               <td className="px-2 py-4">{formattedDate(order.createdAt)}</td>
               <td className="px-1 py-4 text-right flex items-center gap-x-2">
@@ -217,7 +210,7 @@ export default function OrderPage() {
                       }}
                       className="font-medium text-lg text-green-600 "
                     >
-                      جزئیات سفارش
+                      {t("buttons.order_details")}
                     </button>
                   </>
                 ) : (
@@ -229,7 +222,7 @@ export default function OrderPage() {
                       }}
                       className="font-medium text-lg text-red-600 "
                     >
-                      بررسی سفارش
+                      {t("buttons.review_order")}
                     </button>
                   </>
                 )}
@@ -239,7 +232,7 @@ export default function OrderPage() {
           {currentOrders.length === 0 && (
             <tr>
               <td colSpan={4} className="text-center py-4">
-                هیچ سفارشی وجود ندارد.
+                {t("table.no_orders")}{" "}
               </td>
             </tr>
           )}
@@ -257,11 +250,11 @@ export default function OrderPage() {
               : "hover:bg-gray-600"
           }`}
         >
-          قبلی
+          {t("buttons.previous")}
         </button>
         <div className="flex items-center space-x-2">
           <span className="text-gray-600 font-semibold">
-            صفحه {currentPage} از {totalPages}
+            {t("buttons.page_info", { currentPage, totalPages })}
           </span>
         </div>
         <button
@@ -273,13 +266,13 @@ export default function OrderPage() {
               : "hover:bg-gray-600"
           }`}
         >
-          بعدی
+          {t("buttons.next")}
         </button>
       </div>
       <OrderModal
         isOpen={isModalOpen}
         onClose={closeOrderModal}
-        title="بررسی سفارش"
+        title={t("buttons.review_order")}
         orderId={orderToShow}
         onOrderUpdate={handleOrderUpdate}
       />

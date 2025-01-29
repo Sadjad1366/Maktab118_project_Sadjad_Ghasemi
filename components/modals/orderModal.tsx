@@ -5,8 +5,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { toJalaali } from "jalaali-js";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
 import { IOrderDisplay } from "@/types/order.type";
+import { useTranslations } from "next-intl";
 
 interface IOrderModal {
   isOpen: boolean;
@@ -30,6 +30,7 @@ const OrderModal: React.FC<IOrderModal> = ({
     queryFn: () => getOrderById(orderId),
   });
 
+  const t = useTranslations("OrderModal");
   const formattedDate = (date: string | undefined): string => {
     if (!date) return "تاریخ نامعتبر";
     const gregorianDate = new Date(date);
@@ -47,10 +48,9 @@ const OrderModal: React.FC<IOrderModal> = ({
     mutationFn: (deliveryStatus: boolean) =>
       editOrderById(orderId, deliveryStatus),
     onSuccess: () => {
-      toast.success("سفارش با موفقیت ارسال شد✨");
+      toast.success(`${t('messages.sent_successfully')}`);
       onOrderUpdate();
       onClose();
-      // redirect("/admin/dashboard/orders");
     },
   });
 
@@ -62,7 +62,7 @@ const OrderModal: React.FC<IOrderModal> = ({
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-gray-500 text-lg">در حال بارگذاری...</p>
+        <p className="text-gray-500 text-lg">{t("messages.loading")}</p>
       </div>
     );
   }
@@ -70,7 +70,7 @@ const OrderModal: React.FC<IOrderModal> = ({
   if (error) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-red-500 text-lg">خطا در دریافت اطلاعات سفارش</p>
+        <p className="text-red-500 text-lg">{t("messages.error")}</p>
       </div>
     );
   }
@@ -80,7 +80,7 @@ const OrderModal: React.FC<IOrderModal> = ({
   if (!order) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="text-gray-500 text-lg">داده‌ای برای سفارش موجود نیست</p>
+        <p className="text-gray-500 text-lg">{t("messages.no_data")}</p>
       </div>
     );
   }
@@ -94,27 +94,29 @@ const OrderModal: React.FC<IOrderModal> = ({
         <div className="border rounded-lg p-4 bg-gray-50 shadow-sm">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-gray-600 text-sm">نام مشتری:</p>
+              <p className="text-gray-600 text-sm">{t("customer_name")}:</p>
               <p className="text-gray-800 font-medium">
                 {order.user.firstname} {order.user.lastname}
               </p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm">آدرس:</p>
+              <p className="text-gray-600 text-sm">{t('address')}:</p>
               <p className="text-gray-800 font-medium">{order.user.address}</p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm">تلفن:</p>
-              <p className="text-gray-800 font-medium">{order.user.phoneNumber}</p>
+              <p className="text-gray-600 text-sm">{t("phone")}:</p>
+              <p className="text-gray-800 font-medium">
+                {order.user.phoneNumber}
+              </p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm">زمان سفارش:</p>
+              <p className="text-gray-600 text-sm">{t("order_time")}:</p>
               <p className="text-gray-800 font-medium">
                 {formattedDate(order.createdAt)}
               </p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm">زمان تحویل:</p>
+              <p className="text-gray-600 text-sm"> {t("delivery_time")}:</p>
               <p className="text-gray-800 font-medium">
                 {formattedDate(order.deliveryDate)}
               </p>
@@ -124,27 +126,35 @@ const OrderModal: React.FC<IOrderModal> = ({
 
         <div className="mt-6">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            جزئیات سفارش
+            {t("title")}
           </h3>
           <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
             <thead>
               <tr className="bg-teal-500 text-white">
-                <th className="py-3 px-4 text-right text-sm">کالا</th>
-                <th className="py-3 px-4 text-center text-sm">قیمت</th>
-                <th className="py-3 px-4 text-center text-sm">تعداد</th>
+                <th className="py-3 text-center text-sm">
+                  {t("table.product")}
+                </th>
+                <th className="py-3 px-4 text-center text-sm">
+                  {t("table.price")}
+                </th>
+                <th className="py-3 px-4 text-center text-sm">
+                  {t("table.quantity")}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {order.products.map((item: IOrderDisplay, index:any) => (
+              {order.products.map((item: IOrderDisplay, index: any) => (
                 <tr
                   key={item._id}
                   className={`${
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   } hover:bg-gray-100`}
                 >
-                  <td className="py-3 px-4 text-gray-800">{item.product.name}</td>
-                  <td className="py-3 px-4 text-center text-gray-800">
-                    {item.product.price.toLocaleString()} تومان
+                  <td className="py-3 text-center text-gray-800">
+                    {item.product.name}
+                  </td>
+                  <td className="py-3 text-center text-gray-800">
+                    {item.product.price.toLocaleString()} {t("currency")}
                   </td>
                   <td className="py-3 px-4 text-center text-gray-800">
                     {item.count}
@@ -160,17 +170,19 @@ const OrderModal: React.FC<IOrderModal> = ({
             onClick={onClose}
             className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
           >
-            بستن
+            {t("buttons.close")}
           </button>
           {order.deliveryStatus === false ? (
             <button
               onClick={handelEditOrder}
               className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
             >
-              در انتظار ارسال
+              {t("buttons.pending")}
             </button>
           ) : (
-            <p className="text-green-500 font-semibold">سفارش ارسال شده است.</p>
+            <p className="text-green-500 font-semibold">
+              {t("messages.order_sent")}
+            </p>
           )}
         </div>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
 import { z } from "zod";
@@ -13,9 +14,7 @@ const addProductValidationSchema = z.object({
   quantity: z.coerce.number().min(1, "تعداد باید بیشتر از صفر باشد"),
   brand: z.string().min(3, "حداقل سه کاراکتر وارد کنید").trim(),
   description: z.string().min(3, "حداقل سه کاراکتر وارد کنید").trim(),
-  images: z
-    .array(z.instanceof(File))
-    .min(1, "حداقل یک عکس لازم است"),
+  images: z.array(z.instanceof(File)).min(1, "حداقل یک عکس لازم است"),
 });
 
 interface ICreateModal {
@@ -49,6 +48,7 @@ const CreateModal: React.FC<ICreateModal> = ({
   >([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const t = useTranslations("CreateModal");
 
   useEffect(() => {
     if (formData.category) {
@@ -129,12 +129,12 @@ const CreateModal: React.FC<ICreateModal> = ({
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
       <div className="bg-slate-100 p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
-          ایجاد محصول
+          {t("title")}
         </h2>
         <div className="space-y-3">
           {/* Product Name */}
           <div>
-            <label>نام محصول</label>
+            <label>{t("fields.name")}</label>
             <input
               type="text"
               name="name"
@@ -142,20 +142,22 @@ const CreateModal: React.FC<ICreateModal> = ({
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm">{t("errors.name")}</p>
+            )}
           </div>
 
           {/* Category and Subcategory */}
           <div className="flex gap-2">
             <div className="w-1/2">
-              <label>دسته‌بندی</label>
+              <label>{t("fields.category")}</label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">انتخاب کنید</option>
+                <option value=""> {t("choose")}</option>
                 {Object.entries(categories).map(([id, name]) => (
                   <option key={id} value={id}>
                     {name}
@@ -163,18 +165,18 @@ const CreateModal: React.FC<ICreateModal> = ({
                 ))}
               </select>
               {errors.category && (
-                <p className="text-red-500 text-sm">{errors.category}</p>
+                <p className="text-red-500 text-sm">{t("errors.category")}</p>
               )}
             </div>
             <div className="w-1/2">
-              <label>زیر دسته‌بندی</label>
+              <label>{t("fields.subcategory")}</label>
               <select
                 name="subcategory"
                 value={formData.subcategory}
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="">انتخاب کنید</option>
+                <option value="">{t("choose")}</option>
                 {filteredSubcategories.map((sub) => (
                   <option key={sub._id} value={sub._id}>
                     {sub.name}
@@ -182,7 +184,9 @@ const CreateModal: React.FC<ICreateModal> = ({
                 ))}
               </select>
               {errors.subcategory && (
-                <p className="text-red-500 text-sm">{errors.subcategory}</p>
+                <p className="text-red-500 text-sm">
+                  {t("errors.subcategory")}
+                </p>
               )}
             </div>
           </div>
@@ -190,7 +194,7 @@ const CreateModal: React.FC<ICreateModal> = ({
           {/* Price and Quantity */}
           <div className="flex gap-2">
             <div className="w-1/2">
-              <label>قیمت</label>
+              <label>{t("fields.price")}</label>
               <input
                 type="number"
                 name="price"
@@ -199,11 +203,11 @@ const CreateModal: React.FC<ICreateModal> = ({
                 className="w-full p-2 border rounded"
               />
               {errors.price && (
-                <p className="text-red-500 text-sm">{errors.price}</p>
+                <p className="text-red-500 text-sm">{t("errors.price")}</p>
               )}
             </div>
             <div className="w-1/2">
-              <label>تعداد</label>
+              <label>{t("fields.quantity")}</label>
               <input
                 type="number"
                 name="quantity"
@@ -212,12 +216,12 @@ const CreateModal: React.FC<ICreateModal> = ({
                 className="w-full p-2 border rounded"
               />
               {errors.quantity && (
-                <p className="text-red-500 text-sm">{errors.quantity}</p>
+                <p className="text-red-500 text-sm">{t("errors.quantity")}</p>
               )}
             </div>
           </div>
           <div>
-            <label>برند</label>
+            <label>{t("fields.brand")}</label>
             <input
               type="text"
               name="brand"
@@ -225,10 +229,12 @@ const CreateModal: React.FC<ICreateModal> = ({
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-            {errors.brand && <p className="text-red-500 text-sm">{errors.brand}</p>}
+            {errors.brand && (
+              <p className="text-red-500 text-sm">{t("errors.brand")}</p>
+            )}
           </div>
           <div>
-            <label>توضیحات</label>
+            <label>{t("fields.description")}</label>
             <textarea
               name="description"
               rows={3}
@@ -236,20 +242,22 @@ const CreateModal: React.FC<ICreateModal> = ({
               onChange={handleChange}
               className="w-full p-2 border rounded"
             />
-            {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+            {errors.description && (
+              <p className="text-red-500 text-sm">{t("errors.description")}</p>
+            )}
           </div>
           {/* Images */}
           <div className="flex gap-x-2">
             <label className="w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
-              <FiUpload/>
-              <span>انتخاب عکس</span>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileChange}
-              className="hidden"
-            />
+              <FiUpload />
+              <span>{t("fields.images")}</span>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+              />
             </label>
             <div className="flex flex-wrap gap-2 mt-2">
               {imagePreviews.map((preview, index) => (
@@ -269,9 +277,8 @@ const CreateModal: React.FC<ICreateModal> = ({
               ))}
             </div>
             {errors.images && (
-              <p className="text-red-500 text-sm">{errors.images}</p>
+              <p className="text-red-500 text-sm">{t("errors.images")}</p>
             )}
-
           </div>
 
           {/* Actions */}
@@ -280,13 +287,13 @@ const CreateModal: React.FC<ICreateModal> = ({
               onClick={onClose}
               className="bg-gray-500 text-white px-4 py-2 rounded"
             >
-              انصراف
+              {t("buttons.cancel")}
             </button>
             <button
               onClick={handleSubmit}
               className="bg-blue-600 text-white px-4 py-2 rounded"
             >
-              ایجاد محصول
+              {t("buttons.submit")}
             </button>
           </div>
         </div>
