@@ -58,7 +58,7 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <div
           className={`${
-            isSidebarOpen ? "w-64" : "w-16"
+            isSidebarOpen ? "w-48 xl:w-64" : "w-16"
           } bg-slate-600 text-white flex flex-col transition-width duration-300 opacity-90`}
         >
           {/* Header */}

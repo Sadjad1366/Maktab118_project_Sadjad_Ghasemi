@@ -13,8 +13,10 @@ export default function Home() {
   return (
     <div className="py-0 mx-0 bg-slate-100">
       <Navbar />
+      <div className="mx-3">
+      <ImageSlider />
+      </div>
       <div className="container mx-auto px-0">
-        <ImageSlider />
         <BrandsSection/>
         <CategoryList />
         <ExtraInfoComp />

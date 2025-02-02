@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import ClientProvider from "../../provider/reduxProvider";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -34,12 +34,16 @@ export default async function LocaleLayout({
 
 
   const direction = locale === "fa" ? "rtl" : "ltr";
+  const isEnglish = locale === "en";
   // Providing all messages to the client
   // side is the easiest way to get started
   const messages = await getMessages();
   return (
     <html lang={locale} dir={direction}>
-      <body className={`${bnazaninFont.variable} antialiased font-bnazanin`}>
+      <body className={`${bnazaninFont.variable} antialiased font-bnazanin${
+          isEnglish ? "english" : ""
+        }`}
+      >
         <Toaster position="top-left" reverseOrder={false} />
         <ClientProvider>
         <NextIntlClientProvider messages={messages}>

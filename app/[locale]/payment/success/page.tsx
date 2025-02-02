@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/routing";
+import { className } from "@/utils/classNames";
 import { useTranslations } from "next-intl";
 import { PiCloudCheckLight } from "react-icons/pi";
 
@@ -35,7 +36,8 @@ export default function SuccessPage() {
           <div className="bg-gray-100 p-4 w-full">
             <Link
               href="/"
-              className="w-full py-2 px-8 bg-green-500 text-white rounded-lg hover:bg-green-600 transform hover:scale-105 transition duration-300"
+              className={className("w-full py-2 px-8 bg-green-500 text-white rounded-lg",
+                "hover:bg-green-600 transform hover:scale-105 transition duration-300")}
             >
               {t("home_page")}
             </Link>

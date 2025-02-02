@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import {Link} from "@/i18n/routing";
+import { Link } from "@/i18n/routing";
 import { FaTelegramPlane, FaGithub, FaFacebook } from "react-icons/fa";
 import { className } from "@/utils/classNames";
 
@@ -23,10 +23,12 @@ export default function ContactUs() {
             <div className="text-gray-700 mb-4">
               <div className="flex gap-x-36">
                 <p className="text-lg font-medium">
-                  <strong>{t("contact_us.contact_info.phone")}:</strong> 77400524-021
+                  <strong>{t("contact_us.contact_info.phone")}:</strong>{" "}
+                  77400524-021
                 </p>
                 <p className="text-lg font-medium">
-                  <strong>{t("contact_us.contact_info.mobile")}:</strong> 7258919-0912
+                  <strong>{t("contact_us.contact_info.mobile")}:</strong>{" "}
+                  7258919-0912
                 </p>
               </div>
               <p className="text-lg font-medium">
@@ -39,7 +41,8 @@ export default function ContactUs() {
                 </Link>
               </p>
               <p className="text-lg font-medium">
-                <strong>{t("contact_us.contact_info.address")}:</strong> {t("contact_us.contact_info.address_value")}
+                <strong>{t("contact_us.contact_info.address")}:</strong>{" "}
+                {t("contact_us.contact_info.address_value")}
               </p>
             </div>
           </div>
@@ -98,41 +101,62 @@ export default function ContactUs() {
           <form>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col">
-                <label htmlFor="name" className="text-lg font-medium text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="text-lg font-medium text-gray-700"
+                >
                   {t("contact_us.contact_form.name")}
                 </label>
                 <input
                   type="text"
                   name="name"
-                  className="mt-2 p-3 border border-gray-300 shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={className(
+                    "mt-2 p-3 border border-gray-300 shadow-md rounded-lg",
+                    "focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  )}
                   required
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="email" className="text-lg font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="text-lg font-medium text-gray-700"
+                >
                   {t("contact_us.contact_form.email")}
                 </label>
                 <input
                   type="email"
                   name="email"
-                  className="mt-2 p-3 border border-gray-300 shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={className(
+                    "mt-2 p-3 border border-gray-300 shadow-md rounded-lg",
+                    "focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  )}
                   required
                 />
               </div>
             </div>
             <div className="flex flex-col mt-6">
-              <label htmlFor="message" className="text-lg font-medium text-gray-700">
+              <label
+                htmlFor="message"
+                className="text-lg font-medium text-gray-700"
+              >
                 {t("contact_us.contact_form.message")}
               </label>
               <textarea
                 name="message"
                 rows={4}
-                className="mt-2 p-3 border border-gray-300 shadow-md rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className={className(
+                  "mt-2 p-3 border border-gray-300 shadow-md rounded-lg",
+                  "focus:outline-none focus:ring-2 focus:ring-gray-500"
+                )}
                 required
               />
             </div>
             <div className="text-center">
-              <button type="submit" className="mt-4 px-6 py-3 bg-gray-700 text-white rounded-lg">
+              <button
+                type="submit"
+                className="mt-4 px-6 py-3 bg-gray-700 text-white rounded-lg"
+              >
                 {t("contact_us.contact_form.submit")}
               </button>
             </div>

@@ -5,13 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IUserLoginReq } from "@/types/user.type";
 import { userloginReq } from "@/apis/auth.service";
 import { className } from "@/utils/classNames";
-import { useRouter, useSearchParams } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 import { AuthSchema } from "@/utils/validations/zodAuthValidation";
 import {Link} from '@/i18n/routing';
 import toast from "react-hot-toast";
 import { FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaLock } from "react-icons/fa6";
 import { useTranslations } from "next-intl";
+import { useRouter} from '@/i18n/routing'
 
 export default function LoginPage() {
   const {
@@ -27,6 +28,7 @@ export default function LoginPage() {
   const t = useTranslations("Login")
   const router = useRouter();
   // const searchParams = useSearchParams();
+  //     const redirect = searchParams.get("redirect") || "/";
 
 
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
@@ -38,7 +40,6 @@ export default function LoginPage() {
 
       toast.success(`${t('login_success')}`);
       router.push("/");
-      // const redirect = searchParams.get("redirect") || "/";
       // router.push(redirect)
     } catch (error: any) {
       toast.error(`${t('login_error')} - ${error.message}`);

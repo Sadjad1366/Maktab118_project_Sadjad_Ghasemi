@@ -42,6 +42,7 @@ const Basket: React.FC = () => {
     } else {
       toast.error(`${t("guest_login_required")}`);
       router.push("/auth/login");
+      // router.push(`/auth/login?redirect=/cart`);
     }
   };
 

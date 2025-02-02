@@ -13,14 +13,14 @@ const AdminGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const role = Cookies.get('role')
 
     if (role !== "ADMIN") {
-      router.push("/not-found"); // Redirect to home page if no token
+      router.push("/not-found");
     } else {
-      setIsAuthorized(true); // User is authorized
+      setIsAuthorized(true);
     }
   }, [router]);
 
   if (!isAuthorized) {
-    return <p>در حال بارگذاری...</p>; // Loading state while checking authorization
+    return <p>در حال بارگذاری...</p>;
   }
 
   return <>{children}</>;

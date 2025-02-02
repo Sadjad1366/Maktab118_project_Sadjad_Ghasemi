@@ -1,17 +1,8 @@
 {
   "carts": [
     {
-      "userId": "6798c909be402e99a0a4fcf8",
-      "products": [
-        {
-          "id": "6758a8d22ff2a0018f46ba6d",
-          "name": "ایسلندر ProII",
-          "price": 159,
-          "quantity": 1,
-          "image": "products-6758a8d22ff2a0018f46ba6d-1733864058561-1.jpeg",
-          "stock": 10
-        }
-      ]
+      "userId": "6769576d18abeb0d4238e217",
+      "products": []
     }
   ]
 }

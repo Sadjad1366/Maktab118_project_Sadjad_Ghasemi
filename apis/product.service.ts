@@ -37,8 +37,6 @@ type getProductByIdType = (id:string) => Promise<IProductById>
 export const getProductById:getProductByIdType = async(id) => {
   try {
     const response = await client.get(urls.product.getById(id));
-    // console.log(response.data);
-
      return response.data
   } catch (error:any) {
     throw new Error("خطا از طرف سرور میباشد.چند دقیقه دیگر دوباره تلاش کنید");
@@ -60,7 +58,6 @@ try{
     headers: {
       'Content-Type': 'multipart/form-data',
     },});
-  console.log(response.data.data.product);
   return response.data;
 
 } catch(error:any){
@@ -72,15 +69,12 @@ try{
 //=========================== CREATE PRODUCT
 export const createNewProduct = async (formData: FormData): Promise<IProduct> => {
   try {
-    // Add the image file using the correct field name
     const response = await client.post(urls.product.create, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${Cookies.get('accessToken')}`,
       },
     });
-
-    console.log(response.data.data.product);
     return response.data.data.product;
 
   } catch (error: any) {

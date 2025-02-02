@@ -1,5 +1,6 @@
 "use client";
 
+import { className } from "@/utils/classNames";
 import { useTranslations } from "next-intl";
 import React, { useState, useEffect } from "react";
 import { FiUpload, FiX } from "react-icons/fi";
@@ -126,8 +127,8 @@ const CreateModal: React.FC<ICreateModal> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
-      <div className="bg-slate-100 p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <div className="fixed inset-1 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
+      <div className="bg-slate-100 p-6 rounded-lg shadow-lg w-full max-w-lg  max-h-screen overflow-auto">
         <h2 className="text-lg font-bold text-gray-700 mb-4 text-center">
           {t("title")}
         </h2>
@@ -248,7 +249,8 @@ const CreateModal: React.FC<ICreateModal> = ({
           </div>
           {/* Images */}
           <div className="flex gap-x-2">
-            <label className="w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue">
+            <label className={className("w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue",
+              "rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue")}>
               <FiUpload />
               <span>{t("fields.images")}</span>
               <input

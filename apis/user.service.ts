@@ -24,7 +24,6 @@ export const getAllUsers: GetAllUsersType = async () => {
 export const getUserById = async (id: string): Promise<IUserByIdRes> => {
   try {
     const response = await client.get(urls.editUser(id));
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to fetch user");

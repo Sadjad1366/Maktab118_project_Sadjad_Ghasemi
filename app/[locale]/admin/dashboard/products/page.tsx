@@ -37,20 +37,13 @@ const ProductPage: React.FC = () => {
     null
   );
   const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
-  // const [productToCreate, setProductToCreate] = React.useState<IProduct | null>(
-  //   null
-  // );
 
   // Open and close create modal
-  const openCreateModal = () => {
-    setIsCreateModalOpen(true);
-    // setProductToCreate(null); // Explicitly pass null if no initial value is needed
-  };
+  const openCreateModal = () => setIsCreateModalOpen(true);
 
-  const closeCreateModal = () => {
-    setIsCreateModalOpen(false);
-    // setProductToCreate(null);
-  };
+
+  const closeCreateModal = () => setIsCreateModalOpen(false);
+
 
   // Open and close update modal
   const openUpdateModal = (product: IProduct) => {
@@ -106,7 +99,7 @@ const ProductPage: React.FC = () => {
       const subCategories = await getAllSubCategories();
 
       const map: Record<string, { _id: string; name: string }[]> = {};
-      const flatMap: Record<string, string> = {}; // For ID -> Name mapping
+      const flatMap: Record<string, string> = {};
 
       subCategories.forEach((subcategory: ISubCategory) => {
         if (!map[subcategory.category]) {
@@ -117,12 +110,11 @@ const ProductPage: React.FC = () => {
           name: subcategory.name,
         });
 
-        // Populate `subCatMap` for ID-to-name mapping
         flatMap[subcategory._id] = subcategory.name;
       });
 
       setSubCategoriesMap(map);
-      setSubCatMap(flatMap); // Ensure this is populated
+      setSubCatMap(flatMap);
     } catch (error) {
       console.error(`${t("notifications.fetch_subcategories_error")}`, error);
     }
@@ -133,8 +125,8 @@ const ProductPage: React.FC = () => {
     try {
       await createNewProduct(formData);
       toast.success(`${t("notifications.create_success")}`);
-      fetchProducts(currentPage); // Refresh product list
-      closeCreateModal(); // Close the modal
+      fetchProducts(currentPage);
+      closeCreateModal();
     } catch (error) {
       toast.error(`${t("notifications.create_error")}`);
       console.error(error);
@@ -146,8 +138,8 @@ const ProductPage: React.FC = () => {
     try {
       await updateProductById(id, formData);
       toast.success(`${t("notifications.update_success")}`);
-      fetchProducts(currentPage); // Refresh product list
-      closeUpdateModal(); // Close the modal
+      fetchProducts(currentPage);
+      closeUpdateModal();
     } catch (error) {
       toast.error(`${t("notifications.update_error")}`);
       console.error(error);
@@ -159,18 +151,16 @@ const ProductPage: React.FC = () => {
       await deleteProductById(id);
       toast.success(`${t("notifications.delete_success")}`);
 
-      // Temporarily filter the product list to simulate deletion
       const updatedProducts = products.filter((product) => product._id !== id);
 
-      // If the page becomes empty and it's not the first page, go to the previous page
       if (updatedProducts.length === 0 && currentPage > 1) {
-        setCurrentPage((prev) => prev - 1); // Navigate to the previous page
+        setCurrentPage((prev) => prev - 1);
       } else {
-        setProducts(updatedProducts); // Update product list without navigating
+        setProducts(updatedProducts);
       }
 
-      fetchProducts(currentPage); // Refresh product list
-      closeDeleteModal(); // Close the modal
+      fetchProducts(currentPage);
+      closeDeleteModal(); 
     } catch (error: any) {
       toast.error(error.message || `${t("notifications.delete_error")}`);
     }

@@ -72,7 +72,8 @@ export default function ImageSlider(): JSX.Element {
         />
         {/* Previous Button */}
         <button
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300"
+          className={className("absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70",
+            "text-white p-3 rounded-full transition-all duration-300")}
           onClick={prevSlide}
         >
           <ChevronLeft className="text-white" />
@@ -80,7 +81,8 @@ export default function ImageSlider(): JSX.Element {
 
         {/* Next Button */}
         <button
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300"
+          className={className("absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70",
+            "text-white p-3 rounded-full transition-all duration-300")}
           onClick={nextSlide}
         >
           <ChevronRight className="text-white" />

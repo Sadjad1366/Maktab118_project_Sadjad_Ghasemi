@@ -1,6 +1,6 @@
 "use client";
 
-import {Link} from '@/i18n/routing';
+import { Link } from "@/i18n/routing";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { GrLogin } from "react-icons/gr";
@@ -19,7 +19,7 @@ import {
   clearDisabledButtons,
 } from "@/redux/slices/basketSlice";
 import { useTranslations } from "next-intl";
-
+import LocaleSwitcher from "../localSwitch/LocaleSwitcher";
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -68,11 +68,14 @@ const Navbar: React.FC = () => {
   const items = useSelector((state: RootState) => state.basket.items) || [];
   return (
     <div className="w-full bg-gray-600 shadow-lg rounded-lg px-10 relative mb-5">
-      <nav className="flex justify-between items-center px-6">
+      <nav className="flex justify-between items-center px-1">
+        <>
+          <LocaleSwitcher />
+        </>
         {/* Logo and Menu */}
-        <div className="w-full flex justify-between md:justify-normal items-center px-10">
+        <div className="w-full flex justify-between md:justify-normal items-center px-5">
           <button
-            className="lg:hidden text-gray-800 focus:outline-none"
+            className="xl:hidden text-gray-800 focus:outline-none"
             onClick={toggleMenu}
           >
             {isOpen ? (
@@ -81,7 +84,7 @@ const Navbar: React.FC = () => {
               <FiMenu className="text-gray-300" size={36} />
             )}
           </button>
-          <div className="flex items-center gap-x-10">
+          <div className="flex items-center gap-x-4">
             <img
               className="w-24 h-[100px] sm:w-36 sm:h-[120px]"
               src="/images/logo/ninja.svg"
@@ -93,7 +96,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex gap-x-10 px-36">
+          <div className="hidden xl:flex gap-x-8 px-24">
             <Link href="/" className="text-slate-100 hover:underline text-lg">
               {t("home")}
             </Link>
@@ -130,7 +133,7 @@ const Navbar: React.FC = () => {
             <Link
               href="/admin/dashboard"
               className={className(
-                "hidden md:flex items-center gap-x-2 px-9",
+                "hidden md:flex items-center gap-x-2 px-1",
                 "bg-blue-400 hover:bg-blue-500 text-white",
                 "rounded-lg px-4 py-[8px]"
               )}
@@ -226,7 +229,7 @@ const Navbar: React.FC = () => {
                   </ul>
                 ) : (
                   <p className="text-center py-4 text-gray-500">
-                    {t('emptyCart')}
+                    {t("emptyCart")}
                   </p>
                 )}
               </div>
@@ -238,7 +241,7 @@ const Navbar: React.FC = () => {
       {isOpen && (
         <div
           className={className(
-            "lg:hidden flex flex-col bg-slate-300",
+            "xl:hidden flex flex-col bg-slate-300",
             "text-black gap-2 rounded-md p-2 h-screen absolute top-full left-0 w-full shadow-lg z-20"
           )}
         >
@@ -246,32 +249,32 @@ const Navbar: React.FC = () => {
             href="/"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-              {t("home")}
-              </Link>
+            {t("home")}
+          </Link>
           <Link
             href="/products"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-              {t("products")}
-              </Link>
+            {t("products")}
+          </Link>
           <Link
             href="/category"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-              {t("category")}
-              </Link>
+            {t("category")}
+          </Link>
           <Link
             href="/aboutus"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-              {t("aboutUs")}
-              </Link>
+            {t("aboutUs")}
+          </Link>
           <Link
             href="/contactus"
             className="bg-slate-100 rounded-xl text-center text-lg p-2 hover:underline"
           >
-              {t("contactUs")}
-              </Link>
+            {t("contactUs")}
+          </Link>
 
           <div className="flex flex-col gap-y-3 mt-">
             {!token ? (
@@ -284,8 +287,7 @@ const Navbar: React.FC = () => {
                 href="/auth/login"
               >
                 <GrLogin className="text-xl" />
-                <p>              {t("login")}
-                </p>
+                <p> {t("login")}</p>
               </Link>
             ) : (
               <button
@@ -297,8 +299,7 @@ const Navbar: React.FC = () => {
                 )}
               >
                 <GrLogin className="text-xl text-red-500" />
-                <p className="text-red-500">              {t("logout")}
-                </p>
+                <p className="text-red-500"> {t("logout")}</p>
               </button>
             )}
             <Link
