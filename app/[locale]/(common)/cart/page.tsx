@@ -23,6 +23,7 @@ import {
 } from "@/redux/thunks/basketThunks";
 import { className } from "@/utils/classNames";
 import { useTranslations } from "next-intl";
+import Image from "next/image"; // Fixed next/image usage
 
 const Basket: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,9 +32,9 @@ const Basket: React.FC = () => {
     (state: RootState) => state.basket
   );
   const router = useRouter();
-  const role = Cookies.get("role");
-  const token = Cookies.get("accessToken");
-  const userId = Cookies.get("userId");
+  const role = Cookies.get("role") || "";
+  const token = Cookies.get("accessToken") || "";
+  const userId = Cookies.get("userId") || "";
   const t = useTranslations("Cart");
 
   const onClickHandler = () => {
@@ -42,7 +43,6 @@ const Basket: React.FC = () => {
     } else {
       toast.error(`${t("guest_login_required")}`);
       router.push("/auth/login");
-      // router.push(`/auth/login?redirect=/cart`);
     }
   };
 
@@ -52,17 +52,14 @@ const Basket: React.FC = () => {
       mergeTriggered.current = true;
       dispatch(mergeGuestCartWithUserCart({ userId }))
         .unwrap()
-        .then((result) => {
-          console.log("Merge completed. Updated Cart:", result);
-        })
+        .then((result) => console.log("Merge completed. Updated Cart:", result))
         .catch((error) => console.error("Error merging carts:", error));
     }
   }, [userId, dispatch]);
 
   useEffect(() => {
     if (!userId) {
-      const guestCart = getGuestCart();
-      dispatch(setGuestCart(guestCart));
+      dispatch(setGuestCart(getGuestCart()));
     } else {
       dispatch(fetchCart(userId));
     }
@@ -73,7 +70,7 @@ const Basket: React.FC = () => {
       if (userId) {
         dispatch(
           updateCartApi({
-            userId: userId!,
+            userId: userId,
             productId: itemId,
             quantity: quantity + 1,
           })
@@ -99,7 +96,7 @@ const Basket: React.FC = () => {
       if (userId) {
         dispatch(
           updateCartApi({
-            userId: userId!,
+            userId: userId,
             productId: itemId,
             quantity: quantity - 1,
           })
@@ -150,21 +147,13 @@ const Basket: React.FC = () => {
         <div>
           <div className="overflow-x-auto mb-6">
             <table className="min-w-full table-auto border-collapse border border-gray-200">
-              <thead>
+            <thead>
                 <tr className="bg-gray-100 text-gray-700">
                   <th className="p-3 border border-gray-200">{t("image")}</th>
-                  <th className="p-3 border border-gray-200">
-                    {t("product_name")}
-                  </th>
-                  <th className="p-3 border border-gray-200">
-                    {t("quantity")}
-                  </th>
-                  <th className="p-3 border border-gray-200">
-                    {t("unit_price")}
-                  </th>
-                  <th className="p-3 border border-gray-200">
-                    {t("total_price")}
-                  </th>
+                  <th className="p-3 border border-gray-200">{t("product_name")}</th>
+                  <th className="p-3 border border-gray-200">{t("quantity")}</th>
+                  <th className="p-3 border border-gray-200">{t("unit_price")}</th>
+                  <th className="p-3 border border-gray-200">{t("total_price")}</th>
                   <th className="p-3 border border-gray-200">{t("actions")}</th>
                 </tr>
               </thead>
@@ -172,9 +161,11 @@ const Basket: React.FC = () => {
                 {items.map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="p-3 border border-gray-200 text-center">
-                      <img
+                    <Image
                         src={`http://localhost:8000/images/products/images/${item.image}`}
                         alt={item.name}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 object-cover mx-auto rounded"
                       />
                     </td>

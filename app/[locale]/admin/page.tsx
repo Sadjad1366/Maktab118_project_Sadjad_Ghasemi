@@ -35,9 +35,9 @@ const AdminLoginPage: React.FC = () => {
       toast.success(`${t("login_success")}`);
 
       router.push("/admin/dashboard");
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    } catch (error: unknown) {
+      const errMessage = error instanceof Error ? error.message : t("login_error");
+      toast.error(errMessage);    }
   };
 
   return (

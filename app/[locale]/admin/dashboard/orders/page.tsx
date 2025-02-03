@@ -64,11 +64,11 @@ export default function OrderPage() {
     };
     fetchUsers();
     fetchOrders();
-  }, [currentPage, deliveryStatus, refreshTrigger]);
+  }, [currentPage, deliveryStatus, refreshTrigger,t]);
 
   const formattedDate = (date: string): string => {
-    const gregorianDate: any = new Date(date);
-    const jalaaliDate: any = toJalaali(
+    const gregorianDate = new Date(date);
+    const jalaaliDate = toJalaali(
       gregorianDate.getFullYear(),
       gregorianDate.getMonth() + 1,
       gregorianDate.getDate()

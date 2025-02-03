@@ -17,7 +17,7 @@ import {
   setButtonDisabled,
   setGuestCart,
 } from "@/redux/slices/basketSlice";
-import { unknown } from "zod";
+import Image from "next/image"; // ✅ Use next/image for better performance
 
 interface IProduct {
   _id: string;
@@ -36,7 +36,7 @@ const ProductDetailsPage: React.FC = () => {
   const params = useParams();
   const dispatch = useAppDispatch();
   const disabledButtons = useSelector(
-    (state: RootState ) => state.basket.disabledButtons
+    (state: RootState) => state.basket.disabledButtons
   );
   const userCart = useSelector((state: RootState) => state.basket.items);
   const [activeImage, setActiveImage] = useState<string | undefined>(undefined);
@@ -61,19 +61,19 @@ const ProductDetailsPage: React.FC = () => {
         } else {
           console.error("Product data is missing in response:", response);
         }
-      } catch (error: any) {
-        console.error("Error fetching product details:", error.message);
-        toast.error(`${t("loading_error")}`);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+        toast.error(t("loading_error"));
       }
     };
     fetchProductDetails();
-  }, [id]);
+  }, [id, t]); // ✅ Added `t` to dependency array
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
 
     if (!product) {
-      toast.error(`${t("product_unavailable")}`);
+      toast.error(t("product_unavailable"));
       return;
     }
 
@@ -92,12 +92,12 @@ const ProductDetailsPage: React.FC = () => {
     }
 
     if (currentQuantityInCart >= product.quantity) {
-      toast.error(`${t("guest_error_stock")}`);
+      toast.error(t("guest_error_stock"));
       return;
     }
 
     if (isAddedToCart) {
-      toast.error(`${t("repeat")}`);
+      toast.error(t("repeat"));
       return;
     }
 
@@ -119,22 +119,22 @@ const ProductDetailsPage: React.FC = () => {
       )
         .unwrap()
         .then(() => {
-          toast.success(`${t("success_add_cart")}`);
+          toast.success(t("success_add_cart"));
         })
         .catch((error) => {
           console.error("Error adding to cart:", error);
-          toast.error(`${t("error_add_cart")}`);
+          toast.error(t("error_add_cart"));
         });
     } else {
       const guestCart = getGuestCart();
-      const existingProductIndex = guestCart.findIndex(
-        (item: any) => item.id === product._id
+      const existingProductIndex: number = guestCart.findIndex(
+        (item: CartItem) => item.id === product._id
       );
 
       if (existingProductIndex !== -1) {
         const newQuantity = guestCart[existingProductIndex].quantity + 1;
         if (newQuantity > product.quantity) {
-          toast.error(`${t("exceeds_stock")}`);
+          toast.error(t("exceeds_stock"));
           return;
         }
         guestCart[existingProductIndex].quantity = newQuantity;
@@ -151,7 +151,7 @@ const ProductDetailsPage: React.FC = () => {
 
       saveGuestCart(guestCart);
       dispatch(setGuestCart(guestCart));
-      toast.success(`${t("success_add_cart")}`);
+      toast.success(t("success_add_cart"));
     }
   };
 
@@ -172,13 +172,14 @@ const ProductDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Images */}
         <div className="relative">
-          {/* Main Product Image */}
-          <img
+          {/* ✅ Use next/image */}
+          <Image
             className="w-full rounded-lg shadow-md"
             src={activeImage || ""}
             alt={product.name}
-            width={48}
-            height={48}
+            width={500}
+            height={500}
+            priority
           />
 
           {/* Thumbnail Carousel */}
@@ -186,7 +187,7 @@ const ProductDetailsPage: React.FC = () => {
             {product.images?.map((image, index) => {
               const imageUrl = `http://localhost:8000/images/products/images/${image}`;
               return (
-                <img
+                <Image
                   key={index}
                   className={className(
                     "w-16 h-16 object-cover rounded-lg cursor-pointer border",
@@ -196,6 +197,8 @@ const ProductDetailsPage: React.FC = () => {
                   )}
                   src={imageUrl}
                   alt={`Thumbnail ${index}`}
+                  width={64}
+                  height={64}
                   onClick={() => handleThumbnailClick(imageUrl)}
                 />
               );
@@ -209,13 +212,6 @@ const ProductDetailsPage: React.FC = () => {
             {product.name}
           </h1>
           <p className="text-gray-600 text-lg mb-4">{product.description}</p>
-
-          {/* Ratings */}
-          <div className="flex items-center mb-4">
-            <span className="ml-2 text-gray-600">
-              ({product.rating.count} {t("reviews")})
-            </span>
-          </div>
 
           {/* Price */}
           {product.quantity > 0 ? (
@@ -237,7 +233,7 @@ const ProductDetailsPage: React.FC = () => {
                 : "bg-indigo-300 cursor-not-allowed text-white"
             )}
           >
-            {isAddedToCart ? `${t("added_to_cart")}` : `${t("add_to_cart")}`}
+            {isAddedToCart ? t("added_to_cart") : t("add_to_cart")}
           </button>
         </div>
       </div>

@@ -4,6 +4,8 @@ import { className } from "@/utils/classNames";
 import { useTranslations } from "next-intl";
 import React from "react";
 import toast from "react-hot-toast";
+import { useCallback } from "react";
+import Image from "next/image";
 
 export default function EntityPage() {
   const [products, setProducts] = React.useState<IProduct[]>([]);
@@ -25,28 +27,34 @@ export default function EntityPage() {
     });
   }, [updates, products]);
 
-  const fetchProducts = async (currentPage: number) => {
-    try {
-      const response = await getAllProductsReq(currentPage, perPage);
-      setProducts(response.data.products);
-      setTotalPages(response.total_pages);
+  const fetchProducts = useCallback(
+    async (currentPage: number) => {
+      try {
+        const response = await getAllProductsReq(currentPage, perPage);
+        setProducts(response.data.products);
+        setTotalPages(response.total_pages);
 
-      setUpdates(
-        response.data.products.reduce(
-          (
-            acc: Record<string, { price: number; quantity: number }>,
-            product: IProduct
-          ) => ({
-            ...acc,
-            [product._id]: { price: product.price, quantity: product.quantity },
-          }),
-          {}
-        )
-      );
-    } catch (error) {
-      console.log(`${t("messages.fetch_error")}`, error);
-    }
-  };
+        setUpdates(
+          response.data.products.reduce(
+            (
+              acc: Record<string, { price: number; quantity: number }>,
+              product: IProduct
+            ) => ({
+              ...acc,
+              [product._id]: {
+                price: product.price,
+                quantity: product.quantity,
+              },
+            }),
+            {}
+          )
+        );
+      } catch (error) {
+        console.log(`${t("messages.fetch_error")}`, error);
+      }
+    },
+    [t]
+  ); // ✅ Include `t` to avoid missing dependency warning
 
   const handlePageChange = (pageNumber: number) => {
     // Check for unsaved changes
@@ -103,7 +111,7 @@ export default function EntityPage() {
 
   React.useEffect(() => {
     fetchProducts(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchProducts]);
 
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
@@ -154,10 +162,11 @@ export default function EntityPage() {
               className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
             >
               <td>
-                <img
+                <Image
                   src={`http://localhost:8000/images/products/images/${product.images[0]}`}
                   alt={product.name}
-                  width="50px"
+                  width={50}
+                  height={50}
                 />
               </td>
               <td className="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">

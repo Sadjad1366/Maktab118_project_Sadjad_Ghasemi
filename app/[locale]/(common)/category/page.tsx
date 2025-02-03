@@ -3,6 +3,7 @@
 import { getAllCategories } from "@/apis/category.service";
 import { useRouter } from "@/i18n/routing";
 import React, { useEffect, useState } from "react";
+import Image from "next/image"; // ✅ Import next/image
 
 const categoryImages = {
   "674c5b02d5ab17876575084e": "/images/categoryPage/automatic.jpg",
@@ -43,8 +44,12 @@ export default function CategoryPage() {
           className="relative group hover:opacity-70 cursor-pointer"
           onClick={() => handleCategoryClick(categoryId)}
         >
-          <img
-            src={categoryImages[categoryId as keyof typeof categoryImages]} 
+          {/* ✅ Use next/image for optimization */}
+          <Image
+            src={categoryImages[categoryId as keyof typeof categoryImages]}
+            alt={categoryNames[categoryId as keyof typeof categoryNames]} // ✅ Fixed missing alt attribute
+            width={300} // ✅ Adjust width dynamically if needed
+            height={200} // ✅ Adjust height dynamically if needed
             className="w-full h-auto"
           />
           <div className="opacity-0 group-hover:opacity-100 duration-700 absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-xl text-white font-semibold">

@@ -1,10 +1,11 @@
 "use client";
 
-import { className } from "@/utils/classNames";
-import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
-import { FiUpload, FiX } from "react-icons/fi";
 import { z } from "zod";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { className } from "@/utils/classNames";
+import { FiUpload, FiX } from "react-icons/fi";
+import React, { useState, useEffect } from "react";
 
 // Zod Validation Schema
 const addProductValidationSchema = z.object({
@@ -249,8 +250,12 @@ const CreateModal: React.FC<ICreateModal> = ({
           </div>
           {/* Images */}
           <div className="flex gap-x-2">
-            <label className={className("w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue",
-              "rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue")}>
+            <label
+              className={className(
+                "w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue",
+                "rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue"
+              )}
+            >
               <FiUpload />
               <span>{t("fields.images")}</span>
               <input
@@ -264,8 +269,11 @@ const CreateModal: React.FC<ICreateModal> = ({
             <div className="flex flex-wrap gap-2 mt-2">
               {imagePreviews.map((preview, index) => (
                 <div key={index} className="relative">
-                  <img
+                  <Image
                     src={preview}
+                    alt={`Preview ${index}`}
+                    width={64}
+                    height={64}
                     className="w-16 h-16 object-cover rounded-md"
                   />
                   <button

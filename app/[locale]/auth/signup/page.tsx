@@ -6,13 +6,14 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema } from "@/utils/validations/zodAuthValidation";
-import {Link} from '@/i18n/routing';
+import { Link } from "@/i18n/routing";
 import { className } from "@/utils/classNames";
 import { useRouter } from "@/i18n/routing";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { IoIosPhonePortrait } from "react-icons/io";
 import { IoIosHome } from "react-icons/io";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function SignupPage() {
   const {
@@ -52,8 +53,11 @@ export default function SignupPage() {
       });
       toast.success(`${t("signup_success")}`);
       router.push("/auth/login");
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message || "خطا در ثبت نام!");
+    } catch (error: unknown) {
+      // ✅ FIXED
+      const errMessage =
+        error instanceof Error ? error.message : "خطا در ثبت نام!";
+      toast.error(errMessage);
       console.error("Signup Error:", error);
     } finally {
       setIsLoading(false);
@@ -67,7 +71,12 @@ export default function SignupPage() {
         className="bg-slate-200 px-8 py-5 rounded-xl shadow-md w-full max-w-lg opacity-95"
       >
         <div className="flex justify-center pb-3">
-          <img src="/images/logo/ninja.png" alt="Ninja Logo" className="h-16" />
+          <Image
+            src="/images/logo/ninja.png"
+            alt="Ninja Logo"
+            width={64} 
+            height={64}
+          />
         </div>
         <div className="space-y-4">
           <div className="flex justify-between gap-x-5">
@@ -267,15 +276,12 @@ export default function SignupPage() {
               </p>
             )}
           </div>
-            <div className="text-center">
-            <Link
-              className="text-blue-500 hover:underline"
-              href="/auth/login"
-            >
-              {t('login_link')}
+          <div className="text-center">
+            <Link className="text-blue-500 hover:underline" href="/auth/login">
+              {t("login_link")}
             </Link>
-            </div>
-            <div>
+          </div>
+          <div>
             <button
               type="submit"
               className={className(
@@ -285,11 +291,11 @@ export default function SignupPage() {
               )}
               disabled={isLoading}
             >
-              {isLoading ? `${t('signing_up')}` : `${t('signup')}`}
+              {isLoading ? `${t("signing_up")}` : `${t("signup")}`}
             </button>
           </div>
           <div className="text-end text-blue-700 font-medium hover:underline">
-            <Link href="/">{t('back_to_home')}</Link>
+            <Link href="/">{t("back_to_home")}</Link>
           </div>
         </div>
       </form>

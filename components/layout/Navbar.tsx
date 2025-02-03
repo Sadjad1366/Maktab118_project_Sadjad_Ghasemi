@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
@@ -32,16 +33,13 @@ const Navbar: React.FC = () => {
   const t = useTranslations("Navbar");
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const checkRole = () => {
-    if (role === "ADMIN") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-  };
 
   React.useEffect(() => {
+    const checkRole = () => {
+      setIsAdmin(role === "ADMIN");
+    };
     checkRole();
+
     const userId = Cookies.get("userId") || null;
     if (userId !== currentUserId) {
       setCurrentUserId(userId);
@@ -85,10 +83,12 @@ const Navbar: React.FC = () => {
             )}
           </button>
           <div className="flex items-center gap-x-4">
-            <img
+            <Image
               className="w-24 h-[100px] sm:w-36 sm:h-[120px]"
               src="/images/logo/ninja.svg"
               alt="Logo"
+              width={144} // ✅ Define width
+              height={120} // ✅ Define height
             />
             <p className="hidden xl:block text-slate-100 text-2xl font-semibold ">
               {t("ninjaGallery")}
@@ -200,10 +200,12 @@ const Navbar: React.FC = () => {
                         className="flex items-center justify-between p-2 hover:bg-gray-100"
                       >
                         <div className="flex items-center gap-x-2">
-                          <img
+                          <Image
                             src={`http://localhost:8000/images/products/images/${item.image}`}
                             alt={item.name}
                             className="w-10 h-10 object-cover rounded"
+                            width={40} // ✅ Define width
+                            height={40} // ✅ Define height
                           />
                           <div>
                             <p className="text-sm font-semibold text-gray-700">

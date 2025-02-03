@@ -9,9 +9,7 @@ const AdminGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
     const role = Cookies.get('role')
-
     if (role !== "ADMIN") {
       router.push("/not-found");
     } else {

@@ -41,7 +41,7 @@ console.log("deliver",deliveryDate);
     };
 
     try {
-      const response = await createOrderReq(orderRequest);
+      await createOrderReq(orderRequest);
       const userId = Cookies.get("userId");
 console.log("user:",userId)
             await dispatch(clearCartApi(userId || ""));

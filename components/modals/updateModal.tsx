@@ -1,10 +1,11 @@
 "use client";
 
-import { className } from "@/utils/classNames";
-import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
-import { FiUpload, FiX } from "react-icons/fi";
 import { z } from "zod";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { FiUpload, FiX } from "react-icons/fi";
+import { className } from "@/utils/classNames";
+import React, { useState, useEffect } from "react";
 
 // Zod Validation Schema
 export const updateProductValidationSchema = z.object({
@@ -51,8 +52,7 @@ const UpdateModal: React.FC<IUpdateModal> = ({
     { _id: string; name: string }[]
   >([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
-    const t = useTranslations("UpdateModal");
-
+  const t = useTranslations("UpdateModal");
 
   // Populate subcategories based on category selection
   useEffect(() => {
@@ -145,31 +145,31 @@ const UpdateModal: React.FC<IUpdateModal> = ({
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50 p-6">
       <div className="bg-slate-200 p-6 rounded-lg shadow-lg w-full max-w-lg max-h-screen overflow-auto">
-        <h2 className="text-lg font-bold mb-4 text-center">{t('title')}</h2>
+        <h2 className="text-lg font-bold mb-4 text-center">{t("title")}</h2>
 
         {/* Name */}
         <div>
-          <label>{t('fields.name')}</label>
+          <label>{t("fields.name")}</label>
           <input
             name="name"
             value={formData.name}
             onChange={handleChange}
             className="w-full border rounded p-2"
           />
-          {errors.name && <p className="text-red-500">{t('errors.name')}</p>}
+          {errors.name && <p className="text-red-500">{t("errors.name")}</p>}
         </div>
 
         {/* Category and Subcategory */}
         <div className="flex gap-2 mt-4">
           <div className="w-1/2">
-            <label>{t('fields.category')}</label>
+            <label>{t("fields.category")}</label>
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
               className="w-full border rounded p-2"
             >
-              <option value="">{t('choose')}</option>
+              <option value="">{t("choose")}</option>
               {Object.entries(categories).map(([id, name]) => (
                 <option key={id} value={id}>
                   {name}
@@ -177,18 +177,18 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               ))}
             </select>
             {errors.category && (
-              <p className="text-red-500">{t('errors.category')}</p>
+              <p className="text-red-500">{t("errors.category")}</p>
             )}
           </div>
           <div className="w-1/2">
-            <label>{t('fields.subcategory')}</label>
+            <label>{t("fields.subcategory")}</label>
             <select
               name="subcategory"
               value={formData.subcategory}
               onChange={handleChange}
               className="w-full border rounded p-2"
             >
-              <option value="">{t('choose')}</option>
+              <option value="">{t("choose")}</option>
               {filteredSubcategories.map((sub) => (
                 <option key={sub._id} value={sub._id}>
                   {sub.name}
@@ -196,7 +196,7 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               ))}
             </select>
             {errors.subcategory && (
-              <p className="text-red-500">{t('errors.subcategory')}</p>
+              <p className="text-red-500">{t("errors.subcategory")}</p>
             )}
           </div>
         </div>
@@ -204,7 +204,7 @@ const UpdateModal: React.FC<IUpdateModal> = ({
         {/* Price and Quantity */}
         <div className="flex gap-2 mt-4">
           <div className="w-1/2">
-            <label>{t('fields.price')}</label>
+            <label>{t("fields.price")}</label>
             <input
               name="price"
               type="number"
@@ -212,10 +212,12 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               onChange={handleChange}
               className="w-full border rounded p-2"
             />
-            {errors.price && <p className="text-red-500">{t('errors.price')}</p>}
+            {errors.price && (
+              <p className="text-red-500">{t("errors.price")}</p>
+            )}
           </div>
           <div className="w-1/2">
-            <label>{t('fields.quantity')}</label>
+            <label>{t("fields.quantity")}</label>
             <input
               name="quantity"
               type="number"
@@ -224,25 +226,25 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               className="w-full border rounded p-2"
             />
             {errors.quantity && (
-              <p className="text-red-500">{t('errors.quantity')}</p>
+              <p className="text-red-500">{t("errors.quantity")}</p>
             )}
           </div>
         </div>
         {/* Brand */}
         <div>
-          <label>{t('fields.brand')}</label>
+          <label>{t("fields.brand")}</label>
           <input
             name="brand"
             value={formData.brand}
             onChange={handleChange}
             className="w-full border rounded p-2"
           />
-          {errors.brand && <p className="text-red-500">{t('errors.brand')}</p>}
+          {errors.brand && <p className="text-red-500">{t("errors.brand")}</p>}
         </div>
 
         {/* Description */}
         <div className="mt-4">
-          <label>{t('fields.description')}</label>
+          <label>{t("fields.description")}</label>
           <textarea
             name="description"
             value={formData.description}
@@ -251,16 +253,20 @@ const UpdateModal: React.FC<IUpdateModal> = ({
             className="w-full border rounded p-2"
           />
           {errors.description && (
-            <p className="text-red-500">{t('errors.description')}</p>
+            <p className="text-red-500">{t("errors.description")}</p>
           )}
         </div>
 
         {/* Images */}
         <div className="mt-4 flex gap-x-2">
-          <label className={className("w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue",
-            "rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue")}>
+          <label
+            className={className(
+              "w-36 h-20 flex flex-col items-center px-4 py-4 bg-white text-blue",
+              "rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue"
+            )}
+          >
             <FiUpload />
-            <span>{t('fields.images')}</span>
+            <span>{t("fields.images")}</span>
             <input
               type="file"
               accept="image/*"
@@ -269,11 +275,19 @@ const UpdateModal: React.FC<IUpdateModal> = ({
               className="hidden"
             />
           </label>
-          {errors.images && <p className="text-red-500">{t('errors.images')}</p>}
+          {errors.images && (
+            <p className="text-red-500">{t("errors.images")}</p>
+          )}
           <div className="flex gap-2 mt-2">
             {imagePreviews.map((src, index) => (
               <div key={index} className="relative">
-                <img src={src} className="w-16 h-16 object-cover rounded" />
+                <Image
+                  src={src}
+                  width={64}
+                  height={64}
+                  alt="Product Image"
+                  className="w-16 h-16 object-cover rounded"
+                />
                 <button
                   onClick={() => handleRemoveImage(index)}
                   className="absolute top-0 left-0 bg-red-500 text-white rounded-full p-1"

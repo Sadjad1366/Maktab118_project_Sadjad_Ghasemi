@@ -22,6 +22,7 @@ import {
   Legend,
 } from "chart.js";
 import { className } from "@/utils/classNames";
+import Image from "next/image";
 
 // Register Chart.js components
 ChartJS.register(
@@ -332,7 +333,7 @@ const DashboardPage: React.FC = () => {
               </tr>
             ))}
             {/* If no orders */}
-             {recentOrders.length === 0 && (
+            {recentOrders.length === 0 && (
               <tr>
                 <td
                   colSpan={5}
@@ -354,9 +355,11 @@ const DashboardPage: React.FC = () => {
         <ul className="space-y-4">
           {userActivities.map((activity, index) => (
             <li key={index} className="flex items-center">
-              <img
+              <Image
                 src={activity.avatar}
                 alt={`${activity.user} avatar`}
+                width={48}
+                height={48} 
                 className="w-12 h-12 rounded-full mr-4"
               />
               <div>

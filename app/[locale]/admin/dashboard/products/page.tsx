@@ -14,7 +14,8 @@ import { getAllCategories, getAllSubCategories } from "@/apis/category.service";
 import { className } from "@/utils/classNames";
 import CreateModal from "@/components/modals/createModal";
 import { useTranslations } from "next-intl";
-import { title } from "process";
+import { useCallback } from "react";
+import Image from "next/image";
 
 const ProductPage: React.FC = () => {
   const [products, setProducts] = React.useState<IProduct[]>([]);
@@ -41,9 +42,7 @@ const ProductPage: React.FC = () => {
   // Open and close create modal
   const openCreateModal = () => setIsCreateModalOpen(true);
 
-
   const closeCreateModal = () => setIsCreateModalOpen(false);
-
 
   // Open and close update modal
   const openUpdateModal = (product: IProduct) => {
@@ -70,18 +69,22 @@ const ProductPage: React.FC = () => {
   const t1 = useTranslations("DeleteModal");
 
   // Fetch products
-  const fetchProducts = async (page: number) => {
-    try {
-      const response = await getAllProductsReq(page, 6);
-      setProducts(response.data.products);
-      setTotalPages(response.total_pages);
-    } catch (error) {
-      toast.error(`${t("notifications.fetch_error")}`);
-    }
-  };
+  const fetchProducts = useCallback(
+    async (page: number) => {
+      try {
+        const response = await getAllProductsReq(page, 6);
+        setProducts(response.data.products);
+        setTotalPages(response.total_pages);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast.error(`${t("notifications.fetch_error")}`);
+      }
+    },
+    [t]
+  );
 
   // Fetch categories and subcategories
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const categories = await getAllCategories();
       const map: Record<string, string> = {};
@@ -92,15 +95,13 @@ const ProductPage: React.FC = () => {
     } catch (error) {
       console.error(`${t("notifications.fetch_categories_error")}`, error);
     }
-  };
+  }, [t]);
 
-  const fetchSubCategories = async () => {
+  const fetchSubCategories = useCallback(async () => {
     try {
       const subCategories = await getAllSubCategories();
-
       const map: Record<string, { _id: string; name: string }[]> = {};
       const flatMap: Record<string, string> = {};
-
       subCategories.forEach((subcategory: ISubCategory) => {
         if (!map[subcategory.category]) {
           map[subcategory.category] = [];
@@ -109,7 +110,6 @@ const ProductPage: React.FC = () => {
           _id: subcategory._id,
           name: subcategory.name,
         });
-
         flatMap[subcategory._id] = subcategory.name;
       });
 
@@ -118,7 +118,7 @@ const ProductPage: React.FC = () => {
     } catch (error) {
       console.error(`${t("notifications.fetch_subcategories_error")}`, error);
     }
-  };
+  }, [t]);
 
   // create product
   const createProduct = async (formData: FormData) => {
@@ -160,9 +160,11 @@ const ProductPage: React.FC = () => {
       }
 
       fetchProducts(currentPage);
-      closeDeleteModal(); 
-    } catch (error: any) {
-      toast.error(error.message || `${t("notifications.delete_error")}`);
+      closeDeleteModal();
+    } catch (error: unknown) {
+      const errMessage =
+        (error as Error).message || t("notifications.delete_error");
+      toast.error(errMessage);
     }
   };
 
@@ -174,7 +176,7 @@ const ProductPage: React.FC = () => {
     fetchProducts(currentPage);
     fetchCategories();
     fetchSubCategories();
-  }, [currentPage]);
+  }, [currentPage, fetchProducts, fetchCategories, fetchSubCategories]);
 
   return (
     <div className="overflow-x-auto sm:rounded-lg bg-slate-300 lg:w-[800px] p-3">
@@ -228,10 +230,11 @@ const ProductPage: React.FC = () => {
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
               >
                 <td>
-                  <img
+                  <Image
                     src={`http://localhost:8000/images/products/images/${product.images[0]}`}
                     alt={product.name}
-                    width="50px"
+                    width={50} 
+                    height={50}
                   />
                 </td>
                 <td className="px-2 py-4">{product.name}</td>
@@ -276,9 +279,7 @@ const ProductPage: React.FC = () => {
           >
             {t("pagination.previous")}
           </button>
-          <span>
-              {t("pagination.page_info", { currentPage, totalPages })}
-            </span>
+          <span>{t("pagination.page_info", { currentPage, totalPages })}</span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}

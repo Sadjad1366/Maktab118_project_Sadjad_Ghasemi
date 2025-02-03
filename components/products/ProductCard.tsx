@@ -1,11 +1,12 @@
 "use client";
 
-import { className } from "@/utils/classNames";
-import { useTranslations } from "next-intl";
-import {Link} from '@/i18n/routing';
 import React from "react";
+import Image from "next/image";
+import { Link } from "@/i18n/routing";
 import { CiHeart } from "react-icons/ci";
 import { FaHeart } from "react-icons/fa";
+import { useTranslations } from "next-intl";
+import { className } from "@/utils/classNames";
 
 interface ProductCardProps {
   product: IProduct;
@@ -13,7 +14,9 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isLike, setIsLike] = React.useState(false);
-  const toggleLike = ()=> {setIsLike((prev)=> !prev)};
+  const toggleLike = () => {
+    setIsLike((prev) => !prev);
+  };
   const isOutOfStock = product.quantity === 0;
   const t = useTranslations("Products");
 
@@ -27,7 +30,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       {isLike ? (
         <>
-          <FaHeart onClick={toggleLike} className="text-red-600 p-1" size={36} />
+          <FaHeart
+            onClick={toggleLike}
+            className="text-red-600 p-1"
+            size={36}
+          />
         </>
       ) : (
         <>
@@ -38,10 +45,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Product Image */}
       <div className="relative h-40 size-36 mx-auto">
         <Link href={`/products/${product._id}`}>
-          <img
+          <Image
             className="w-full h-full object-cover cursor-pointer rounded-t-lg mt-2"
             src={`http://localhost:8000/images/products/images/${product.images[0]}`}
-            alt={product.name}
+            width={150} // ✅ Specify width
+            height={150} // ✅ Specify height
+            alt={product.name} // ✅ Provide an alt attribute
           />
         </Link>
       </div>
@@ -52,18 +61,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.name}
         </h3>
         <p className="text-sm text-gray-600 truncate mb-2">
-          {product.description || `${t('no_description')}`}
+          {product.description || `${t("no_description")}`}
         </p>
         {isOutOfStock ? (
           <div className="flex justify-center items-center mt-2">
-            <span className="text-red-500 text-xl font-semibold">{t('out_of_stock')}</span>
+            <span className="text-red-500 text-xl font-semibold">
+              {t("out_of_stock")}
+            </span>
           </div>
         ) : (
           <div className="flex justify-between items-center mt-2">
             <span className="text-lg font-bold text-indigo-600">
-              {Number(product.price).toLocaleString()} {t('currency')}
+              {Number(product.price).toLocaleString()} {t("currency")}
             </span>
-            <span className="text-green-500 text-sm font-semibold">{t('in_stock')}</span>
+            <span className="text-green-500 text-sm font-semibold">
+              {t("in_stock")}
+            </span>
           </div>
         )}
       </div>

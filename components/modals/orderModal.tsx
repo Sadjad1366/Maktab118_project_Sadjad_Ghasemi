@@ -23,18 +23,31 @@ const OrderModal: React.FC<IOrderModal> = ({
   orderId,
   onOrderUpdate,
 }) => {
-  if (!isOpen) return null;
+  // ✅ Fix: Hooks must always be called unconditionally
+  const t = useTranslations("OrderModal");
+
+  const mutation = useMutation({
+    mutationFn: (deliveryStatus: boolean) => editOrderById(orderId, deliveryStatus),
+    onSuccess: () => {
+      toast.success(t("messages.sent_successfully"));
+      onOrderUpdate();
+      onClose();
+    },
+  });
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => getOrderById(orderId),
+    enabled: isOpen, // ✅ Prevents running query when modal is closed
   });
 
-  const t = useTranslations("OrderModal");
-  const formattedDate = (date: string | undefined): string => {
-    if (!date) return "تاریخ نامعتبر";
+  // ✅ Early return only once, after hooks
+  if (!isOpen) return null;
+
+  const formattedDate = (date?: string): string => {
+    if (!date) return t("messages.invalid_date");
     const gregorianDate = new Date(date);
-    if (isNaN(gregorianDate.getTime())) return "تاریخ نامعتبر";
+    if (isNaN(gregorianDate.getTime())) return t("messages.invalid_date");
 
     const jalaaliDate = toJalaali(
       gregorianDate.getFullYear(),
@@ -44,17 +57,7 @@ const OrderModal: React.FC<IOrderModal> = ({
     return `${jalaaliDate.jy}/${jalaaliDate.jm}/${jalaaliDate.jd}`;
   };
 
-  const mutation = useMutation({
-    mutationFn: (deliveryStatus: boolean) =>
-      editOrderById(orderId, deliveryStatus),
-    onSuccess: () => {
-      toast.success(`${t('messages.sent_successfully')}`);
-      onOrderUpdate();
-      onClose();
-    },
-  });
-
-  const handelEditOrder = () => {
+  const handleEditOrder = () => {
     const newDeliveryStatus = !data?.data?.order?.deliveryStatus;
     mutation.mutate(newDeliveryStatus);
   };
@@ -100,7 +103,7 @@ const OrderModal: React.FC<IOrderModal> = ({
               </p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm">{t('address')}:</p>
+              <p className="text-gray-600 text-sm">{t("address")}:</p>
               <p className="text-gray-800 font-medium">{order.user.address}</p>
             </div>
             <div>
@@ -116,7 +119,7 @@ const OrderModal: React.FC<IOrderModal> = ({
               </p>
             </div>
             <div>
-              <p className="text-gray-600 text-sm"> {t("delivery_time")}:</p>
+              <p className="text-gray-600 text-sm">{t("delivery_time")}:</p>
               <p className="text-gray-800 font-medium">
                 {formattedDate(order.deliveryDate)}
               </p>
@@ -124,65 +127,45 @@ const OrderModal: React.FC<IOrderModal> = ({
           </div>
         </div>
 
+        {/* Order Items */}
         <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            {t("title")}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">{t("title")}</h3>
           <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
             <thead>
               <tr className="bg-teal-500 text-white">
-                <th className="py-3 text-center text-sm">
-                  {t("table.product")}
-                </th>
-                <th className="py-3 px-4 text-center text-sm">
-                  {t("table.price")}
-                </th>
-                <th className="py-3 px-4 text-center text-sm">
-                  {t("table.quantity")}
-                </th>
+                <th className="py-3 text-center text-sm">{t("table.product")}</th>
+                <th className="py-3 px-4 text-center text-sm">{t("table.price")}</th>
+                <th className="py-3 px-4 text-center text-sm">{t("table.quantity")}</th>
               </tr>
             </thead>
             <tbody>
-              {order.products.map((item: IOrderDisplay, index: any) => (
+              {order.products.map((item: IOrderDisplay, index: number) => (
                 <tr
                   key={item._id}
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } hover:bg-gray-100`}
+                  className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100`}
                 >
-                  <td className="py-3 text-center text-gray-800">
-                    {item.product.name}
-                  </td>
+                  <td className="py-3 text-center text-gray-800">{item.product.name}</td>
                   <td className="py-3 text-center text-gray-800">
                     {item.product.price.toLocaleString()} {t("currency")}
                   </td>
-                  <td className="py-3 px-4 text-center text-gray-800">
-                    {item.count}
-                  </td>
+                  <td className="py-3 px-4 text-center text-gray-800">{item.count}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
+        {/* Actions */}
         <div className="flex justify-between items-center mt-6">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
-          >
+          <button onClick={onClose} className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded">
             {t("buttons.close")}
           </button>
           {order.deliveryStatus === false ? (
-            <button
-              onClick={handelEditOrder}
-              className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
-            >
+            <button onClick={handleEditOrder} className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
               {t("buttons.pending")}
             </button>
           ) : (
-            <p className="text-green-500 font-semibold">
-              {t("messages.order_sent")}
-            </p>
+            <p className="text-green-500 font-semibold">{t("messages.order_sent")}</p>
           )}
         </div>
       </div>
