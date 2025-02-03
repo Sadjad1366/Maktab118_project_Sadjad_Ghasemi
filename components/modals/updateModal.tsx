@@ -79,7 +79,7 @@ const UpdateModal: React.FC<IUpdateModal> = ({
       // Populate existing image previews
       setImagePreviews(
         product.images?.map(
-          (img) => `bhttps://backend-app-gamma.vercel.app/images/products/images/${img}`
+          (img) => `https://backend-app-gamma.vercel.app/images/products/images/${img}`
         ) || []
       );
     }

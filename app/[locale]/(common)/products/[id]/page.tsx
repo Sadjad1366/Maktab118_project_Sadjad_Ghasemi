@@ -56,7 +56,7 @@ const ProductDetailsPage: React.FC = () => {
         if (productData) {
           setProduct(productData);
           setActiveImage(
-            `bhttps://backend-app-gamma.vercel.app/images/products/images/${productData.images[0]}`
+            `https://backend-app-gamma.vercel.app/images/products/images/${productData.images[0]}`
           );
         } else {
           console.error("Product data is missing in response:", response);
@@ -185,7 +185,7 @@ const ProductDetailsPage: React.FC = () => {
           {/* Thumbnail Carousel */}
           <div className="flex mt-4 space-x-2 gap-x-2 overflow-x-auto">
             {product.images?.map((image, index) => {
-              const imageUrl = `bhttps://backend-app-gamma.vercel.app/images/products/images/${image}`;
+              const imageUrl = `https://backend-app-gamma.vercel.app/images/products/images/${image}`;
               return (
                 <Image
                   key={index}

@@ -162,7 +162,7 @@ const Basket: React.FC = () => {
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="p-3 border border-gray-200 text-center">
                     <Image
-                        src={`bhttps://backend-app-gamma.vercel.app/images/products/images/${item.image}`}
+                        src={`https://backend-app-gamma.vercel.app/images/products/images/${item.image}`}
                         alt={item.name}
                         width={48}
                         height={48}
