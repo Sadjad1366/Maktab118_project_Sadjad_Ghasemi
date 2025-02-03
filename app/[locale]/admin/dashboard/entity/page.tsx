@@ -163,7 +163,7 @@ export default function EntityPage() {
             >
               <td>
                 <Image
-                  src={`http://localhost:8000/images/products/images/${product.images[0]}`}
+                  src={`https://backend-6us4acis1-sadjad1366s-projects.vercel.app/images/products/images/${product.images[0]}`}
                   alt={product.name}
                   width={50}
                   height={50}
