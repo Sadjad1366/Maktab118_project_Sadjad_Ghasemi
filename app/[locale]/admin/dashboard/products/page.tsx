@@ -231,7 +231,7 @@ const ProductPage: React.FC = () => {
               >
                 <td>
                   <Image
-                    src={`backend-6us4acis1-sadjad1366s-projects.vercel.app/images/products/images/${product.images[0]}`}
+                    src={`bhttps://backend-app-gamma.vercel.app/images/products/images/${product.images[0]}`}
                     alt={product.name}
                     width={50}
                     height={50}
