@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const client = axios.create({
-  baseURL: "https://backend-6us4acis1-sadjad1366s-projects.vercel.app/api",
+  baseURL: "http://backend-6us4acis1-sadjad1366s-projects.vercel.app/api",
   timeout: 1000,
 });

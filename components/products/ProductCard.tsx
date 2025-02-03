@@ -47,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link href={`/products/${product._id}`}>
           <Image
             className="w-full h-full object-cover cursor-pointer rounded-t-lg mt-2"
-            src={`https://backend-6us4acis1-sadjad1366s-projects.vercel.app/images/products/images/${product.images[0]}`}
+            src={`http://backend-6us4acis1-sadjad1366s-projects.vercel.app/images/products/images/${product.images[0]}`}
             width={150} // ✅ Specify width
             height={150} // ✅ Specify height
             alt={product.name} // ✅ Provide an alt attribute
