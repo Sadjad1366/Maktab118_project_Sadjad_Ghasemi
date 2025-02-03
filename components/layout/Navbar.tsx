@@ -201,7 +201,7 @@ const Navbar: React.FC = () => {
                       >
                         <div className="flex items-center gap-x-2">
                           <Image
-                            src={`backend-6us4acis1-sadjad1366s-projects.vercel.app/images/products/images/${item.image}`}
+                            src={`https://backend-app-gamma.vercel.app/images/products/images/${item.image}`}
                             alt={item.name}
                             className="w-10 h-10 object-cover rounded"
                             width={40} // ✅ Define width
