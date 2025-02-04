@@ -10,7 +10,7 @@ export const fetchCart = createAsyncThunk<
   { rejectValue: string }
 >("basket/fetchCart", async (userId, { rejectWithValue }) => {
   try {
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
     const response = await axios.get(`${BASE_URL}/api/cart?userId=${userId}`);
     return response.data.products || [];
   } catch (error: any) {
@@ -24,7 +24,7 @@ export const addToCartApi = createAsyncThunk(
     try {
       const { userId, item } = payload;
       const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+        process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
       const response = await axios.post(`${BASE_URL}/api/cart`, {
         userId,
         product: item,
@@ -46,7 +46,7 @@ export const updateCartApi = createAsyncThunk(
     try {
       const { userId, productId, quantity } = payload;
       const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+        process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
       const response = await axios.put(`${BASE_URL}/api/cart`, {
         userId,
         productId,
@@ -69,7 +69,7 @@ export const removeFromCartApi = createAsyncThunk(
     try {
       const { userId, productId } = payload;
       const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+        process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
       const response = await axios.delete(`${BASE_URL}/api/cart`, {
         data: { userId, productId },
       });
@@ -86,7 +86,7 @@ export const clearCartApi = createAsyncThunk(
   async (userId: string, { rejectWithValue }) => {
     try {
       const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+        process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
       const response = await axios.delete(`${BASE_URL}/api/cart/clear`, {
         data: { userId },
       });
@@ -110,7 +110,7 @@ export const mergeGuestCartWithUserCart = createAsyncThunk<
   ) => {
     try {
       const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000" || "https://maktab118-project-sadjad-ghasemi.vercel.app";
+        process.env.NEXT_PUBLIC_API_URL || "https://maktab118-project-sadjad-ghasemi.vercel.app";
       const guestCart = getGuestCart();
       const state = getState() as RootState;
       const userCart = state.basket.items;
