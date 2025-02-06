@@ -74,7 +74,7 @@ export default function SignupPage() {
           <Image
             src="/images/logo/ninja.png"
             alt="Ninja Logo"
-            width={64} 
+            width={64}
             height={64}
           />
         </div>
@@ -158,7 +158,7 @@ export default function SignupPage() {
               </label>
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder={t("username")}
+                placeholder={t("password")}
                 {...register("password")}
                 className={className(
                   "w-full px-8 py-2 border rounded-md shadow-lg",
